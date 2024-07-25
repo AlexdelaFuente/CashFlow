@@ -103,9 +103,7 @@ class RegisterViewController: UIViewController {
             if wasRegistered {
                 AlertManager.showEmailVerificationSentAlert(on: self, email: registerUserRequest.email)
                 navigationController?.viewControllers.forEach({ vc in
-                    print(vc)
                     if vc is LoginViewController{
-                        print("lOOOL")
                         let login = vc as! LoginViewController
                         login.emailTextField.text = registerUserRequest.email
                     }

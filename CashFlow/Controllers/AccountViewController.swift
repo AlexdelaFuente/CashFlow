@@ -14,13 +14,13 @@ class AccountViewController: UIViewController {
     
     
     deinit {
-        NotificationCenter.default.removeObserver(self, name: UIMenuController.didHideMenuNotification, object: nil)
+        removeMenuNotification()
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(self, selector: #selector(menuDidHide), name: UIMenuController.willHideMenuNotification, object: nil)
+        addMenuNotification()
     }
     
     
@@ -28,11 +28,27 @@ class AccountViewController: UIViewController {
         super.viewWillAppear(animated)
         setupUI()
         navigationController?.navigationBar.isHidden = true
+        tabBarController?.tabBar.isHidden = false
     }
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        animateUsername()
+    }
+    
+    
+    private func addMenuNotification() {
+        NotificationCenter.default.addObserver(self, selector: #selector(menuDidHide), name: UIMenuController.willHideMenuNotification, object: nil)
+    }
+    
+    
+    private func removeMenuNotification() {
+        NotificationCenter.default.removeObserver(self, name: UIMenuController.didHideMenuNotification, object: nil)
+    }
+    
+    
+    private func animateUsername() {
         if nameLabel.text != User.shared.username {
             UIView.animate(withDuration: 0.2, animations: {
                 self.nameLabel.transform = CGAffineTransform(translationX: self.view.bounds.width, y: 0)

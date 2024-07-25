@@ -16,18 +16,28 @@ class ChangeCurrencyViewController: UIViewController {
     
     @IBOutlet var pickerView: UIPickerView!
     
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        pickerView.delegate = self
-        let currency = User.shared.currency
-        
-        pickerView.selectRow(currencies.firstIndex(of: currency)!, inComponent: 0, animated: false)
+        setupView()
     }
     
     
     override func viewWillDisappear(_ animated: Bool) {
+        saveCurrency()
         super.viewWillDisappear(animated)
+        
+    }
+    
+    
+    private func setupView() {
+        pickerView.delegate = self
+        let currency = User.shared.currency
+        pickerView.selectRow(currencies.firstIndex(of: currency)!, inComponent: 0, animated: false)
+    }
+    
+    
+    private func saveCurrency() {
         let currency = currencies[pickerView.selectedRow(inComponent: 0)]
         if currency != User.shared.currency {
             AuthService.shared.updateCurrency(newCurrency: currency) { error in

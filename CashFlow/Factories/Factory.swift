@@ -94,4 +94,11 @@ class Factory: NSObject {
     }
     
     
+    static func providetotalBalanceScreen(storyboard: UIStoryboard) -> TotalBalanceViewController{
+        let totalBalanceScreen = storyboard.instantiateViewController(withIdentifier: Screens.totalBalanceScreen) as! TotalBalanceViewController
+        return totalBalanceScreen
+    }
+    
+    
+    
 }

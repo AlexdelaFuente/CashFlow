@@ -20,6 +20,17 @@ class TransactionsTableViewController: UITableViewController {
         setupEmptyState()
     }
     
+  
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+        if User.shared.username == "" || User.shared.transactions.isEmpty {
+            view.addSubview(emptyState!)
+        } else {
+            emptyState?.removeFromSuperview()
+        }
+    }
+    
     
     private func setupEmptyState() {
         emptyState = EmptyStateView(frame: tableView.bounds, message: "You didnt add any transactions yet")
@@ -29,17 +40,6 @@ class TransactionsTableViewController: UITableViewController {
     private func setupTableView() {
         tableView.register(UINib(nibName: "TransactionsTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionsTableViewCell")
         tableView.isScrollEnabled = false
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-        if User.shared.username == "" || User.shared.transactions.isEmpty {
-            view.addSubview(emptyState!)
-        } else {
-            emptyState?.removeFromSuperview()
-        }
     }
     
     
@@ -74,7 +74,7 @@ class TransactionsTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let transaction = User.shared.transactions[indexPath.row]
         let vc = Factory.provideTransactionDetailScreen(storyboard: storyboard!, transaction: transaction)
-        present(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
     

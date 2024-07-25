@@ -8,11 +8,15 @@
 import UIKit
 import SearchTextField
 import FirebaseAuth
+import WebKit
+import Loady
 
 class LoginViewController: UIViewController {
     
     @IBOutlet var emailTextField: SearchTextField!
     @IBOutlet var passwordTextField: UITextField!
+    @IBOutlet var webView: WKWebView!
+    @IBOutlet var signInButton: LoadyButton!
     
     private var isPasswordVisible = false
     
@@ -20,13 +24,35 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTextFields()
-        
+        setupWebView()
+        setupSignInButton()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
+        
+    }
+    
+    
+    private func setupSignInButton() {
+        signInButton.setAnimation(LoadyAnimationType.downloading(with: .init(
+            downloadingLabel: (title: "Signing In...", font: UIFont.boldSystemFont(ofSize: 18), textColor : .accent),
+            percentageLabel: (font: UIFont.boldSystemFont(ofSize: 0), textColor : .systemBackground),
+            downloadedLabel: (title: "Completed.", font: UIFont.boldSystemFont(ofSize: 20), textColor : .accent)
+            )
+        ))
+    }
+    
+    
+    private func setupWebView() {
+        webView.layer.masksToBounds = true
+        webView.layer.cornerRadius = 16
+        webView.translatesAutoresizingMaskIntoConstraints = true
+        guard let url = URL(string: "https://my.spline.design/designingfemaleworkersandbankcards-955fdace555fb0402af450b32c83f00d/") else { return }
+        let request = URLRequest(url: url)
+        webView.load(request)
     }
     
     
@@ -88,11 +114,12 @@ class LoginViewController: UIViewController {
             return
         }
         
-        
+        signInButton.startLoading()
         AuthService.shared.signIn(with: loginUserRequest) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
                 AlertManager.showSignInErrorAlert(on: self, with: error)
+                signInButton.stopLoading()
                 return
             }
             
@@ -107,6 +134,7 @@ class LoginViewController: UIViewController {
                     try? Auth.auth().signOut()
                 }
             }
+            signInButton.stopLoading()
         }
     }
     

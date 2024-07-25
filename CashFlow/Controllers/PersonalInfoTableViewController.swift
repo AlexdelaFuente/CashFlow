@@ -48,15 +48,21 @@ class PersonalInfoTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = false
-        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        setupBars()
     }
    
     
     override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
+    
+    private func setupBars() {
+        navigationController?.navigationBar.isHidden = false
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        tabBarController?.tabBar.isHidden = true
+    }
     
     private func registerCells() {
         tableView.register(PersonalInfoCell.self, forCellReuseIdentifier: "PersonalInfoCell")

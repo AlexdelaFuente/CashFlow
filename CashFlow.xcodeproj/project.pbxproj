@@ -10,6 +10,8 @@
 		281164FB2C2EB19F00CAA9BB /* AddTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */; };
 		28172C9B2C41095400CFDA8B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9A2C41095400CFDA8B /* Date+Extensions.swift */; };
 		28172CA02C41361600CFDA8B /* EditTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */; };
+		2820665E2C51117200F4E782 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665D2C51117200F4E782 /* UIView+Extensions.swift */; };
+		282066602C511D2700F4E782 /* TotalBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */; };
 		282660242C3D110B0067513F /* AnimatedSegmentSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282660232C3D110B0067513F /* AnimatedSegmentSwitch.swift */; };
 		283DB36B2C256D3D0051F459 /* PersonalInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */; };
 		284094292C22C6640096A9F9 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284094282C22C6640096A9F9 /* AlertManager.swift */; };
@@ -69,6 +71,8 @@
 		281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionViewController.swift; sourceTree = "<group>"; };
 		28172C9A2C41095400CFDA8B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionViewController.swift; sourceTree = "<group>"; };
+		2820665D2C51117200F4E782 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
+		2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalanceViewController.swift; sourceTree = "<group>"; };
 		282660232C3D110B0067513F /* AnimatedSegmentSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSegmentSwitch.swift; sourceTree = "<group>"; };
 		283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoTableViewController.swift; sourceTree = "<group>"; };
 		284094282C22C6640096A9F9 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
@@ -161,6 +165,7 @@
 				281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */,
 				289718ED2C3FC868004680A5 /* TransactionDetailViewController.swift */,
 				28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */,
+				2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -278,6 +283,7 @@
 				284094352C22F0A80096A9F9 /* Validator.swift */,
 				28A9E9562C22BF350037C639 /* Constants.swift */,
 				28172C9A2C41095400CFDA8B /* Date+Extensions.swift */,
+				2820665D2C51117200F4E782 /* UIView+Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -448,6 +454,7 @@
 				28DBB8802C2D67F5002AC154 /* DayLabel.swift in Sources */,
 				287154E22C296823009589D3 /* ChangeCurrencyViewController.swift in Sources */,
 				28DBB8822C2DBDF9002AC154 /* MoneyType.swift in Sources */,
+				282066602C511D2700F4E782 /* TotalBalanceViewController.swift in Sources */,
 				287154E82C29746C009589D3 /* ChangeLanguageViewController.swift in Sources */,
 				287154E52C296C3C009589D3 /* Currency.swift in Sources */,
 				28DBB87E2C2D5CAF002AC154 /* DayRangeIndicatorView.swift in Sources */,
@@ -461,6 +468,7 @@
 				287154ED2C298B93009589D3 /* ChangePasswordViewController.swift in Sources */,
 				2876A9572C2C3DA800FE02E3 /* EmptyStateView.swift in Sources */,
 				28A9E9572C22BF350037C639 /* Constants.swift in Sources */,
+				2820665E2C51117200F4E782 /* UIView+Extensions.swift in Sources */,
 				289718F02C4007A1004680A5 /* FilterOrderButton.swift in Sources */,
 				28A9E9382C2081980037C639 /* AppDelegate.swift in Sources */,
 				2889B4972C247F7E0089B61E /* Cell.swift in Sources */,
@@ -626,7 +634,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CashFlow/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Cash Flow";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -662,7 +670,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = CashFlow/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Cash Flow";
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.productivity";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;

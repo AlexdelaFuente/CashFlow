@@ -206,7 +206,7 @@ extension AlertManager {
     
     public static func showCopiedTextAlert(on vc: UIViewController) {
         let tickImage = UIImage(systemName: SFSymbols.checkmark)
-        self.showCustomAlert(on: vc, title: "Copied text!", image: tickImage, imageColor: .systemGreen)
+        self.showCustomAlert(on: vc, title: "Copied text!", image: tickImage, imageColor: .accent)
     }
 }
 
@@ -215,7 +215,7 @@ extension AlertManager {
     
     public static func signedInAlert(on vc: UIViewController) {
         let tickImage = UIImage(systemName: SFSymbols.checkmark)
-        AlertManager.showCustomAlert(on: vc, title: "Login Succesful!", image: tickImage, imageColor: .systemGreen)
+        AlertManager.showCustomAlert(on: vc, title: "Login Succesful!", image: tickImage, imageColor: .accent)
     }
 }
 
@@ -234,7 +234,7 @@ extension AlertManager {
     
     public static func createdAccountAlert(on vc: UIViewController) {
         let tickImage = UIImage(systemName: SFSymbols.checkmark)
-        AlertManager.showCustomAlert(on: vc, title: "Account created!", image: tickImage, imageColor: .systemGreen)
+        AlertManager.showCustomAlert(on: vc, title: "Account created!", image: tickImage, imageColor: .accent)
     }
 }
 
@@ -258,7 +258,7 @@ extension AlertManager {
     
     public static func passwordChangedAlert(on vc: UIViewController) {
         let tickImage = UIImage(systemName: SFSymbols.checkmark)
-        AlertManager.showCustomAlert(on: vc, title: "Password Changed!", image: tickImage, imageColor: .systemGreen)
+        AlertManager.showCustomAlert(on: vc, title: "Password Changed!", image: tickImage, imageColor: .accent)
     }
     
 }
@@ -267,7 +267,7 @@ extension AlertManager {
 extension AlertManager {
     
     public static func showWrongPersonalInformation(on vc: UIViewController) {
-        self.showBasicAlert(on: vc, title: "Error Updating Personal Information", message: "You have entered invalid data")
+        self.showBasicAlert(on: vc, title: "Error Updating Personal Information", message: "You have entered invalid data.")
     }
     
     
@@ -278,7 +278,7 @@ extension AlertManager {
     
     public static func personalInformationUpdatedAlert(on vc: UIViewController) {
         let tickImage = UIImage(systemName: SFSymbols.checkmark)
-        AlertManager.showCustomAlert(on: vc, title: "Personal Information Updated!", image: tickImage, imageColor: .systemGreen)
+        AlertManager.showCustomAlert(on: vc, title: "Personal Information Updated!", image: tickImage, imageColor: .accent)
     }
 }
 
@@ -296,7 +296,7 @@ extension AlertManager {
     
     public static func transactionWasSaved(on vc: UIViewController) {
         let tickImage = UIImage(systemName: SFSymbols.checkmark)
-        AlertManager.showCustomAlert(on: vc, title: "Your transaction was saved succesfully.", image: tickImage, imageColor: .systemGreen)
+        AlertManager.showCustomAlert(on: vc, title: "Your transaction was saved succesfully.", image: tickImage, imageColor: .accent)
     }
     
     
@@ -325,7 +325,62 @@ extension AlertManager {
     
     
     public static func transactionNegativeAmount(on vc: UIViewController) {
-        self.showBasicAlert(on: vc, title: "Invalid Amount", message: "Amount must be greater than 0")
+        self.showBasicAlert(on: vc, title: "Invalid Amount", message: "Amount must be greater than 0.")
     }
     
+}
+
+//MARK: - Edit Transaction
+extension AlertManager {
+    
+    public static func editTransactionError(on vc: UIViewController, with error: Error) {
+        self.showBasicAlert(on: vc, title: "Error editing transaction", message: "\(error.localizedDescription)")
+    }
+    
+    
+    public static func editTransactionSuccesful(on vc: UIViewController) {
+        let tickImage = UIImage(systemName: SFSymbols.checkmark)
+        AlertManager.showCustomAlert(on: vc, title: "Your transaction was edited succesfully.", image: tickImage, imageColor: .accent)
+    }
+}
+
+//MARK: - Delete Transaction
+extension AlertManager {
+    
+    public static func deleteTransactionAlert(on vc: UIViewController, transaction: Transaction) {
+        self.showYesOrNoAlert(on: vc, title: "Delete Transaction", message: "Are you sure you want to delete this transaction?") { _ in
+            AuthService.shared.deleteTransaction(transaction: transaction) { error in
+                if let error = error {
+                    deleteTransactionError(on: vc, with: error)
+                    return
+                }
+                AuthService.shared.fetchUser { user, error in
+                    if let error = error {
+                        showFetchingUserError(on: vc, with: error)
+                    }
+                    if let user = user {
+                        User.shared = user
+                    } else {
+                        showUnknownFetchingUserError(on: vc)
+                    }
+                }
+                User.shared.transactions.removeAll { tr in
+                    tr == transaction
+                }
+                deleteTransactionSuccesful(on: vc)
+                vc.navigationController?.popViewController(animated: true)
+            }
+        }
+    }
+    
+    
+    public static func deleteTransactionError(on vc: UIViewController, with error: Error) {
+        self.showBasicAlert(on: vc, title: "Error Deleting Transaction", message: "\(error.localizedDescription)")
+    }
+    
+    
+    public static func deleteTransactionSuccesful(on vc: UIViewController) {
+        let tickImage = UIImage(systemName: SFSymbols.checkmark)
+        self.showCustomAlert(on: vc, title: "Your transaction was deleted succesfully.", image: tickImage, imageColor: .accent)
+    }
 }

@@ -22,7 +22,6 @@ class FilterOrderButton: UIButton {
             }
         }
         
-        
         var image: UIImage {
             switch self {
             case .ascending:
@@ -31,8 +30,6 @@ class FilterOrderButton: UIButton {
                 return UIImage(systemName: "arrow.up")!
             }
         }
-        
-        
         
         var next: OrderState {
             switch self {
@@ -62,7 +59,10 @@ class FilterOrderButton: UIButton {
     }
     
     private func commonInit() {
-        self.setTitle(orderState.title, for: .normal)
+        let attributes: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: self.titleLabel?.font.pointSize ?? 17)]
+                
+        let attributedTitle = NSAttributedString(string: orderState.title, attributes: attributes)
+        self.setAttributedTitle(attributedTitle, for: .normal)
         self.setImage(orderState.image, for: .normal)
         self.tintColor = .white
         self.setTitleColor(.white, for: .normal)
@@ -75,12 +75,23 @@ class FilterOrderButton: UIButton {
         self.layer.shadowOffset = CGSize(width: 0, height: 2)
         self.layer.shadowOpacity = 0.4
         self.layer.shadowRadius = 4
-    
-        self.layer.borderColor = UIColor.white.cgColor
-        self.layer.borderWidth = 1
+        
+        self.layer.borderColor = UIColor.systemBackground.cgColor
+        self.layer.borderWidth = 5
         
         self.addTarget(self, action: #selector(toggleOrderState), for: .touchUpInside)
+        
     }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            self.layer.borderColor = UIColor.background.cgColor
+        }
+    }
+    
+    
     
     @objc private func toggleOrderState() {
         orderState = orderState.next

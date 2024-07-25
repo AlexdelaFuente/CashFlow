@@ -18,23 +18,53 @@ class TransactionDetailViewController: UIViewController {
     
     public var transaction: Transaction!
     
+    public var hasToUpdate = false
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        setupLabels()
         setupBackgroundView()
-        
     }
     
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        setupLabels()
+        setupNavigation()
+    }
+    
+    
+    private func setupNavigation() {
+        tabBarController?.tabBar.isHidden = true
+        navigationController?.navigationBar.isHidden = false
+        
+        let deleteButton = UIBarButtonItem(title: "Delete", style: .plain, target: self, action: #selector(deleteButtonTapped))
+        deleteButton.tintColor = .systemRed
+        let editButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editButtonTapped))
+        navigationItem.rightBarButtonItems = [deleteButton, editButton]
+        title = "Transaction"
+        navigationController?.navigationBar.prefersLargeTitles = false
+    }
+    
+    
+    @objc func editButtonTapped() {
+        let vc = Factory.provideEditTransactionScreen(storyboard: storyboard!)
+        vc.transaction = transaction
+        title = "Back"
+        navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    @objc func deleteButtonTapped() {
+        AlertManager.deleteTransactionAlert(on: self, transaction: transaction)
+    }
+        
     
     private func setupLabels() {
         setupTitleLabels()
         setupDateLabel()
         setupTransactionTypeLabel()
         setupTransactionIdLabel()
-        
-        
     }
     
     
@@ -93,10 +123,5 @@ class TransactionDetailViewController: UIViewController {
     private func setupBackgroundView() {
         backgroundView.layer.cornerRadius = 46
         backgroundView.backgroundColor = .systemGray4
-    }
-
-    @IBAction func editButtonTapped(_ sender: Any) {
-        let vc = Factory.provideEditTransactionScreen(storyboard: storyboard!)
-        present(vc, animated: true)
     }
 }

@@ -25,6 +25,9 @@ enum SFSymbols {
     static let xCircle = "x.circle.fill"
     static let creditCard = "creditcard.fill"
     static let banknote = "banknote.fill"
+    static let uptrendChart = "chart.line.uptrend.xyaxis.circle.fill"
+    static let downtrendChart = "chart.line.downtrend.xyaxis.circle.fill"
+    static let flattrendChart = "chart.line.flattrend.xyaxis.circle.fill"
     
 }
 
@@ -43,4 +46,5 @@ enum Screens {
     static let addTransactionScreen = "AddTransactionScreen"
     static let transactionDetailScreen = "TransactionDetailScreen"
     static let editTransactionScreen = "EditTransactionScreen"
+    static let totalBalanceScreen = "TotalBalanceScreen"
 }

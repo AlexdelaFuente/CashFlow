@@ -16,15 +16,27 @@ class ChangeLanguageViewController: UIViewController {
         Language.spanish
     ]
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        saveLanguage()
+    }
+    
+    
+    private func setupView() {
         pickerView.delegate = self
         let language = User.shared.language
         pickerView.selectRow(languages.firstIndex(of: language)!, inComponent: 0, animated: false)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    
+    private func saveLanguage() {
         let language = languages[pickerView.selectedRow(inComponent: 0)]
         if language != User.shared.language {
             AuthService.shared.updateLanguage(newLanguage: language) { error in
@@ -35,9 +47,8 @@ class ChangeLanguageViewController: UIViewController {
                 }
             }
         }
-        
-        
     }
+    
 }
 
 extension ChangeLanguageViewController: UIPickerViewDelegate, UIPickerViewDataSource {

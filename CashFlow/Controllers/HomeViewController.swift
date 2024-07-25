@@ -40,17 +40,33 @@ class HomeViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupTabBar()
+        setupDelegate()
+        loadTransactions()
+        updateBalanceVisibilityUI()
+    }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupView()
+    }
+    
+    
+    private func setupView() {
+        tabBarController?.tabBar.isHidden = false
+        navigationController?.navigationBar.isHidden = true
         
-        let tabBar = tabBarController as! TabBarViewController
-        tabBar.delegt = self
-        
-        children.forEach { vc in
-            if let vc = vc as? TransactionsTableViewController {
-                delegate = vc
-                childrenVC = vc
-            }
+        if User.shared.username != "" {
+            titleLabel.text = "Welcome back \(User.shared.username)!"
+            delegate?.setMoneyVisibility(isBalanceVisible)
+            
+            updateBalanceVisibilityUI()
         }
-        
+    }
+    
+    
+    private func loadTransactions() {
         let activityIndicator = NVActivityIndicatorView(frame: CGRect(x: 0, y: 0, width: 60, height: 60), type: .ballBeat, color: .accent)
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         loadingView.addSubview(activityIndicator)
@@ -59,20 +75,21 @@ class HomeViewController: UIViewController {
             activityIndicator.centerXAnchor.constraint(equalTo: loadingView.centerXAnchor)
         ])
         activityIndicator.startAnimating()
-        
-        updateBalanceVisibilityUI()
     }
     
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
-        
-        if User.shared.username != "" {
-            titleLabel.text = "Welcome back \(User.shared.username)!"
-            delegate?.setMoneyVisibility(isBalanceVisible)
-            
-            updateBalanceVisibilityUI()
+    private func setupTabBar() {
+        let tabBar = tabBarController as! TabBarViewController
+        tabBar.delegt = self
+    }
+    
+    
+    private func setupDelegate() {
+        children.forEach { vc in
+            if let vc = vc as? TransactionsTableViewController {
+                delegate = vc
+                childrenVC = vc
+            }
         }
     }
     
@@ -130,6 +147,11 @@ class HomeViewController: UIViewController {
             cardLabel.text = "~~~ \(User.shared.currency.symbol)"
             eyeButton.setImage(UIImage(systemName: SFSymbols.eyeSlash), for: .normal)
         }
+    }
+    
+    @IBAction func balanceDetailButtonPressed(_ sender: Any) {
+        let vc = Factory.providetotalBalanceScreen(storyboard: storyboard!)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     

@@ -12,26 +12,23 @@ class FilterButton: UIButton {
     public var isFiltering: Bool = false
     private var crossImageView: UIImageView?
     
-    
     init(title: String) {
         super.init(frame: .zero)
         commonInit(title: title)
     }
-    
     
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit(title: "")
     }
     
-    
     private func commonInit(title: String) {
         self.configuration = .filled()
         self.setTitleColor(.white, for: .normal)
-        self.layer.borderColor = UIColor.white.cgColor
-        self.layer.borderWidth = 1
+        self.layer.borderColor = UIColor.background.cgColor
+        self.layer.borderWidth = 8
         self.layer.cornerRadius = 20
-        self.tintColor = UIColor.accent.withAlphaComponent(0.35)
+        self.tintColor = UIColor.accent.withAlphaComponent(0.8)
         self.clipsToBounds = true
         self.setTitle(title, for: .normal)
         
@@ -43,9 +40,16 @@ class FilterButton: UIButton {
         addCrossImageView()
     }
     
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            self.layer.borderColor = UIColor.background.cgColor
+        }
+    }
     
     private func addCrossImageView() {
-        let crossImage = UIImage(systemName: SFSymbols.xmark)
+        let crossImage = UIImage(systemName: "xmark")
         let imageView = UIImageView(image: crossImage)
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.tintColor = .white
@@ -59,16 +63,24 @@ class FilterButton: UIButton {
         self.crossImageView = imageView
     }
     
-    
     public func toggleFiltering() {
         isFiltering.toggle()
         if isFiltering {
-            
             self.tintColor = .accent
+            self.layer.borderWidth = 5
             crossImageView?.isHidden = false
         } else {
-            self.tintColor = UIColor.accent.withAlphaComponent(0.35)
+            self.tintColor = UIColor.accent.withAlphaComponent(0.8)
+            self.layer.borderWidth = 8
             crossImageView?.isHidden = true
         }
+    }
+    
+    public func setTitleBold(title: String, isBold: Bool) {
+        
+        let attributes: [NSAttributedString.Key: Any] = isBold ? [.font: UIFont.boldSystemFont(ofSize: self.titleLabel?.font.pointSize ?? 17)] : [.font: UIFont.systemFont(ofSize: self.titleLabel?.font.pointSize ?? 17)]
+        
+        let attributedTitle = NSAttributedString(string: title, attributes: attributes)
+        self.setAttributedTitle(attributedTitle, for: .normal)
     }
 }

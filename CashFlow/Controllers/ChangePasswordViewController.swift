@@ -26,7 +26,7 @@ class ChangePasswordViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = false
+        setupNavigation()
     }
     
     
@@ -34,6 +34,12 @@ class ChangePasswordViewController: UIViewController {
         setupPasswordTextField(oldPasswordTextField, action: #selector(toggleOldPasswordVisibility))
         setupPasswordTextField(newPasswordTextField, action: #selector(toggleNewPasswordVisibility))
         setupPasswordTextField(repeatPasswordTextField, action: #selector(toggleRepeatPasswordVisibility))
+    }
+    
+    
+    private func setupNavigation() {
+        navigationController?.navigationBar.isHidden = false
+        tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -113,6 +119,7 @@ class ChangePasswordViewController: UIViewController {
 
 //MARK: - UITextFieldDelegate Methods
 extension ChangePasswordViewController: UITextFieldDelegate {
+    
     func textFieldDidChangeSelection(_ textField: UITextField) {
         if !textField.text!.isEmpty {
             textField.rightView?.isHidden = false

@@ -27,7 +27,7 @@ enum Section: Hashable {
 class AllTransactionsTableViewController: UITableViewController {
     
     private let searchController = UISearchController()
-    private var transactions: [Transaction] = []
+    public var transactions: [Transaction] = []
     private var filteredTransactions: [Transaction] = []
     
     private var dataSource: UITableViewDiffableDataSource<Section, Transaction>!
@@ -58,9 +58,7 @@ class AllTransactionsTableViewController: UITableViewController {
         tableView.register(UINib(nibName: "TransactionsTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionsTableViewCell")
         
         loadTransactions()
-        
         setupEmptyState()
-        
         setupSearchController()
         
         configureDataSource()
@@ -72,7 +70,10 @@ class AllTransactionsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        print(transactions)
+        loadTransactions()
         setupNavigationController()
+        tabBarController?.tabBar.isHidden = true
     }
     
     
@@ -109,11 +110,6 @@ class AllTransactionsTableViewController: UITableViewController {
     
     
     private func setupFilterButtons() {
-        incomeButton.toggleFiltering()
-        expenseButton.toggleFiltering()
-        cashButton.toggleFiltering()
-        cardButton.toggleFiltering()
-        
         let scrollView = UIScrollView()
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -123,7 +119,7 @@ class AllTransactionsTableViewController: UITableViewController {
         guard let stackView = stackView else { return }
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.spacing = 10
+        stackView.spacing = 2
         
         stackView.addArrangedSubview(orderButton)
         stackView.addArrangedSubview(incomeButton)
@@ -161,18 +157,34 @@ class AllTransactionsTableViewController: UITableViewController {
         ])
         
         orderButton.addTarget(self, action: #selector(filterTransactions), for: .touchUpInside)
-        incomeButton.addTarget(self, action: #selector(filterTransactions), for: .touchUpInside)
-        expenseButton.addTarget(self, action: #selector(filterTransactions), for: .touchUpInside)
-        cashButton.addTarget(self, action: #selector(filterTransactions), for: .touchUpInside)
-        cardButton.addTarget(self, action: #selector(filterTransactions), for: .touchUpInside)
+        incomeButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
+        expenseButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
+        cashButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
+        cardButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(showDateFilterView), for: .touchUpInside)
         amountButton.addTarget(self, action: #selector(showAmountFilterAlert), for: .touchUpInside)
+        
+        basicFilterButtonPressed(incomeButton)
+        basicFilterButtonPressed(expenseButton)
+        basicFilterButtonPressed(cashButton)
+        basicFilterButtonPressed(cardButton)
         
         reorderButtons()
     }
     
     
-    @objc private func showDateFilterView() {
+    @objc private func basicFilterButtonPressed(_ sender: UIButton) {
+        guard let filterButton = sender as? FilterButton else { return }
+        filterButton.setTitleBold(title: filterButton.title(for: .normal)!, isBold: !filterButton.isFiltering)
+        
+        filterTransactions(sender)
+    }
+    
+    
+    @objc private func showDateFilterView(_ sender: UIButton) {
+        guard let filterButton = sender as? FilterButton else { return }
+        
+        
         if !dateButton.isFiltering {
             let vc = Factory.provideDateRangeFilter()
             
@@ -186,7 +198,7 @@ class AllTransactionsTableViewController: UITableViewController {
             minDate = nil
             maxDate = nil
             filterTransactions(dateButton)
-            dateButton.setTitle("By date", for: .normal)
+            filterButton.setTitleBold(title: "By date", isBold: false)
         }
     }
     
@@ -211,7 +223,8 @@ class AllTransactionsTableViewController: UITableViewController {
     }
     
     
-    @objc private func showAmountFilterAlert() {
+    @objc private func showAmountFilterAlert(_ sender: UIButton) {
+        guard let filterButton = sender as? FilterButton else { return }
         if !self.amountButton.isFiltering {
             let alert = UIAlertController(title: "Filter by Amount", message: "Enter minimum and maximum amount", preferredStyle: .alert)
             
@@ -227,21 +240,21 @@ class AllTransactionsTableViewController: UITableViewController {
             
             let filterAction = UIAlertAction(title: "Filter", style: .default) { [weak self] _ in
                 guard let self = self else { return }
-                guard let minAmountText = alert.textFields?[0].text, let minAmount = Double(minAmountText),
-                      let maxAmountText = alert.textFields?[1].text, let maxAmount = Double(maxAmountText),
+                guard let minAmountText = alert.textFields?[0].text!.replacingOccurrences(of: ",", with: "."), let minAmount = Double(minAmountText),
+                      let maxAmountText = alert.textFields?[1].text!.replacingOccurrences(of: ",", with: "."), let maxAmount = Double(maxAmountText),
                       maxAmount >= minAmount else {
                     AlertManager.invalidAmountFiltering(on: self)
                     return
                 }
                 
-                self.amountButton.toggleFiltering()
+                filterButton.toggleFiltering()
                 self.minAmount = minAmount
                 self.maxAmount = maxAmount
                 self.applyFilters()
                 if maxAmount == minAmount {
-                    self.amountButton.setTitle("\(minAmount)\(User.shared.currency.symbol)", for: .normal)
+                    filterButton.setTitleBold(title: "\(minAmount)\(User.shared.currency.symbol)", isBold: true)
                 } else {
-                    self.amountButton.setTitle("\(minAmount)\(User.shared.currency.symbol) - \(maxAmount)\(User.shared.currency.symbol)", for: .normal)
+                    filterButton.setTitleBold(title: "\(minAmount)\(User.shared.currency.symbol) - \(maxAmount)\(User.shared.currency.symbol)", isBold: true)
                 }
                 
                 self.reorderButtons()
@@ -256,7 +269,7 @@ class AllTransactionsTableViewController: UITableViewController {
         } else {
             self.minAmount = nil
             self.maxAmount = nil
-            self.amountButton.setTitle("By amount", for: .normal)
+            filterButton.setTitleBold(title: "By amount", isBold: false)
             filterTransactions(amountButton)
         }
     }
@@ -474,7 +487,7 @@ extension AllTransactionsTableViewController {
         let transaction = transactions[indexPath.row]
         
         let vc = Factory.provideTransactionDetailScreen(storyboard: storyboard!, transaction: transaction)
-        present(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
 }
@@ -501,10 +514,11 @@ extension AllTransactionsTableViewController: DateRangeFilterViewControllerDeleg
         
         if firstDate.formatted(date: .abbreviated, time: .omitted) == secondDateAdjusted.formatted(date: .abbreviated, time: .omitted) {
             
-            dateButton.setTitle("\(firstDate.formatted(date: .abbreviated, time: .omitted))", for: .normal)
+            dateButton.setTitleBold(title: "\(firstDate.formatted(date: .abbreviated, time: .omitted))", isBold: true)
             
         } else {
-            dateButton.setTitle("\(firstDate.formatted(date: .abbreviated, time: .omitted)) - \n \(secondDateAdjusted.formatted(date: .abbreviated, time: .omitted))", for: .normal)
+            dateButton.setTitleBold(title: "\(firstDate.formatted(date: .abbreviated, time: .omitted)) - \n \(secondDateAdjusted.formatted(date: .abbreviated, time: .omitted))", isBold: true)
+            
         }
         filterTransactions(dateButton)
     }

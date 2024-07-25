@@ -14,7 +14,7 @@ class AddTransactionViewController: UIViewController {
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var amountTextField: UITextField!
     @IBOutlet var datePicker: UIDatePicker!
-    @IBOutlet var scrollView: UIScrollView!
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,15 +23,24 @@ class AddTransactionViewController: UIViewController {
         setupTextFields()
     }
     
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigationController()
+        setupTabBarController()
     }
+    
+    
+    private func setupTabBarController() {
+        tabBarController?.tabBar.isHidden = true
+    }
+    
     
     private func setupTextFields() {
         descriptionTextField.delegate = self
         amountTextField.delegate = self
     }
+    
     
     private func setupDatePicker() {
         let calendar = Calendar.current
@@ -43,6 +52,7 @@ class AddTransactionViewController: UIViewController {
         
         datePicker.maximumDate = currentDate
     }
+    
     
     private func setupSwitches() {
         let switchConfig: (AnimatedSegmentSwitch) -> Void = { switchControl in
@@ -61,11 +71,14 @@ class AddTransactionViewController: UIViewController {
         switchConfig(moneyTypeSwitch)
     }
     
+    
     private func setupNavigationController() {
         navigationController?.navigationBar.isHidden = false
         navigationController?.navigationBar.prefersLargeTitles = true
         title = "Add Transaction"
+        navigationItem.backButtonTitle = "Back"
     }
+    
     
     @IBAction func addButtonTapped(_ sender: Any) {
         var invalidAmount = false
@@ -143,21 +156,12 @@ class AddTransactionViewController: UIViewController {
                     } else {
                         AlertManager.showUnknownFetchingUserError(on: self)
                     }
-                    self.navigationController?.popViewController(animated: true)
                 }
+                User.shared.transactions.append(transaction)
+                User.shared.transactions.sort { $0.date > $1.date }
+                self.navigationController?.popViewController(animated: true)
             }
         }
-    }
-    
-    private func shakeTextField(textField: UITextField) {
-        let animation = CAKeyframeAnimation(keyPath: "position")
-        animation.duration = 0.5
-        animation.repeatCount = 2
-        animation.values = [
-            NSValue(cgPoint: CGPoint(x: textField.center.x - 10, y: textField.center.y)),
-            NSValue(cgPoint: CGPoint(x: textField.center.x + 10, y: textField.center.y))
-        ]
-        textField.layer.add(animation, forKey: "position")
     }
 }
 

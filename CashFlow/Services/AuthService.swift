@@ -256,12 +256,45 @@ class AuthService {
                 return
             }
             completion(nil)
-            
+        }
+    }
+    
+    
+    public func updateTransaction(transaction: Transaction, completion: @escaping (Error?) -> Void) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        
+        let db = Firestore.firestore()
+        db.collection("users").document(userUID).collection("transactions").document(transaction.id.uuidString).updateData([
+            "description": transaction.description,
+            "money": transaction.money,
+            "date": transaction.date,
+            "transactionType": transaction.transactionType.rawValue,
+            "moneyType": transaction.moneyType.rawValue
+        ]) { error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            completion(nil)
+        }
+    }
+    
+    
+    public func deleteTransaction(transaction:Transaction, completion: @escaping (Error?) -> Void) {
+        guard let userUID = Auth.auth().currentUser?.uid else { return }
+        
+        let db = Firestore.firestore()
+        db.collection("users").document(userUID).collection("transactions").document(transaction.id.uuidString).delete { error in
+            if let error = error {
+                completion(error)
+                return
+            }
+            completion(nil)
         }
         
         
-        
     }
+    
     
 }
 
