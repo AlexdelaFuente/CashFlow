@@ -19,6 +19,28 @@ extension Date {
     }
     
     
+    func isThisMonth() -> Bool {
+            let calendar = Calendar.current
+            let now = Date()
+            
+            let thisMonth = calendar.dateInterval(of: .month, for: now)
+            return thisMonth?.contains(self) ?? false
+        }
+        
+        func isPreviousMonth() -> Bool {
+            let calendar = Calendar.current
+            let now = Date()
+            
+            guard let startOfThisMonth = calendar.date(from: calendar.dateComponents([.year, .month], from: now)),
+                  let startOfPreviousMonth = calendar.date(byAdding: .month, value: -1, to: startOfThisMonth) else {
+                return false
+            }
+            
+            let previousMonth = calendar.dateInterval(of: .month, for: startOfPreviousMonth)
+            return previousMonth?.contains(self) ?? false
+        }
+    
+    
     func formattedString() -> String {
         if self.isToday() {
             return "Today"

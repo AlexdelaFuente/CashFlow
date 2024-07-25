@@ -384,3 +384,21 @@ extension AlertManager {
         self.showCustomAlert(on: vc, title: "Your transaction was deleted succesfully.", image: tickImage, imageColor: .accent)
     }
 }
+
+//MARK: - TotalBalance Screen
+extension AlertManager {
+    
+    public static func showTotalBalanceInfo(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Total Summary", message: "All-time balance.")
+    }
+    
+    
+    public static func showMonthlySummaryInfo(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Monthly Summary", message: "The balance based only on the transactions of that specific month.")
+    }
+    
+    
+    public static func showMonthlyExpensesInfo(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Monthly Expenses", message: "The total expenses that happened only in that specific month.")
+    }
+}

@@ -32,7 +32,8 @@ class LoginViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+        print("HOLAAA")
     }
     
     
@@ -116,10 +117,17 @@ class LoginViewController: UIViewController {
         
         signInButton.startLoading()
         AuthService.shared.signIn(with: loginUserRequest) { [weak self] error in
-            guard let self = self else { return }
+            guard let self = self else {
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self?.signInButton.stopLoading()
+                }
+                return
+            }
             if let error = error {
                 AlertManager.showSignInErrorAlert(on: self, with: error)
-                signInButton.stopLoading()
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.signInButton.stopLoading()
+                }
                 return
             }
             
@@ -134,7 +142,9 @@ class LoginViewController: UIViewController {
                     try? Auth.auth().signOut()
                 }
             }
-            signInButton.stopLoading()
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                self.signInButton.stopLoading()
+            }
         }
     }
     

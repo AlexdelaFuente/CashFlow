@@ -30,11 +30,17 @@ class HomeViewController: UIViewController {
     
     private var isBalanceVisible: Bool {
         get {
-            return UserDefaults.standard.bool(forKey: balanceVisibilityKey)
-        }
-        set {
-            UserDefaults.standard.set(newValue, forKey: balanceVisibilityKey)
-        }
+                    // Comprobar si el valor ya está establecido en UserDefaults
+                    if UserDefaults.standard.object(forKey: balanceVisibilityKey) == nil {
+                        // Establecer el valor predeterminado como true
+                        UserDefaults.standard.set(true, forKey: balanceVisibilityKey)
+                        return true
+                    }
+                    return UserDefaults.standard.bool(forKey: balanceVisibilityKey)
+                }
+                set {
+                    UserDefaults.standard.set(newValue, forKey: balanceVisibilityKey)
+                }
     }
     
     

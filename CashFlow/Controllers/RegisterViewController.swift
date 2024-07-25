@@ -29,6 +29,13 @@ class RegisterViewController: UIViewController {
     }
     
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.navigationBar.isHidden = true
+        print("will appear register")
+    }
+    
+    
     private func setupRegisterButton() {
         registerButton.setAnimation(LoadyAnimationType.downloading(with: .init(
             downloadingLabel: (title: "Registering...", font: UIFont.boldSystemFont(ofSize: 18), textColor : .accent),
@@ -44,12 +51,6 @@ class RegisterViewController: UIViewController {
         emailTextField.startFilteringAfter = "@"
         emailTextField.startSuggestingImmediately = true
         emailTextField.filterStrings(["gmail.com", "hotmail.com", "outlook.com", "icloud.com"])
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        navigationController?.navigationBar.isHidden = true
     }
     
     
@@ -90,13 +91,19 @@ class RegisterViewController: UIViewController {
         registerButton.startLoading()
         AuthService.shared.registerUser(with: registerUserRequest) { [weak self] wasRegistered, error in
             guard let self = self else {
-                self?.registerButton.stopLoading()
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self?.registerButton.stopLoading()
+                }
                 return
             }
             
             if let error = error {
                 AlertManager.showRegistrationErrorAlert(on: self, with: error)
-                registerButton.stopLoading()
+                
+                DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                    self.registerButton.stopLoading()
+                }
+                
                 return
             }
             
@@ -113,7 +120,9 @@ class RegisterViewController: UIViewController {
                 AlertManager.showRegistrationErrorAlert(on: self)
             }
             
-            self.registerButton.stopLoading()
+            DispatchQueue.main.asyncAfter(deadline: .now()+1) {
+                self.registerButton.stopLoading()
+            }
         }
     }
     

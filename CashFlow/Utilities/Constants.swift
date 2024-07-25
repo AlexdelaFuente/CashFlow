@@ -14,12 +14,14 @@ enum SFSymbols {
     static let personalInformation = "figure.stand"
     static let help = "questionmark.circle"
     static let language = "character.bubble.fill"
-    static let currency = "dollarsign"
+    static let currency = "dollarsign.circle"
     static let timeZone = "clock"
     static let changePassword = "rectangle.and.pencil.and.ellipsis"
     static let terms = "doc.text"
     static let privacyPolicy = "hand.raised.circle"
-    static let logOut = "door.left.hand.open"
+    
+    static let logOut = "rectangle.portrait.and.arrow.right"
+    
     static let checkmark = "checkmark.circle.fill"
     static let xmark = "xmark"
     static let xCircle = "x.circle.fill"
