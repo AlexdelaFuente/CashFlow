@@ -63,6 +63,9 @@
 		28DBB87E2C2D5CAF002AC154 /* DayRangeIndicatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DBB87D2C2D5CAF002AC154 /* DayRangeIndicatorView.swift */; };
 		28DBB8802C2D67F5002AC154 /* DayLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DBB87F2C2D67F5002AC154 /* DayLabel.swift */; };
 		28DBB8822C2DBDF9002AC154 /* MoneyType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28DBB8812C2DBDF9002AC154 /* MoneyType.swift */; };
+		28EA1BDD2C539A0D001F40D1 /* ChartBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EA1BDC2C539A0D001F40D1 /* ChartBar.swift */; };
+		28EA1BDF2C539A2B001F40D1 /* ChartBarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EA1BDE2C539A2B001F40D1 /* ChartBarViewModel.swift */; };
+		28EA1BE52C53A039001F40D1 /* MonthlyExpensesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28EA1BE42C53A039001F40D1 /* MonthlyExpensesViewController.swift */; };
 		54AE213C2087840423BCD9BD /* Pods_CashFlow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F95F4826DC14994F43603297 /* Pods_CashFlow.framework */; };
 /* End PBXBuildFile section */
 
@@ -126,6 +129,9 @@
 		28DBB87D2C2D5CAF002AC154 /* DayRangeIndicatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayRangeIndicatorView.swift; sourceTree = "<group>"; };
 		28DBB87F2C2D67F5002AC154 /* DayLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayLabel.swift; sourceTree = "<group>"; };
 		28DBB8812C2DBDF9002AC154 /* MoneyType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoneyType.swift; sourceTree = "<group>"; };
+		28EA1BDC2C539A0D001F40D1 /* ChartBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBar.swift; sourceTree = "<group>"; };
+		28EA1BDE2C539A2B001F40D1 /* ChartBarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartBarViewModel.swift; sourceTree = "<group>"; };
+		28EA1BE42C53A039001F40D1 /* MonthlyExpensesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonthlyExpensesViewController.swift; sourceTree = "<group>"; };
 		5A8B8471E0595D6B8A32E50F /* Pods-CashFlow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CashFlow.debug.xcconfig"; path = "Target Support Files/Pods-CashFlow/Pods-CashFlow.debug.xcconfig"; sourceTree = "<group>"; };
 		F95F4826DC14994F43603297 /* Pods_CashFlow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_CashFlow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -166,6 +172,7 @@
 				289718ED2C3FC868004680A5 /* TransactionDetailViewController.swift */,
 				28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */,
 				2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */,
+				28EA1BE42C53A039001F40D1 /* MonthlyExpensesViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -213,6 +220,7 @@
 		28A466E52C245D9200519CE4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				28EA1BDB2C5399FE001F40D1 /* ChartBar */,
 				287154EE2C299D3A009589D3 /* PersonalInfoCell.swift */,
 				2889B4922C247A600089B61E /* GeneralTableViewCell.swift */,
 				2889B4932C247A600089B61E /* GeneralTableViewCell.xib */,
@@ -286,6 +294,15 @@
 				2820665D2C51117200F4E782 /* UIView+Extensions.swift */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		28EA1BDB2C5399FE001F40D1 /* ChartBar */ = {
+			isa = PBXGroup;
+			children = (
+				28EA1BDC2C539A0D001F40D1 /* ChartBar.swift */,
+				28EA1BDE2C539A2B001F40D1 /* ChartBarViewModel.swift */,
+			);
+			path = ChartBar;
 			sourceTree = "<group>";
 		};
 		CF5180CCEDD58C8E8517B626 /* Frameworks */ = {
@@ -459,10 +476,12 @@
 				287154E52C296C3C009589D3 /* Currency.swift in Sources */,
 				28DBB87E2C2D5CAF002AC154 /* DayRangeIndicatorView.swift in Sources */,
 				2879F6412C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift in Sources */,
+				28EA1BDF2C539A2B001F40D1 /* ChartBarViewModel.swift in Sources */,
 				28A9E9542C2082B70037C639 /* ForgotPasswordViewController.swift in Sources */,
 				28A9E9422C2081980037C639 /* CashFlow.xcdatamodeld in Sources */,
 				2879F63E2C2B096F009E6B24 /* TransactionsTableViewCell.swift in Sources */,
 				2879F63B2C2AD80D009E6B24 /* TransactionType.swift in Sources */,
+				28EA1BDD2C539A0D001F40D1 /* ChartBar.swift in Sources */,
 				2876A9532C2BF91800FE02E3 /* FilterButton.swift in Sources */,
 				28DBB87C2C2D52B1002AC154 /* DateRangeFilterViewController.swift in Sources */,
 				287154ED2C298B93009589D3 /* ChangePasswordViewController.swift in Sources */,
@@ -476,6 +495,7 @@
 				28A9E93A2C2081980037C639 /* SceneDelegate.swift in Sources */,
 				283DB36B2C256D3D0051F459 /* PersonalInfoTableViewController.swift in Sources */,
 				28172CA02C41361600CFDA8B /* EditTransactionViewController.swift in Sources */,
+				28EA1BE52C53A039001F40D1 /* MonthlyExpensesViewController.swift in Sources */,
 				289718EE2C3FC868004680A5 /* TransactionDetailViewController.swift in Sources */,
 				284094342C22DB4D0096A9F9 /* HomeViewController.swift in Sources */,
 			);

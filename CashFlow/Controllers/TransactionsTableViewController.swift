@@ -70,6 +70,17 @@ class TransactionsTableViewController: UITableViewController {
     }
     
     
+    override func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let section = indexPath.section
+        let numberOfRows = tableView.numberOfRows(inSection: section)
+        
+        if indexPath.row == numberOfRows - 1 {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: view.bounds.width)
+        } else {
+            cell.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        }
+    }
+    
     // MARK: - Table view delegate
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let transaction = User.shared.transactions[indexPath.row]
@@ -77,7 +88,6 @@ class TransactionsTableViewController: UITableViewController {
         navigationController?.pushViewController(vc, animated: true)
         tableView.deselectRow(at: indexPath, animated: true)
     }
-    
 }
 
 extension TransactionsTableViewController: HomeViewControllerDelegate {

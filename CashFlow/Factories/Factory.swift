@@ -100,5 +100,11 @@ class Factory: NSObject {
     }
     
     
+    static func providetotalMonthlyExpensesScreen(storyboard: UIStoryboard) -> MonthlyExpensesViewController{
+        let monthlyExpensesScreen = storyboard.instantiateViewController(withIdentifier: Screens.monthlyExpensesScreen) as! MonthlyExpensesViewController
+        return monthlyExpensesScreen
+    }
+    
+    
     
 }

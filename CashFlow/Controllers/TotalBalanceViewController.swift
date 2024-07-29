@@ -42,6 +42,12 @@ class TotalBalanceViewController: UIViewController {
     }
     
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.title = "Back"
+    }
+    
+    
     private func setupView() {
         backgroundViews.forEach { backgroundView in
             backgroundView.roundCorners(.allCorners, radius: 12)
@@ -189,7 +195,8 @@ class TotalBalanceViewController: UIViewController {
     
     
     @IBAction func seeAllExpensesButtonTapped(_ sender: Any) {
-        print("Expenses Tapped!")
+        let vc = Factory.providetotalMonthlyExpensesScreen(storyboard: storyboard!)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     

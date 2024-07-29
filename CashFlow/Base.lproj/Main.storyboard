@@ -1246,6 +1246,36 @@
             </objects>
             <point key="canvasLocation" x="4194.6564885496182" y="1348.5915492957747"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="zBx-KN-pJo">
+            <objects>
+                <viewController id="aI2-LF-ZgA" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="WgI-mE-czY">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="XdR-Rc-6BO"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="O43-TF-URL" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4972" y="1070"/>
+        </scene>
+        <!--Monthly Expenses View Controller-->
+        <scene sceneID="rht-yC-zp1">
+            <objects>
+                <viewController storyboardIdentifier="MonthlyExpensesScreen" id="YuB-8X-Nna" customClass="MonthlyExpensesViewController" customModule="CashFlow" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="QjK-am-B6S">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="y4C-P4-Ml9"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Ccs-NO-6rO" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4972" y="1730"/>
+        </scene>
         <!--Account Table View Controller-->
         <scene sceneID="gXh-He-PNr">
             <objects>

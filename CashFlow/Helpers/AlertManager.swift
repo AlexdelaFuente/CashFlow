@@ -389,7 +389,7 @@ extension AlertManager {
 extension AlertManager {
     
     public static func showTotalBalanceInfo(on vc: UIViewController) {
-        self.showBasicAlert(on: vc, title: "Total Summary", message: "All-time balance.")
+        self.showBasicAlert(on: vc, title: "Total Summary", message: "The balance having in count all the transactions.")
     }
     
     

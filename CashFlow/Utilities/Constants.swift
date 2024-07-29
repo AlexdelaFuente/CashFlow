@@ -49,4 +49,5 @@ enum Screens {
     static let transactionDetailScreen = "TransactionDetailScreen"
     static let editTransactionScreen = "EditTransactionScreen"
     static let totalBalanceScreen = "TotalBalanceScreen"
+    static let monthlyExpensesScreen = "MonthlyExpensesScreen"
 }
