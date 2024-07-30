@@ -14,5 +14,6 @@ pod 'NVActivityIndicatorView'
 pod 'HorizonCalendar'
 pod 'SearchTextField'
 pod 'loady'
+pod 'SkeletonView'
 
 end

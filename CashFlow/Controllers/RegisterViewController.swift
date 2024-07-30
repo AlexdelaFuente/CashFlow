@@ -32,7 +32,6 @@ class RegisterViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
-        print("will appear register")
     }
     
     
@@ -144,7 +143,7 @@ class RegisterViewController: UIViewController {
     
     
     @IBAction func dismissVC(_ sender: Any) {
-        navigationController?.popViewController(animated: true)
+        self.navigationController?.popViewController(animated: true)
     }
 }
 

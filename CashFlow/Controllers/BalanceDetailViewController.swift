@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TotalBalanceViewController: UIViewController {
+class BalanceDetailViewController: UIViewController {
 
     @IBOutlet var totalBalanceLabel: UILabel!
     @IBOutlet var totalBalanceGraphButton: UIButton!
@@ -25,6 +25,8 @@ class TotalBalanceViewController: UIViewController {
     
     @IBOutlet var thisMonthExpensesLabel: UILabel!
     @IBOutlet var previousMonthExpensesLabel: UILabel!
+    
+
     
     
     override func viewDidLoad() {
@@ -52,6 +54,7 @@ class TotalBalanceViewController: UIViewController {
         backgroundViews.forEach { backgroundView in
             backgroundView.roundCorners(.allCorners, radius: 12)
         }
+        
     }
     
     
@@ -77,15 +80,22 @@ class TotalBalanceViewController: UIViewController {
     private func calculateTotalBalance() {
         let totalBalance = User.shared.transactions.reduce(0) { $0 + ($1.transactionType == .expense ? -$1.money : $1.money) }
         totalBalanceLabel.text = "\(String(format: "%.2f", totalBalance)) \(User.shared.currency.symbol)"
+        
         if totalBalance < 0 {
             totalBalanceLabel.textColor = .systemRed
-            totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            }
         } else if totalBalance == 0 {
             totalBalanceLabel.textColor = .label
-            totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            }
         } else {
             totalBalanceLabel.textColor = .label
-            totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
+            }
         }
     }
     
@@ -97,13 +107,19 @@ class TotalBalanceViewController: UIViewController {
         
         if cashBalance < 0 {
             cashLabel.textColor = .systemRed
-            cashGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                cashGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            }
         } else if cashBalance == 0 {
             cashLabel.textColor = .label
-            cashGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                cashGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            }
         } else {
             cashLabel.textColor = .label
-            cashGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                cashGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
+            }
         }
     }
     
@@ -115,13 +131,19 @@ class TotalBalanceViewController: UIViewController {
         
         if cardBalance < 0 {
             cardLabel.textColor = .systemRed
-            cardGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                cardGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            }
         } else if cardBalance == 0 {
             cardLabel.textColor = .label
-            cardGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                cardGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            }
         } else {
             cardLabel.textColor = .label
-            cardGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
+            if #available(iOS 17, *) {
+                cardGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
+            }
         }
     }
     
@@ -175,22 +197,26 @@ class TotalBalanceViewController: UIViewController {
     
     
     @IBAction func totalBalanceButtonTapped(_ sender: Any) {
-        print("Total Balance Tapped!")
+        let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .totalBalance)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
     @IBAction func totalCashButtonTapped(_ sender: Any) {
-        print("Total Cash Tapped!")
+        let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .totalCash)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
     @IBAction func totalCardButtonTapped(_ sender: Any) {
-        print("Total Card Tapped!")
+        let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .totalCard)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
 
     @IBAction func seeAllSummaryButtonTapped(_ sender: Any) {
-        print("Summary Tapped!")
+        let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .monthlySummary)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     

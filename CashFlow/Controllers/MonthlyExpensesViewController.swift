@@ -12,7 +12,7 @@ class MonthlyExpensesViewController: UIViewController {
 
     private let vm = ChartBarViewModel()
     private var sortedExpenses: [(Date, Double)] = []
-    private var transactionsForSelectedMonth: [CashFlow.Transaction] = []
+    private var transactionsForSelectedMonth: [Transaction] = []
 
     private var cancellable: AnyCancellable?
 
@@ -120,10 +120,10 @@ class MonthlyExpensesViewController: UIViewController {
         NSLayoutConstraint.activate([
             childVC.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             childVC.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            childVC.view.topAnchor.constraint(equalTo: view.topAnchor, constant: navigationController!.navigationBar.frame.height + 32),
+            childVC.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             childVC.view.heightAnchor.constraint(equalToConstant: 232)
         ])
-
+        
         cancellable = childVC.rootView.viewModel.$selectedIndex.sink(receiveValue: { [weak self] value in
             guard let self = self else { return }
             self.updateScreen(value)
@@ -134,7 +134,7 @@ class MonthlyExpensesViewController: UIViewController {
     private func setupLabels() {
         averageExpensesTitleLabel.text = "Average month expenses"
         thisMonthExpensesLabel.text = "Loading..."
-        thisMonthExpensesTitleLabel.text = "Expenses in this month"
+        thisMonthExpensesTitleLabel.text = "Expenses in selected month"
  
         let totalSum = sortedExpenses.reduce(0) { (sum, item) in
             sum + item.1
@@ -144,10 +144,10 @@ class MonthlyExpensesViewController: UIViewController {
 
         averageExpensesLabel.text = "\(String(format: "%.2f", average)) \(User.shared.currency.symbol)"
 
-        averageExpensesTitleLabel.font = .preferredFont(forTextStyle: .footnote)
-        averageExpensesLabel.font = .preferredFont(forTextStyle: .title1)
-        thisMonthExpensesTitleLabel.font = .preferredFont(forTextStyle: .footnote)
-        thisMonthExpensesLabel.font = .preferredFont(forTextStyle: .title1)
+        averageExpensesTitleLabel.font = .systemFont(ofSize: 13)
+        averageExpensesLabel.font = .systemFont(ofSize: 28, weight: .regular)
+        thisMonthExpensesTitleLabel.font = .systemFont(ofSize: 13)
+        thisMonthExpensesLabel.font = .systemFont(ofSize: 28, weight: .regular)
 
         averageExpensesTitleLabel.translatesAutoresizingMaskIntoConstraints = false
         averageExpensesLabel.translatesAutoresizingMaskIntoConstraints = false

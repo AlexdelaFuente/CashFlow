@@ -1112,6 +1112,7 @@ PODS:
   - PromisesObjC (2.4.0)
   - RecaptchaInterop (100.0.0)
   - SearchTextField (1.2.4)
+  - SkeletonView (1.30.4)
 
 DEPENDENCIES:
   - FirebaseAuth
@@ -1122,6 +1123,7 @@ DEPENDENCIES:
   - loady
   - NVActivityIndicatorView
   - SearchTextField
+  - SkeletonView
 
 SPEC REPOS:
   trunk:
@@ -1149,6 +1151,7 @@ SPEC REPOS:
     - PromisesObjC
     - RecaptchaInterop
     - SearchTextField
+    - SkeletonView
 
 SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
@@ -1175,7 +1178,8 @@ SPEC CHECKSUMS:
   PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
   RecaptchaInterop: 7d1a4a01a6b2cb1610a47ef3f85f0c411434cb21
   SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
+  SkeletonView: 5a050f6411e697abd4cda0a8d767013399dccd69
 
-PODFILE CHECKSUM: 24eb0a5feecbe002869ec4163f98c56590befd34
+PODFILE CHECKSUM: c27d082296ef08f56f2d6fd6ec282fdeae6accba
 
 COCOAPODS: 1.15.2

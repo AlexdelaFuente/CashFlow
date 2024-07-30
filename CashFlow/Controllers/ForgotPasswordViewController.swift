@@ -10,7 +10,6 @@ import SearchTextField
 
 class ForgotPasswordViewController: UIViewController {
     
-    
     @IBOutlet var emailTextField: SearchTextField!
     
     
@@ -23,7 +22,6 @@ class ForgotPasswordViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = false
-        print("will appear password")
     }
 
     
@@ -56,6 +54,10 @@ class ForgotPasswordViewController: UIViewController {
     
     @IBAction func dismissKeyboard(_ sender: Any) {
         self.view.endEditing(true)
-        
+    }
+    
+    
+    @IBAction func dismissVC(_ sender: Any) {
+        self.navigationController?.popViewController(animated: true)
     }
 }

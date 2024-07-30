@@ -17,6 +17,10 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
+                    <key>NSLocationWhenInUseUsageDescription</key>
+                    <string>We need your location to create transactions in it</string>
+                    <key>NSLocationAlwaysUsageDescription</key>
+                    <string>We need your location to always to create transactions in it</string>
 				</dict>
 			</array>
 		</dict>

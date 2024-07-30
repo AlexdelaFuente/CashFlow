@@ -177,7 +177,6 @@ class EditTransactionViewController: UIViewController {
                     let allTransactionsVC: AllTransactionsTableViewController = vc as! AllTransactionsTableViewController
                     allTransactionsVC.transactions.removeAll { $0.id == transactionToSave.id }
                     allTransactionsVC.transactions.append(transactionToSave)
-                    print("hola")
                 }
                 
             })

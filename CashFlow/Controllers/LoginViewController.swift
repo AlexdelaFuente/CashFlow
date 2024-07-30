@@ -33,7 +33,6 @@ class LoginViewController: UIViewController {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
-        print("HOLAAA")
     }
     
     

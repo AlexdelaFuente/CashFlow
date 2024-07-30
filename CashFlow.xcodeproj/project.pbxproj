@@ -11,7 +11,7 @@
 		28172C9B2C41095400CFDA8B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9A2C41095400CFDA8B /* Date+Extensions.swift */; };
 		28172CA02C41361600CFDA8B /* EditTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */; };
 		2820665E2C51117200F4E782 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665D2C51117200F4E782 /* UIView+Extensions.swift */; };
-		282066602C511D2700F4E782 /* TotalBalanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */; };
+		282066602C511D2700F4E782 /* BalanceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */; };
 		282660242C3D110B0067513F /* AnimatedSegmentSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282660232C3D110B0067513F /* AnimatedSegmentSwitch.swift */; };
 		283DB36B2C256D3D0051F459 /* PersonalInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */; };
 		284094292C22C6640096A9F9 /* AlertManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284094282C22C6640096A9F9 /* AlertManager.swift */; };
@@ -21,6 +21,10 @@
 		284094322C22D9AE0096A9F9 /* LoginUserRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284094312C22D9AE0096A9F9 /* LoginUserRequest.swift */; };
 		284094342C22DB4D0096A9F9 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284094332C22DB4D0096A9F9 /* HomeViewController.swift */; };
 		284094362C22F0A80096A9F9 /* Validator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 284094352C22F0A80096A9F9 /* Validator.swift */; };
+		2855DCF02C5797AD005A700C /* ChartLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2855DCEF2C5797AD005A700C /* ChartLine.swift */; };
+		2855DCF22C5797CC005A700C /* ChartLineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2855DCF12C5797CC005A700C /* ChartLineViewModel.swift */; };
+		2855DCF42C579A10005A700C /* BalanceChartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2855DCF32C579A10005A700C /* BalanceChartViewController.swift */; };
+		2855DCF62C579AF7005A700C /* LinearChartDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2855DCF52C579AF7005A700C /* LinearChartDataType.swift */; };
 		285FBB902C242E29003CA334 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FBB8F2C242E29003CA334 /* Factory.swift */; };
 		285FBB922C24341A003CA334 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FBB912C24341A003CA334 /* User.swift */; };
 		287154E22C296823009589D3 /* ChangeCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */; };
@@ -75,7 +79,7 @@
 		28172C9A2C41095400CFDA8B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionViewController.swift; sourceTree = "<group>"; };
 		2820665D2C51117200F4E782 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
-		2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalBalanceViewController.swift; sourceTree = "<group>"; };
+		2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetailViewController.swift; sourceTree = "<group>"; };
 		282660232C3D110B0067513F /* AnimatedSegmentSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSegmentSwitch.swift; sourceTree = "<group>"; };
 		283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoTableViewController.swift; sourceTree = "<group>"; };
 		284094282C22C6640096A9F9 /* AlertManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertManager.swift; sourceTree = "<group>"; };
@@ -85,6 +89,10 @@
 		284094312C22D9AE0096A9F9 /* LoginUserRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginUserRequest.swift; sourceTree = "<group>"; };
 		284094332C22DB4D0096A9F9 /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		284094352C22F0A80096A9F9 /* Validator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Validator.swift; sourceTree = "<group>"; };
+		2855DCEF2C5797AD005A700C /* ChartLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLine.swift; sourceTree = "<group>"; };
+		2855DCF12C5797CC005A700C /* ChartLineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartLineViewModel.swift; sourceTree = "<group>"; };
+		2855DCF32C579A10005A700C /* BalanceChartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceChartViewController.swift; sourceTree = "<group>"; };
+		2855DCF52C579AF7005A700C /* LinearChartDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearChartDataType.swift; sourceTree = "<group>"; };
 		285FBB8F2C242E29003CA334 /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		285FBB912C24341A003CA334 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyViewController.swift; sourceTree = "<group>"; };
@@ -171,8 +179,9 @@
 				281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */,
 				289718ED2C3FC868004680A5 /* TransactionDetailViewController.swift */,
 				28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */,
-				2820665F2C511D2700F4E782 /* TotalBalanceViewController.swift */,
+				2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */,
 				28EA1BE42C53A039001F40D1 /* MonthlyExpensesViewController.swift */,
+				2855DCF32C579A10005A700C /* BalanceChartViewController.swift */,
 			);
 			path = Controllers;
 			sourceTree = "<group>";
@@ -189,8 +198,18 @@
 				2879F6382C2AD800009E6B24 /* Transaction.swift */,
 				2879F63A2C2AD80D009E6B24 /* TransactionType.swift */,
 				28DBB8812C2DBDF9002AC154 /* MoneyType.swift */,
+				2855DCF52C579AF7005A700C /* LinearChartDataType.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		2855DCEE2C579791005A700C /* ChartLine */ = {
+			isa = PBXGroup;
+			children = (
+				2855DCEF2C5797AD005A700C /* ChartLine.swift */,
+				2855DCF12C5797CC005A700C /* ChartLineViewModel.swift */,
+			);
+			path = ChartLine;
 			sourceTree = "<group>";
 		};
 		285FBB8E2C242E1F003CA334 /* Factories */ = {
@@ -220,6 +239,7 @@
 		28A466E52C245D9200519CE4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				2855DCEE2C579791005A700C /* ChartLine */,
 				28EA1BDB2C5399FE001F40D1 /* ChartBar */,
 				287154EE2C299D3A009589D3 /* PersonalInfoCell.swift */,
 				2889B4922C247A600089B61E /* GeneralTableViewCell.swift */,
@@ -449,14 +469,17 @@
 			buildActionMask = 2147483647;
 			files = (
 				28A466E02C244F2100519CE4 /* TabBarViewController.swift in Sources */,
+				2855DCF62C579AF7005A700C /* LinearChartDataType.swift in Sources */,
 				28172C9B2C41095400CFDA8B /* Date+Extensions.swift in Sources */,
 				284094292C22C6640096A9F9 /* AlertManager.swift in Sources */,
 				28A9E9502C20829E0037C639 /* LoginViewController.swift in Sources */,
 				282660242C3D110B0067513F /* AnimatedSegmentSwitch.swift in Sources */,
 				284094322C22D9AE0096A9F9 /* LoginUserRequest.swift in Sources */,
+				2855DCF42C579A10005A700C /* BalanceChartViewController.swift in Sources */,
 				28A9E9522C2082A90037C639 /* RegisterViewController.swift in Sources */,
 				287154F12C29B88E009589D3 /* BirthDateCell.swift in Sources */,
 				284094362C22F0A80096A9F9 /* Validator.swift in Sources */,
+				2855DCF22C5797CC005A700C /* ChartLineViewModel.swift in Sources */,
 				281164FB2C2EB19F00CAA9BB /* AddTransactionViewController.swift in Sources */,
 				284094302C22D3BE0096A9F9 /* RegisterUserRequest.swift in Sources */,
 				285FBB902C242E29003CA334 /* Factory.swift in Sources */,
@@ -470,8 +493,9 @@
 				285FBB922C24341A003CA334 /* User.swift in Sources */,
 				28DBB8802C2D67F5002AC154 /* DayLabel.swift in Sources */,
 				287154E22C296823009589D3 /* ChangeCurrencyViewController.swift in Sources */,
+				2855DCF02C5797AD005A700C /* ChartLine.swift in Sources */,
 				28DBB8822C2DBDF9002AC154 /* MoneyType.swift in Sources */,
-				282066602C511D2700F4E782 /* TotalBalanceViewController.swift in Sources */,
+				282066602C511D2700F4E782 /* BalanceDetailViewController.swift in Sources */,
 				287154E82C29746C009589D3 /* ChangeLanguageViewController.swift in Sources */,
 				287154E52C296C3C009589D3 /* Currency.swift in Sources */,
 				28DBB87E2C2D5CAF002AC154 /* DayRangeIndicatorView.swift in Sources */,

@@ -94,15 +94,22 @@ class Factory: NSObject {
     }
     
     
-    static func providetotalBalanceScreen(storyboard: UIStoryboard) -> TotalBalanceViewController{
-        let totalBalanceScreen = storyboard.instantiateViewController(withIdentifier: Screens.totalBalanceScreen) as! TotalBalanceViewController
-        return totalBalanceScreen
+    static func provideBalanceDetailScreen(storyboard: UIStoryboard) -> BalanceDetailViewController{
+        let balanceDetailScreen = storyboard.instantiateViewController(withIdentifier: Screens.balanceDetailScreen) as! BalanceDetailViewController
+        return balanceDetailScreen
     }
     
     
     static func providetotalMonthlyExpensesScreen(storyboard: UIStoryboard) -> MonthlyExpensesViewController{
         let monthlyExpensesScreen = storyboard.instantiateViewController(withIdentifier: Screens.monthlyExpensesScreen) as! MonthlyExpensesViewController
         return monthlyExpensesScreen
+    }
+    
+    
+    static func providetotalBalanceChartScreen(storyboard: UIStoryboard, dataType: LinearChartDataType) -> BalanceChartViewController{
+        let balanceChartScreen = storyboard.instantiateViewController(withIdentifier: Screens.balanceChartScreen) as! BalanceChartViewController
+        balanceChartScreen.dataType = dataType
+        return balanceChartScreen
     }
     
     

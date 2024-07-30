@@ -70,7 +70,6 @@ class AllTransactionsTableViewController: UITableViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        print(transactions)
         loadTransactions()
         setupNavigationController()
         tabBarController?.tabBar.isHidden = true

@@ -7,6 +7,8 @@
 
 import UIKit
 import NVActivityIndicatorView
+import SkeletonView
+
 
 protocol HomeViewControllerDelegate: AnyObject {
     func userHasLoad()
@@ -30,17 +32,17 @@ class HomeViewController: UIViewController {
     
     private var isBalanceVisible: Bool {
         get {
-                    // Comprobar si el valor ya está establecido en UserDefaults
-                    if UserDefaults.standard.object(forKey: balanceVisibilityKey) == nil {
-                        // Establecer el valor predeterminado como true
-                        UserDefaults.standard.set(true, forKey: balanceVisibilityKey)
-                        return true
-                    }
-                    return UserDefaults.standard.bool(forKey: balanceVisibilityKey)
-                }
-                set {
-                    UserDefaults.standard.set(newValue, forKey: balanceVisibilityKey)
-                }
+            // Comprobar si el valor ya está establecido en UserDefaults
+            if UserDefaults.standard.object(forKey: balanceVisibilityKey) == nil {
+                // Establecer el valor predeterminado como true
+                UserDefaults.standard.set(true, forKey: balanceVisibilityKey)
+                return true
+            }
+            return UserDefaults.standard.bool(forKey: balanceVisibilityKey)
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: balanceVisibilityKey)
+        }
     }
     
     
@@ -50,6 +52,7 @@ class HomeViewController: UIViewController {
         setupDelegate()
         loadTransactions()
         updateBalanceVisibilityUI()
+        setupSkeletonViews()
     }
     
     
@@ -69,6 +72,25 @@ class HomeViewController: UIViewController {
             
             updateBalanceVisibilityUI()
         }
+    }
+    
+    
+    private func setupSkeletonViews() {
+        titleLabel.isSkeletonable = true
+        titleLabel.showGradientSkeleton()
+        titleLabel.skeletonTextLineHeight = .fixed(25)
+        
+        balanceLabel.isSkeletonable = true
+        balanceLabel.showGradientSkeleton()
+        balanceLabel.skeletonTextLineHeight = .fixed(50)
+        
+        cashLabel.isSkeletonable = true
+        cashLabel.showGradientSkeleton()
+        cashLabel.skeletonTextLineHeight = .fixed(30)
+        
+        cardLabel.isSkeletonable = true
+        cardLabel.showGradientSkeleton()
+        cardLabel.skeletonTextLineHeight = .fixed(30)
     }
     
     
@@ -111,6 +133,7 @@ class HomeViewController: UIViewController {
             let totalBalance = User.shared.transactions.reduce(0) { $0 + ($1.transactionType == .expense ? -$1.money : $1.money) }
             balanceLabel.text = "\(String(format: "%.2f", totalBalance)) \(User.shared.currency.symbol)"
             balanceLabel.textColor = totalBalance < 0 ? .systemRed : .label
+            
             
             let cashTransactions = User.shared.transactions.filter({ $0.moneyType == .cash })
             let cashBalance = cashTransactions.reduce(0) { $0 + ($1.transactionType == .expense ? -$1.money : $1.money) }
@@ -155,8 +178,9 @@ class HomeViewController: UIViewController {
         }
     }
     
+    
     @IBAction func balanceDetailButtonPressed(_ sender: Any) {
-        let vc = Factory.providetotalBalanceScreen(storyboard: storyboard!)
+        let vc = Factory.provideBalanceDetailScreen(storyboard: storyboard!)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
@@ -177,5 +201,14 @@ extension HomeViewController: TabBarViewControllerDelegate {
         delegate?.userHasLoad()
         loadingView.isHidden = true
         calculateBalance()
+        hideSkeletonViews()
+    }
+    
+    
+    private func hideSkeletonViews() {
+        titleLabel.hideSkeleton()
+        balanceLabel.hideSkeleton()
+        cashLabel.hideSkeleton()
+        cardLabel.hideSkeleton()
     }
 }

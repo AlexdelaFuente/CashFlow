@@ -44,7 +44,7 @@ struct ChartBar: View {
                                     }
                                 
                                 Text(formattedMonth(from: item.0))
-                                    .font(.footnote)
+                                    .font(.system(size: 12))
                                     .fontWeight(viewModel.selectedIndex == index ? .heavy : .medium)
                                     .frame(width: barWidth)
                                     .padding(.top, 4)
