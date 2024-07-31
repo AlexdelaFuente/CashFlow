@@ -112,6 +112,10 @@ class Factory: NSObject {
         return balanceChartScreen
     }
     
-    
+    static func provideChangeCategoryScreen() -> ChangeCategoryViewController{
+        let changeCategoryScreen = ChangeCategoryViewController(nibName: "ChangeCategoryViewController", bundle: nil)
+        return changeCategoryScreen
+    }
     
 }
+

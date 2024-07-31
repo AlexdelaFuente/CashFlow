@@ -35,14 +35,18 @@ class AllTransactionsTableViewController: UITableViewController {
     private var expenseButton = FilterButton(title: "Expense")
     private var cashButton = FilterButton(title: "Cash")
     private var cardButton = FilterButton(title: "Card")
+    private var categoryButton = FilterButton(title: "Category")
     private var dateButton = FilterButton(title: "By date")
     private var amountButton = FilterButton(title: "By amount")
+    
     
     private var orderButton = FilterOrderButton()
     
     
     private var emptyState: EmptyStateView?
     private var stackView: UIStackView?
+    
+    private var filteringCategories: [Category] = []
     
     private var minAmount: Double?
     private var maxAmount: Double?
@@ -57,7 +61,7 @@ class AllTransactionsTableViewController: UITableViewController {
         super.viewDidLoad()
         tableView.register(UINib(nibName: "TransactionsTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionsTableViewCell")
         
-        loadTransactions()
+        
         setupEmptyState()
         setupSearchController()
         
@@ -97,6 +101,7 @@ class AllTransactionsTableViewController: UITableViewController {
     private func loadTransactions() {
         transactions = User.shared.transactions
         filteredTransactions = transactions
+        applyFilters()
     }
     
     
@@ -125,6 +130,7 @@ class AllTransactionsTableViewController: UITableViewController {
         stackView.addArrangedSubview(expenseButton)
         stackView.addArrangedSubview(cashButton)
         stackView.addArrangedSubview(cardButton)
+        stackView.addArrangedSubview(categoryButton)
         stackView.addArrangedSubview(dateButton)
         stackView.addArrangedSubview(amountButton)
         
@@ -160,6 +166,7 @@ class AllTransactionsTableViewController: UITableViewController {
         expenseButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
         cashButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
         cardButton.addTarget(self, action: #selector(basicFilterButtonPressed), for: .touchUpInside)
+        categoryButton.addTarget(self, action: #selector(showCategoryFilterView), for: .touchUpInside)
         dateButton.addTarget(self, action: #selector(showDateFilterView), for: .touchUpInside)
         amountButton.addTarget(self, action: #selector(showAmountFilterAlert), for: .touchUpInside)
         
@@ -169,6 +176,27 @@ class AllTransactionsTableViewController: UITableViewController {
         basicFilterButtonPressed(cardButton)
         
         reorderButtons()
+    }
+    
+    
+    @objc private func showCategoryFilterView(_ sender: UIButton) {
+        
+        if !categoryButton.isFiltering {
+            #warning("Esto esta hecho hardcodeado")
+            filteringCategories = [
+                .general, .restaurants
+            ]
+            filterTransactions(sender)
+            categoryButton.setTitleBold(title: filteringCategories.count == 1 ? filteringCategories.first!.title : "Multiple categories", isBold: true)
+        } else {
+            
+            filteringCategories.removeAll(keepingCapacity: false)
+            filterTransactions(sender)
+            categoryButton.setTitleBold(title: "Category", isBold: false)
+        }
+        
+        
+        
     }
     
     
@@ -313,6 +341,15 @@ class AllTransactionsTableViewController: UITableViewController {
         if let minDate = minDate, let maxDate = maxDate {
             filteredTransactions = filteredTransactions.filter { $0.date >= minDate && $0.date <= maxDate }
         }
+        
+        if !filteringCategories.isEmpty {
+            filteredTransactions = filteredTransactions.filter({ transaction in 
+                filteringCategories.contains { category in
+                    transaction.category == category
+                }
+            })
+        }
+        
         
         if let searchText = searchController.searchBar.text, !searchText.isEmpty {
             filteredTransactions = filteredTransactions.filter { $0.description.lowercased().contains(searchText.lowercased()) }

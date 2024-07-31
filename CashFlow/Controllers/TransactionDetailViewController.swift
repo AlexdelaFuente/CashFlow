@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import MapKit
 
 class TransactionDetailViewController: UIViewController {
 
@@ -13,8 +14,15 @@ class TransactionDetailViewController: UIViewController {
     @IBOutlet var descriptionLabel: UILabel!
     @IBOutlet var dateLabel: UILabel!
     @IBOutlet var transactionTypeLabel: UILabel!
+    
+    @IBOutlet var categoryLabel: UILabel!
+    @IBOutlet var categoryImageView: UIImageView!
+    @IBOutlet var categoryBackgroundView: UIView!
+    @IBOutlet var categoryImageBackgroundView: UIView!
+    
     @IBOutlet var transactionIdLabel: UILabel!
     @IBOutlet var backgroundView: UIView!
+    @IBOutlet var map: MKMapView!
     
     public var transaction: Transaction!
     
@@ -31,6 +39,32 @@ class TransactionDetailViewController: UIViewController {
         super.viewWillAppear(true)
         setupLabels()
         setupNavigation()
+        setupMap()
+    }
+    
+    
+    private func setupMap() {
+        map.roundCorners(.allCorners, radius: 32)
+        map.showsUserLocation = true
+        map.delegate = self
+        
+        let latitude = transaction.location.latitude
+        let longitude = transaction.location.longitude
+        
+        let center = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+        
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        map.setRegion(region, animated: true)
+        
+        addAnnotation(at: center)
+    }
+    
+    
+    private func addAnnotation(at coordinate: CLLocationCoordinate2D) {
+        let annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = transaction.description
+        map.addAnnotation(annotation)
     }
     
     
@@ -65,6 +99,25 @@ class TransactionDetailViewController: UIViewController {
         setupDateLabel()
         setupTransactionTypeLabel()
         setupTransactionIdLabel()
+        setupCategory()
+    }
+    
+    
+    private func setupCategory() {
+        categoryLabel.text = transaction.category.title
+        
+        categoryBackgroundView.layer.borderColor = UIColor.gray.cgColor
+        categoryBackgroundView.layer.borderWidth = 2
+        categoryBackgroundView.clipsToBounds = true
+        categoryBackgroundView.layer.cornerRadius = 16
+        
+        categoryImageView.image = transaction.category.image
+        categoryImageView.tintColor = .white
+        
+        categoryImageBackgroundView.layer.cornerRadius = 14
+        categoryImageBackgroundView.clipsToBounds = true
+        categoryImageBackgroundView.backgroundColor = transaction.category.color
+        
     }
     
     
@@ -123,5 +176,29 @@ class TransactionDetailViewController: UIViewController {
     private func setupBackgroundView() {
         backgroundView.layer.cornerRadius = 46
         backgroundView.backgroundColor = .systemGray4
+    }
+}
+
+// MARK: - MKMapViewDelegate Methods
+extension TransactionDetailViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifier = "DraggablePin"
+        
+        if annotation is MKUserLocation {
+            return nil
+        }
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+        
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = false
+            annotationView?.isDraggable = false
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        return annotationView
     }
 }

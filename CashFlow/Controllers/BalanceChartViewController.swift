@@ -49,6 +49,13 @@ class BalanceChartViewController: UIViewController {
     }
 
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.navigationBar.prefersLargeTitles = false
+        self.title = "Back"
+    }
+    
+    
     private func filterTransactions() {
         var transactions = User.shared.transactions
         
@@ -109,7 +116,7 @@ class BalanceChartViewController: UIViewController {
             let components = Calendar.current.dateComponents([.year, .month], from: transaction.date)
             return Calendar.current.date(from: components)!
         }
-        
+
         let minDate = transactions.map { $0.date }.min()!
         let maxDate = transactions.map { $0.date }.max()!
 
@@ -117,6 +124,9 @@ class BalanceChartViewController: UIViewController {
         let endDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: maxDate))!
 
         var completeMonths: [(Date, Double, Bool)] = []
+        
+        let previousMonthDate = Calendar.current.date(byAdding: .month, value: -1, to: date)!
+        completeMonths.append((previousMonthDate, 0.0, false))
 
         while date <= endDate {
             if let transactions = groupedByMonth[date] {

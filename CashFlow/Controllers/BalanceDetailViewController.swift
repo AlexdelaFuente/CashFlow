@@ -197,30 +197,51 @@ class BalanceDetailViewController: UIViewController {
     
     
     @IBAction func totalBalanceButtonTapped(_ sender: Any) {
+        guard !User.shared.transactions.isEmpty else {
+            AlertManager.showTotalBalanceAlert(on: self)
+            return
+        }
         let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .totalBalance)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
     @IBAction func totalCashButtonTapped(_ sender: Any) {
+        
+        guard !User.shared.transactions.filter({ $0.moneyType == .cash}).isEmpty else {
+            AlertManager.showTotalCashAlert(on: self)
+            return
+        }
         let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .totalCash)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
     @IBAction func totalCardButtonTapped(_ sender: Any) {
+        guard !User.shared.transactions.filter({ $0.moneyType == .card}).isEmpty else {
+            AlertManager.showTotalCardAlert(on: self)
+            return
+        }
         let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .totalCard)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
 
     @IBAction func seeAllSummaryButtonTapped(_ sender: Any) {
+        guard !User.shared.transactions.isEmpty else {
+            AlertManager.showMonthlySummaryAlert(on: self)
+            return
+        }
         let vc = Factory.providetotalBalanceChartScreen(storyboard: storyboard!, dataType: .monthlySummary)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     
-    @IBAction func seeAllExpensesButtonTapped(_ sender: Any) {
+    @IBAction func seeMonthlyExpensesButtonTapped(_ sender: Any) {
+        guard !User.shared.transactions.filter({ $0.transactionType == .expense}).isEmpty else {
+            AlertManager.showMonthlyExpensesInfo(on: self)
+            return
+        }
         let vc = Factory.providetotalMonthlyExpensesScreen(storyboard: storyboard!)
         self.navigationController?.pushViewController(vc, animated: true)
     }

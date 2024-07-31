@@ -197,11 +197,12 @@ class HomeViewController: UIViewController {
 extension HomeViewController: TabBarViewControllerDelegate {
     
     func usernameHasLoad() {
-        titleLabel.text = "Welcome back \(User.shared.username)!"
+        
         delegate?.userHasLoad()
         loadingView.isHidden = true
         calculateBalance()
         hideSkeletonViews()
+        titleLabel.text = "Welcome back \(User.shared.username)!"
     }
     
     

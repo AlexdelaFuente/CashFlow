@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FirebaseFirestoreInternal
 
 struct Transaction {
     
@@ -16,6 +17,10 @@ struct Transaction {
     
     var transactionType: TransactionType
     var moneyType: MoneyType
+    
+    var location: GeoPoint
+    
+    var category: Category
     
     var formattedMoneyString: String {
         let moneyPrefix = (transactionType == .income) ? "+" : "-"

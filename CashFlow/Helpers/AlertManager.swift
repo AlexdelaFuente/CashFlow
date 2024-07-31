@@ -401,4 +401,30 @@ extension AlertManager {
     public static func showMonthlyExpensesInfo(on vc: UIViewController) {
         self.showBasicAlert(on: vc, title: "Monthly Expenses", message: "The total expenses that happened only in that specific month.")
     }
+    
+    
+    
+    public static func showTotalBalanceAlert(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Can't Check Total Balance Chart", message: "There are not any cash transactions yet.")
+    }
+    
+    
+    public static func showTotalCardAlert(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Can't Check Total Card Chart", message: "There are not any card transactions yet.")
+    }
+    
+    
+    public static func showTotalCashAlert(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Can't Check Total Cash Chart", message: "There are not any cash transactions yet.")
+    }
+    
+    
+    public static func showMonthlySummaryAlert(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Can't Check Monthly Summary Chart", message: "There are not any cash transactions yet.")
+    }
+    
+    
+    public static func showMonthlyExpensesAlert(on vc: UIViewController) {
+        self.showBasicAlert(on: vc, title: "Can't Check Monthly Expenses Chart", message: "There are not any expenses yet.")
+    }
 }

@@ -37,12 +37,7 @@ struct ChartBar: View {
                                         Capsule()
                                             .stroke(viewModel.selectedIndex == index ? Color.accentColor : Color.gray, lineWidth: 3)
                                     )
-                                    .onTapGesture {
-                                        withAnimation(.easeInOut(duration: 0.15)) {
-                                            viewModel.selectedIndex = index
-                                        }
-                                    }
-                                
+                                    
                                 Text(formattedMonth(from: item.0))
                                     .font(.system(size: 12))
                                     .fontWeight(viewModel.selectedIndex == index ? .heavy : .medium)
@@ -51,6 +46,11 @@ struct ChartBar: View {
                             }
                             .frame(height: 200, alignment: .bottom)
                             .id(index)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.15)) {
+                                    viewModel.selectedIndex = index
+                                }
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity)
@@ -64,11 +64,13 @@ struct ChartBar: View {
         }
     }
     
+    
     func formattedMonth(from date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM"
         return dateFormatter.string(from: date)
     }
+    
     
     private func animateBarsSequentially() {
         for index in 0..<data.count {

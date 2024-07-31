@@ -145,10 +145,12 @@ class AuthService {
                             let money = snapshotData["money"] as? Double,
                             let dateTimestamp = snapshotData["date"] as? Timestamp,
                             let transactionTypeRawValue = snapshotData["transactionType"] as? String, let transactionType = TransactionType(rawValue: transactionTypeRawValue),
-                            let moneyTypeRawValue = snapshotData["moneyType"] as? String, let moneyType = MoneyType(rawValue: moneyTypeRawValue){
+                            let moneyTypeRawValue = snapshotData["moneyType"] as? String, let moneyType = MoneyType(rawValue: moneyTypeRawValue),
+                            let location = snapshotData["location"] as? GeoPoint,
+                            let categoryRawValue = snapshotData["category"] as? String, let category = Category(rawValue: categoryRawValue){
                                 let uuid = UUID(uuidString: documentSnapshot.documentID)
                                 let date = dateTimestamp.dateValue()
-                                let transaction = Transaction(id: uuid!, description: description, money: money, date: date, transactionType: transactionType, moneyType: moneyType)
+                                let transaction = Transaction(id: uuid!, description: description, money: money, date: date, transactionType: transactionType, moneyType: moneyType, location: location, category: category)
                                 transactions.append(transaction)
                                 
                                 let user = User(username: username, email: email.lowercased(), userUID: userUID, currency: currency, language: language, birthDate: birthDate, phoneNumber: phoneNumber, address: address, city: city, zipCode: zipCode, transactions: transactions.sorted(by: { $0.date > $1.date }))
@@ -249,7 +251,9 @@ class AuthService {
             "money": transaction.money,
             "date": transaction.date,
             "transactionType": transaction.transactionType.rawValue,
-            "moneyType": transaction.moneyType.rawValue
+            "moneyType": transaction.moneyType.rawValue,
+            "location": transaction.location,
+            "category": transaction.category.rawValue
         ]) { error in
             if let error = error {
                 completion(error)
@@ -269,7 +273,9 @@ class AuthService {
             "money": transaction.money,
             "date": transaction.date,
             "transactionType": transaction.transactionType.rawValue,
-            "moneyType": transaction.moneyType.rawValue
+            "moneyType": transaction.moneyType.rawValue,
+            "location": transaction.location,
+            "category": transaction.category.rawValue
         ]) { error in
             if let error = error {
                 completion(error)

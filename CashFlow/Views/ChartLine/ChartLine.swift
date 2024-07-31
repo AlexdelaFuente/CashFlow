@@ -51,10 +51,11 @@ struct ChartLine: View {
                         let start = floor(minDataValue / step) * step
                         let end = ceil(maxDataValue / step) * step
                         var points = stride(from: start, through: end, by: step).map { $0 }
-
+                        
                         if maxDataValue < 50 && minDataValue > -50 {
                             let _ = points = []
                             let _ = points.append(maxDataValue)
+                            let _ = points.append(0)
                             if maxDataValue >= 25 {
                                 let _ = points.append((maxDataValue * 0.75).rounded())
                                 let _ = points.append((maxDataValue * 0.5).rounded())
@@ -72,20 +73,20 @@ struct ChartLine: View {
                                     let _ = points.append((minDataValue * 0.5).rounded())
                                     let _ = points.append((minDataValue * 0.25).rounded())
                                 } else if minDataValue < -15 {
-                                    let _ = points.append((minDataValue / 2).rounded())
+                                    let _ = points.append((minDataValue * 0.66).rounded())
+                                    let _ = points.append((minDataValue * 0.33).rounded())
                                 } else if minDataValue > -15 {
-                                    let _ = points.append((minDataValue * 0.5).rounded())
-                                    let _ = points.append((minDataValue * 0.25).rounded())
+                                    let _ = points.append((minDataValue / 2).rounded())
                                 }
                             }
                         }
-
+                        
                         if minDataValue < 0 {
                             let _ = points.sort()
                             let _ = points.removeFirst()
                         }
                         
-                        if abs(minDataValue) < (step / 3) {
+                        if abs(minDataValue) < (step / 2.5) {
                             let _ = points = points.filter { $0 != minDataValue }
                             let _ = points.append(0)
                         } else {
@@ -144,7 +145,8 @@ struct ChartLine: View {
                                     }
                                     .trim(from: 0, to: animatedLines ? 1 : 0)
                                     .stroke(Color.green, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
-                                    .animation(.easeInOut(duration: 2), value: animatedLines)
+                                    .animation(.easeInOut(duration: Double(data.count) * 0.2), value: animatedLines)
+                                    // .animation(.easeInOut(duration: 2), value: animatedLines)
                                     
                                     ForEach(data.indices, id: \.self) { index in
                                         let point = data[index]
@@ -159,14 +161,14 @@ struct ChartLine: View {
                                                     .frame(width: index == viewModel.selectedIndex ? selectedPointDiameter : pointDiameter, height: index == viewModel.selectedIndex ? selectedPointDiameter : pointDiameter)
                                                     .position(x: xPosition, y: yPosition)
                                                     .scaleEffect(animatedPoints ? 1 : 0.0)
-                                                    .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.5).delay(Double(index) * 0.1), value: animatedPoints)
+                                                    .animation(.snappy.delay(Double(index) * 0.1), value: animatedPoints)
                                             } else {
                                                 Circle()
                                                     .fill(index == viewModel.selectedIndex ? Color.accentColor : Color.gray)
                                                     .frame(width: index == viewModel.selectedIndex ? selectedPointDiameter : pointDiameter, height: index == viewModel.selectedIndex ? selectedPointDiameter : pointDiameter)
                                                     .position(x: xPosition, y: yPosition)
                                                     .scaleEffect(animatedPoints ? 1 : 0.0)
-                                                    .animation(.spring(response: 0.5, dampingFraction: 0.5, blendDuration: 0.5).delay(Double(index) * 0.1), value: animatedPoints)
+                                                    .animation(.snappy.delay(Double(index) * 0.1), value: animatedPoints)
                                             }
                                             
                                             Text(formattedMonth(from: point.0))
@@ -183,7 +185,6 @@ struct ChartLine: View {
                             }
                             .frame(height: maxChartHeight)
                             .padding(.leading, 8)
-                            
                         }
                         .padding(.vertical, 32)
                         .frame(minWidth: CGFloat(data.count) * 50)
@@ -205,11 +206,13 @@ struct ChartLine: View {
         .padding()
     }
     
+    
     func formattedDate(from date: Date) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "MMM d"
         return dateFormatter.string(from: date)
     }
+    
     
     func formattedMonth(from date: Date) -> String {
         let dateFormatter = DateFormatter()

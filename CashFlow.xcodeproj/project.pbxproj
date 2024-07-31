@@ -27,6 +27,9 @@
 		2855DCF62C579AF7005A700C /* LinearChartDataType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2855DCF52C579AF7005A700C /* LinearChartDataType.swift */; };
 		285FBB902C242E29003CA334 /* Factory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FBB8F2C242E29003CA334 /* Factory.swift */; };
 		285FBB922C24341A003CA334 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 285FBB912C24341A003CA334 /* User.swift */; };
+		2870EB492C5A1BEF005AD2DC /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870EB482C5A1BEF005AD2DC /* Category.swift */; };
+		2870EB4C2C5A3750005AD2DC /* ChangeCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2870EB4A2C5A3750005AD2DC /* ChangeCategoryViewController.swift */; };
+		2870EB4D2C5A3750005AD2DC /* ChangeCategoryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2870EB4B2C5A3750005AD2DC /* ChangeCategoryViewController.xib */; };
 		287154E22C296823009589D3 /* ChangeCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */; };
 		287154E32C296823009589D3 /* ChangeCurrencyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287154E12C296823009589D3 /* ChangeCurrencyViewController.xib */; };
 		287154E52C296C3C009589D3 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154E42C296C3C009589D3 /* Currency.swift */; };
@@ -95,6 +98,9 @@
 		2855DCF52C579AF7005A700C /* LinearChartDataType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinearChartDataType.swift; sourceTree = "<group>"; };
 		285FBB8F2C242E29003CA334 /* Factory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Factory.swift; sourceTree = "<group>"; };
 		285FBB912C24341A003CA334 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		2870EB482C5A1BEF005AD2DC /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		2870EB4A2C5A3750005AD2DC /* ChangeCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCategoryViewController.swift; sourceTree = "<group>"; };
+		2870EB4B2C5A3750005AD2DC /* ChangeCategoryViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeCategoryViewController.xib; sourceTree = "<group>"; };
 		287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyViewController.swift; sourceTree = "<group>"; };
 		287154E12C296823009589D3 /* ChangeCurrencyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeCurrencyViewController.xib; sourceTree = "<group>"; };
 		287154E42C296C3C009589D3 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
@@ -159,6 +165,8 @@
 		284094272C22C6430096A9F9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				2870EB4A2C5A3750005AD2DC /* ChangeCategoryViewController.swift */,
+				2870EB4B2C5A3750005AD2DC /* ChangeCategoryViewController.xib */,
 				28DBB8792C2D52B1002AC154 /* DateRangeFilterViewController.swift */,
 				28DBB87A2C2D52B1002AC154 /* DateRangeFilterViewController.xib */,
 				287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */,
@@ -199,6 +207,7 @@
 				2879F63A2C2AD80D009E6B24 /* TransactionType.swift */,
 				28DBB8812C2DBDF9002AC154 /* MoneyType.swift */,
 				2855DCF52C579AF7005A700C /* LinearChartDataType.swift */,
+				2870EB482C5A1BEF005AD2DC /* Category.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -415,6 +424,7 @@
 				28DBB87B2C2D52B1002AC154 /* DateRangeFilterViewController.xib in Resources */,
 				28A9E9472C20819A0037C639 /* Base in Resources */,
 				287154E32C296823009589D3 /* ChangeCurrencyViewController.xib in Resources */,
+				2870EB4D2C5A3750005AD2DC /* ChangeCategoryViewController.xib in Resources */,
 				28A9E93F2C2081980037C639 /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -489,6 +499,7 @@
 				287154EF2C299D3A009589D3 /* PersonalInfoCell.swift in Sources */,
 				287154EB2C2974F9009589D3 /* Language.swift in Sources */,
 				2879F6392C2AD800009E6B24 /* Transaction.swift in Sources */,
+				2870EB492C5A1BEF005AD2DC /* Category.swift in Sources */,
 				2889B4952C247A600089B61E /* GeneralTableViewCell.swift in Sources */,
 				285FBB922C24341A003CA334 /* User.swift in Sources */,
 				28DBB8802C2D67F5002AC154 /* DayLabel.swift in Sources */,
@@ -515,6 +526,7 @@
 				289718F02C4007A1004680A5 /* FilterOrderButton.swift in Sources */,
 				28A9E9382C2081980037C639 /* AppDelegate.swift in Sources */,
 				2889B4972C247F7E0089B61E /* Cell.swift in Sources */,
+				2870EB4C2C5A3750005AD2DC /* ChangeCategoryViewController.swift in Sources */,
 				2879F6372C2AC76E009E6B24 /* TransactionsTableViewController.swift in Sources */,
 				28A9E93A2C2081980037C639 /* SceneDelegate.swift in Sources */,
 				283DB36B2C256D3D0051F459 /* PersonalInfoTableViewController.swift in Sources */,

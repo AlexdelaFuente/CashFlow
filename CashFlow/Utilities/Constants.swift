@@ -26,11 +26,20 @@ enum SFSymbols {
     static let xmark = "xmark"
     static let xCircle = "x.circle.fill"
     static let creditCard = "creditcard.fill"
-    static let banknote = "banknote.fill"
+    static let banknoteFill = "banknote.fill"
     static let uptrendChart = "chart.line.uptrend.xyaxis.circle.fill"
     static let downtrendChart = "chart.line.downtrend.xyaxis.circle.fill"
     static let flattrendChart = "chart.line.flattrend.xyaxis.circle.fill"
     
+    static let cart = "cart"
+    static let forkKnife = "fork.knife"
+    static let gamecontroller = "gamecontroller"
+    static let banknote = "banknote"
+    static let car = "car"
+    static let airplane = "airplane.departure"
+    static let healthcare = "waveform.path.ecg"
+    static let general = "square.on.square"
+    static let bag = "bag"
 }
 
 

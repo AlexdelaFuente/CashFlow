@@ -16,12 +16,12 @@
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" misplaced="YES" id="i5M-Pr-FkT">
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
             <rect key="frame" x="0.0" y="0.0" width="393" height="369"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1J6-k8-ijk">
-                    <rect key="frame" x="0.0" y="83" width="393" height="266"/>
+                    <rect key="frame" x="0.0" y="96.666666666666657" width="393" height="260.33333333333337"/>
                 </pickerView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select a Currency" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6FB-89-sHC">
                     <rect key="frame" x="12" y="31.999999999999996" width="369" height="40.666666666666657"/>
@@ -33,7 +33,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <constraints>
-                <constraint firstItem="1J6-k8-ijk" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="24" id="C5g-8g-Pk2"/>
+                <constraint firstItem="1J6-k8-ijk" firstAttribute="top" secondItem="6FB-89-sHC" secondAttribute="bottom" constant="24" id="C5g-8g-Pk2"/>
                 <constraint firstItem="6FB-89-sHC" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="32" id="EXw-LF-BTf"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="6FB-89-sHC" secondAttribute="trailing" constant="12" id="UbN-Ew-rD7"/>
                 <constraint firstItem="6FB-89-sHC" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="12" id="bGv-jZ-Cde"/>

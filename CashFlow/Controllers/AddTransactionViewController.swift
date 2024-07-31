@@ -6,21 +6,127 @@
 //
 
 import UIKit
+import MapKit
+import CoreLocation
+import FirebaseFirestoreInternal
 
-class AddTransactionViewController: UIViewController {
+class AddTransactionViewController: UIViewController, UIViewControllerTransitioningDelegate {
     
     @IBOutlet var transactionTypeSwitch: AnimatedSegmentSwitch!
     @IBOutlet var moneyTypeSwitch: AnimatedSegmentSwitch!
     @IBOutlet var descriptionTextField: UITextField!
     @IBOutlet var amountTextField: UITextField!
-    @IBOutlet var datePicker: UIDatePicker!
     
+    @IBOutlet var categoryLabel: UILabel!
+    @IBOutlet var categoryImageView: UIImageView!
+    @IBOutlet var categoryBackgroundView: UIView!
+    @IBOutlet var categoryImageBackgroundView: UIView!
+    
+    @IBOutlet var datePicker: UIDatePicker!
+    @IBOutlet var map: MKMapView!
+    
+    private var category: Category!
+    
+    private var annotation: MKPointAnnotation!
+    
+    let locationManager = CLLocationManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSwitches()
         setupDatePicker()
         setupTextFields()
+        setupMap()
+        setupLocationManager()
+        setupCategory()
+    }
+    
+    private func setupMap() {
+        map.roundCorners(.allCorners, radius: 20)
+        map.showsUserLocation = true
+        map.delegate = self
+    }
+    
+    
+    private func setupCategory() {
+        category = .general
+        
+        categoryBackgroundView.layer.borderColor = UIColor.gray.cgColor
+        categoryBackgroundView.layer.borderWidth = 2
+        categoryBackgroundView.clipsToBounds = true
+        categoryBackgroundView.layer.cornerRadius = 26
+    
+        categoryImageView.tintColor = .white
+        
+        categoryImageBackgroundView.layer.cornerRadius = 20
+        categoryImageBackgroundView.clipsToBounds = true
+        
+        let longPressGesture = UILongPressGestureRecognizer(target: self, action: #selector(categoryBackgroundTouched(_:)))
+        longPressGesture.minimumPressDuration = 0
+        categoryBackgroundView.addGestureRecognizer(longPressGesture)
+        categoryBackgroundView.isUserInteractionEnabled = true
+        
+        updateCategory()
+    }
+    
+    
+    private func updateCategory() {
+        categoryLabel.text = category.title
+        categoryImageView.image = category.image
+        categoryImageBackgroundView.backgroundColor = category.color
+    }
+    
+    
+    @objc private func categoryBackgroundTouched(_ gesture: UILongPressGestureRecognizer) {
+        let location = gesture.location(in: categoryBackgroundView)
+            
+        let isInside = categoryBackgroundView.bounds.contains(location)
+        
+        
+        switch gesture.state {
+        case .began:
+            UIView.animate(withDuration: 0.08) {
+                self.categoryBackgroundView.backgroundColor = UIColor.lightGray
+            }
+            
+        case .cancelled, .failed:
+            UIView.animate(withDuration: 0.08) {
+                self.categoryBackgroundView.backgroundColor = UIColor.clear
+            }
+        case .ended:
+            UIView.animate(withDuration: 0.08) {
+                self.categoryBackgroundView.backgroundColor = UIColor.clear
+            }
+            if isInside {
+                let vc = Factory.provideChangeCategoryScreen()
+                vc.delegate = self
+                vc.category = category
+                vc.transitioningDelegate = self
+                if let presentationController = vc.presentationController as? UISheetPresentationController {
+                    presentationController.detents = [.large()]
+                }
+                self.present(vc, animated: true)
+            }
+        default:
+            break
+        }
+    }
+
+    
+    
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    
+    private func addAnnotation(at coordinate: CLLocationCoordinate2D) {
+        annotation = MKPointAnnotation()
+        annotation.coordinate = coordinate
+        annotation.title = "Blank Description"
+        map.addAnnotation(annotation)
     }
     
     
@@ -79,13 +185,18 @@ class AddTransactionViewController: UIViewController {
         navigationItem.backButtonTitle = "Back"
     }
     
+   
+    @IBAction func descriptionTextFieldEditingChanged(_ sender: Any) {
+        annotation.title = descriptionTextField.text!.isEmpty ? "Blank Description" : descriptionTextField.text
+    }
+    
     
     @IBAction func addButtonTapped(_ sender: Any) {
         var invalidAmount = false
         var negativeAmount = false
         var invalidDescription = false
         var amountValue: Double?
-
+        
         if let amountText = amountTextField.text?.replacingOccurrences(of: ",", with: "."), !amountText.isEmpty {
             if let value = Double(amountText) {
                 if value > 0 {
@@ -99,16 +210,16 @@ class AddTransactionViewController: UIViewController {
         } else {
             invalidAmount = true
         }
-
+        
         if let description = descriptionTextField.text, !description.isEmpty, Validator.isValidDescription(for: description) {
         } else {
             invalidDescription = true
         }
-
+        
         if invalidAmount && invalidDescription {
             AlertManager.transactionInvalidAmountAndDescription(on: self)
             return
-        } else if negativeAmount{
+        } else if negativeAmount {
             AlertManager.transactionNegativeAmount(on: self)
             return
         } else if invalidAmount {
@@ -118,23 +229,26 @@ class AddTransactionViewController: UIViewController {
             AlertManager.transactionInvalidDescription(on: self)
             return
         }
-
-
+        
         let transactionTypeIndex = transactionTypeSwitch.selectedIndex
         let moneyTypeIndex = moneyTypeSwitch.selectedIndex
-
+        
         let transactionType: TransactionType = transactionTypeIndex == 0 ? .income : .expense
         let moneyType: MoneyType = moneyTypeIndex == 0 ? .cash : .card
-
+        
+        let location = GeoPoint(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+        
         let transaction = Transaction(
             id: UUID(),
             description: descriptionTextField.text!,
             money: amountValue!,
             date: datePicker.date,
             transactionType: transactionType,
-            moneyType: moneyType
+            moneyType: moneyType,
+            location: location,
+            category: category
         )
-
+        
         AuthService.shared.insertTransaction(transaction: transaction) { error in
             if let error = error {
                 AlertManager.transactionNotSaved(on: self, with: error)
@@ -165,11 +279,59 @@ class AddTransactionViewController: UIViewController {
     }
 }
 
+//MARK: - CLLocationManagerDelegate Methods
+extension AddTransactionViewController: CLLocationManagerDelegate {
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        
+        let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        map.setRegion(region, animated: true)
+        addAnnotation(at: center)
+        
+        locationManager.stopUpdatingLocation()
+    }
+}
+
+// MARK: - MKMapViewDelegate Methods
+extension AddTransactionViewController: MKMapViewDelegate {
+    
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        let identifier = "DraggablePin"
+        
+        if annotation is MKUserLocation {
+            return nil
+        }
+        
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+        
+        if annotationView == nil {
+            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView?.canShowCallout = true
+            annotationView?.isDraggable = true
+        } else {
+            annotationView?.annotation = annotation
+        }
+        
+        return annotationView
+    }
+}
+
 // MARK: - UITextFieldDelegate Methods
 extension AddTransactionViewController: UITextFieldDelegate {
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         view.endEditing(true)
         return true
+    }
+}
+
+//MARK: - ChangeCategoryViewControllerDelegate Methods
+extension AddTransactionViewController: ChangeCategoryViewControllerDelegate {
+    
+    func categorySelected(selectedCategory: Category) {
+        category = selectedCategory
+        updateCategory()
     }
 }

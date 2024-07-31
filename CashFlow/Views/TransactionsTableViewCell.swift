@@ -35,7 +35,7 @@ class TransactionsTableViewCell: UITableViewCell {
         switch(transaction.moneyType) {
             
         case .cash:
-            moneyTypeImage.image = UIImage(systemName: SFSymbols.banknote)
+            moneyTypeImage.image = UIImage(systemName: SFSymbols.banknoteFill)
         case .card:
             moneyTypeImage.image = UIImage(systemName: SFSymbols.creditCard)
         }

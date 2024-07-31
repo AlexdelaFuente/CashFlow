@@ -2,6 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>We need your location to add transactions in it</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need your location to add transactions in it</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>
@@ -17,10 +21,6 @@
 					<string>$(PRODUCT_MODULE_NAME).SceneDelegate</string>
 					<key>UISceneStoryboardFile</key>
 					<string>Main</string>
-                    <key>NSLocationWhenInUseUsageDescription</key>
-                    <string>We need your location to create transactions in it</string>
-                    <key>NSLocationAlwaysUsageDescription</key>
-                    <string>We need your location to always to create transactions in it</string>
 				</dict>
 			</array>
 		</dict>
