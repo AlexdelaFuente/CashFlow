@@ -105,12 +105,12 @@ struct ChartLine: View {
                             Text("\(point.formatted()) \(User.shared.currency.symbol)")
                                 .font(.system(size: 12))
                                 .frame(maxWidth: .infinity, alignment: .trailing)
-                                .position(x: -160, y: yPosition)
+                                .position(x: -150, y: yPosition)
                         }
                     }
                     .frame(height: maxChartHeight)
                 }
-                .padding(.leading, 16)
+                .padding(.leading, 32)
                 
                 ScrollViewReader { scrollProxy in
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -146,7 +146,6 @@ struct ChartLine: View {
                                     .trim(from: 0, to: animatedLines ? 1 : 0)
                                     .stroke(Color.green, style: StrokeStyle(lineWidth: lineWidth, lineCap: .round, lineJoin: .round))
                                     .animation(.easeInOut(duration: Double(data.count) * 0.2), value: animatedLines)
-                                    // .animation(.easeInOut(duration: 2), value: animatedLines)
                                     
                                     ForEach(data.indices, id: \.self) { index in
                                         let point = data[index]
@@ -186,7 +185,7 @@ struct ChartLine: View {
                             .frame(height: maxChartHeight)
                             .padding(.leading, 8)
                         }
-                        .padding(.vertical, 32)
+                        .padding(.vertical, 28)
                         .frame(minWidth: CGFloat(data.count) * 50)
                         .padding(.leading, 8)
                         .padding(.trailing, 16)
@@ -199,7 +198,7 @@ struct ChartLine: View {
                             animatedPoints = true
                             animatedLines = true
                         }
-                    }.padding(.leading, 32)
+                    }.padding(.leading, 48)
                 }
             }
         }

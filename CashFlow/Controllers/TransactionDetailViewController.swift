@@ -44,7 +44,8 @@ class TransactionDetailViewController: UIViewController {
     
     
     private func setupMap() {
-        map.roundCorners(.allCorners, radius: 32)
+        map.clipsToBounds = true
+        map.layer.cornerRadius = 32
         map.showsUserLocation = true
         map.delegate = self
         

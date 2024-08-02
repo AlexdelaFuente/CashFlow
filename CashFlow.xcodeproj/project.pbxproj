@@ -10,7 +10,6 @@
 		281164FB2C2EB19F00CAA9BB /* AddTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */; };
 		28172C9B2C41095400CFDA8B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9A2C41095400CFDA8B /* Date+Extensions.swift */; };
 		28172CA02C41361600CFDA8B /* EditTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */; };
-		2820665E2C51117200F4E782 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665D2C51117200F4E782 /* UIView+Extensions.swift */; };
 		282066602C511D2700F4E782 /* BalanceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */; };
 		282660242C3D110B0067513F /* AnimatedSegmentSwitch.swift in Sources */ = {isa = PBXBuildFile; fileRef = 282660232C3D110B0067513F /* AnimatedSegmentSwitch.swift */; };
 		283DB36B2C256D3D0051F459 /* PersonalInfoTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */; };
@@ -41,6 +40,8 @@
 		287154F12C29B88E009589D3 /* BirthDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154F02C29B88E009589D3 /* BirthDateCell.swift */; };
 		2876A9532C2BF91800FE02E3 /* FilterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2876A9522C2BF91800FE02E3 /* FilterButton.swift */; };
 		2876A9572C2C3DA800FE02E3 /* EmptyStateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2876A9562C2C3DA800FE02E3 /* EmptyStateView.swift */; };
+		2877632B2C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287763292C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift */; };
+		2877632C2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2877632A2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib */; };
 		2879F6372C2AC76E009E6B24 /* TransactionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879F6362C2AC76E009E6B24 /* TransactionsTableViewController.swift */; };
 		2879F6392C2AD800009E6B24 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879F6382C2AD800009E6B24 /* Transaction.swift */; };
 		2879F63B2C2AD80D009E6B24 /* TransactionType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879F63A2C2AD80D009E6B24 /* TransactionType.swift */; };
@@ -81,7 +82,6 @@
 		281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionViewController.swift; sourceTree = "<group>"; };
 		28172C9A2C41095400CFDA8B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionViewController.swift; sourceTree = "<group>"; };
-		2820665D2C51117200F4E782 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetailViewController.swift; sourceTree = "<group>"; };
 		282660232C3D110B0067513F /* AnimatedSegmentSwitch.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnimatedSegmentSwitch.swift; sourceTree = "<group>"; };
 		283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoTableViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +112,8 @@
 		287154F02C29B88E009589D3 /* BirthDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthDateCell.swift; sourceTree = "<group>"; };
 		2876A9522C2BF91800FE02E3 /* FilterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterButton.swift; sourceTree = "<group>"; };
 		2876A9562C2C3DA800FE02E3 /* EmptyStateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStateView.swift; sourceTree = "<group>"; };
+		287763292C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryFiltersSelectionViewController.swift; sourceTree = "<group>"; };
+		2877632A2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CategoryFiltersSelectionViewController.xib; sourceTree = "<group>"; };
 		2879F6362C2AC76E009E6B24 /* TransactionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsTableViewController.swift; sourceTree = "<group>"; };
 		2879F6382C2AD800009E6B24 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		2879F63A2C2AD80D009E6B24 /* TransactionType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionType.swift; sourceTree = "<group>"; };
@@ -165,6 +167,8 @@
 		284094272C22C6430096A9F9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				287763292C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift */,
+				2877632A2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib */,
 				2870EB4A2C5A3750005AD2DC /* ChangeCategoryViewController.swift */,
 				2870EB4B2C5A3750005AD2DC /* ChangeCategoryViewController.xib */,
 				28DBB8792C2D52B1002AC154 /* DateRangeFilterViewController.swift */,
@@ -320,7 +324,6 @@
 				284094352C22F0A80096A9F9 /* Validator.swift */,
 				28A9E9562C22BF350037C639 /* Constants.swift */,
 				28172C9A2C41095400CFDA8B /* Date+Extensions.swift */,
-				2820665D2C51117200F4E782 /* UIView+Extensions.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				2879F63F2C2B096F009E6B24 /* TransactionsTableViewCell.xib in Resources */,
 				2889B4942C247A600089B61E /* GeneralTableViewCell.xib in Resources */,
 				2840942B2C22CB5F0096A9F9 /* GoogleService-Info.plist in Resources */,
+				2877632C2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib in Resources */,
 				28DBB87B2C2D52B1002AC154 /* DateRangeFilterViewController.xib in Resources */,
 				28A9E9472C20819A0037C639 /* Base in Resources */,
 				287154E32C296823009589D3 /* ChangeCurrencyViewController.xib in Resources */,
@@ -521,8 +525,8 @@
 				28DBB87C2C2D52B1002AC154 /* DateRangeFilterViewController.swift in Sources */,
 				287154ED2C298B93009589D3 /* ChangePasswordViewController.swift in Sources */,
 				2876A9572C2C3DA800FE02E3 /* EmptyStateView.swift in Sources */,
+				2877632B2C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift in Sources */,
 				28A9E9572C22BF350037C639 /* Constants.swift in Sources */,
-				2820665E2C51117200F4E782 /* UIView+Extensions.swift in Sources */,
 				289718F02C4007A1004680A5 /* FilterOrderButton.swift in Sources */,
 				28A9E9382C2081980037C639 /* AppDelegate.swift in Sources */,
 				2889B4972C247F7E0089B61E /* Cell.swift in Sources */,

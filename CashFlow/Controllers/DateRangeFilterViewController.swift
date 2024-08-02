@@ -42,8 +42,8 @@ class DateRangeFilterViewController: UIViewController {
         calendarView = CalendarView(initialContent: makeContent(calendar: calendar, startDate: startDate, endDate: endDate))
         
         view.addSubview(calendarView)
-        
         calendarView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate([
             calendarView.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
             calendarView.trailingAnchor.constraint(equalTo: view.layoutMarginsGuide.trailingAnchor),
@@ -53,6 +53,7 @@ class DateRangeFilterViewController: UIViewController {
         
         setupCalendarTouchListener()
         self.calendarView.setContent(self.makeContent(calendar: self.calendar, startDate: self.startDate, endDate: self.endDate))
+        self.calendarView.scroll(toMonthContaining: endDate, scrollPosition: .centered, animated: true)
     }
     
     private func setupCalendarTouchListener() {
@@ -121,7 +122,6 @@ class DateRangeFilterViewController: UIViewController {
     }
     
     private func makeContent(calendar: Calendar, startDate: Date, endDate: Date) -> CalendarViewContent {
-        
         var caldendarViewContent = CalendarViewContent(
             calendar: calendar,
             visibleDateRange: startDate...endDate,

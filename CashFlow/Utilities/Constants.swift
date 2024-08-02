@@ -60,4 +60,9 @@ enum Screens {
     static let balanceDetailScreen = "BalanceDetailScreen"
     static let balanceChartScreen = "BalanceGraphScreen"
     static let monthlyExpensesScreen = "MonthlyExpensesScreen"
+    static let changeCurrencyScreen = "ChangeCurrencyViewController"
+    static let changeLanguageScreen = "ChangeLanguageViewController"
+    static let dateRangeFilterScreen = "DateRangeFilterViewController"
+    static let changeCategoryScreen = "ChangeCategoryViewController"
+    static let categoryFiltersSelectionScreen = "CategoryFiltersSelectionViewController"
 }

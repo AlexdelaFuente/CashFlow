@@ -197,7 +197,6 @@ class HomeViewController: UIViewController {
 extension HomeViewController: TabBarViewControllerDelegate {
     
     func usernameHasLoad() {
-        
         delegate?.userHasLoad()
         loadingView.isHidden = true
         calculateBalance()

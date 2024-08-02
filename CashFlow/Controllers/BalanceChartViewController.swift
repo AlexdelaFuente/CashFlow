@@ -31,9 +31,11 @@ class BalanceChartViewController: UIViewController {
     
     private let tableView = UITableView(frame: .zero)
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        filterTransactions()
+        vm.selectedIndex = sortedTransactions.count - 1
     }
     
     
@@ -46,13 +48,16 @@ class BalanceChartViewController: UIViewController {
         setupEmptyState()
         setupTable()
         updateScreen(vm.selectedIndex)
+        
     }
 
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         self.navigationController?.navigationBar.prefersLargeTitles = false
-        self.title = "Back"
+        DispatchQueue.main.async {
+            self.title = "Back"
+        }
     }
     
     
@@ -83,7 +88,7 @@ class BalanceChartViewController: UIViewController {
         }
 
         let minDate = transactions.map { $0.date }.min()!
-        let maxDate = transactions.map { $0.date }.max()!
+        let maxDate = Date()
 
         var date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: minDate))!
         let endDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: maxDate))!
@@ -118,7 +123,7 @@ class BalanceChartViewController: UIViewController {
         }
 
         let minDate = transactions.map { $0.date }.min()!
-        let maxDate = transactions.map { $0.date }.max()!
+        let maxDate = Date()
 
         var date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: minDate))!
         let endDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: maxDate))!
@@ -160,7 +165,6 @@ class BalanceChartViewController: UIViewController {
     
 
     private func setupChart() {
-        vm.selectedIndex = sortedTransactions.count - 1
         childVC = UIHostingController(rootView: ChartLine(viewModel: vm, data: sortedTransactions))
         addChild(childVC)
         view.addSubview(childVC.view)
@@ -186,6 +190,8 @@ class BalanceChartViewController: UIViewController {
         let selectedMonth = sortedTransactions[value].0
         let moneyToDisplay = sortedTransactions[value].1
         moneyLabel.text = "\(String(format: "%.2f", moneyToDisplay)) \(User.shared.currency.symbol)"
+        
+        moneyLabel.textColor = moneyToDisplay >= 0 ? .label : .systemRed
         
         transactionsForSelectedMonth = User.shared.transactions.filter {
             let components = Calendar.current.dateComponents([.year, .month], from: $0.date)
@@ -256,6 +262,8 @@ class BalanceChartViewController: UIViewController {
             
             averageMonthlySummaryLabel.text = "\(String(format: "%.2f", average)) \(User.shared.currency.symbol)"
             
+            averageMonthlySummaryLabel.textColor = average >= 0 ? .label : .systemRed
+            
             averageMonthlySummaryTitleLabel.font = .systemFont(ofSize: 13)
             averageMonthlySummaryLabel.font = .systemFont(ofSize: 28, weight: .regular)
             
@@ -274,18 +282,11 @@ class BalanceChartViewController: UIViewController {
                 averageMonthlySummaryLabel.centerYAnchor.constraint(equalTo: moneyLabel.centerYAnchor),
                 averageMonthlySummaryLabel.trailingAnchor.constraint(equalTo: averageMonthlySummaryTitleLabel.trailingAnchor)
             ])
-            
-            
         }
-        
-        
-        
     }
     
     
     private func setupEmptyState() {
-        
-        
         emptyState.translatesAutoresizingMaskIntoConstraints = false
 
         view.addSubview(emptyState)

@@ -30,7 +30,8 @@ class MonthlyExpensesViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        sortTransactions()
+        vm.selectedIndex = sortedExpenses.count - 1
     }
 
 
@@ -57,7 +58,8 @@ class MonthlyExpensesViewController: UIViewController {
         }
 
         let minDate = expenses.map { $0.date }.min()!
-        let maxDate = expenses.map { $0.date }.max()!
+        let maxDate = Date()
+       
 
         var date = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: minDate))!
         let endDate = Calendar.current.date(from: Calendar.current.dateComponents([.year, .month], from: maxDate))!
@@ -111,7 +113,6 @@ class MonthlyExpensesViewController: UIViewController {
 
 
     private func setupChart() {
-        vm.selectedIndex = sortedExpenses.count - 1
         childVC = UIHostingController(rootView: ChartBar(viewModel: vm, data: sortedExpenses))
         addChild(childVC)
         view.addSubview(childVC.view)

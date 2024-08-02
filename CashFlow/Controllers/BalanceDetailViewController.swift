@@ -52,7 +52,8 @@ class BalanceDetailViewController: UIViewController {
     
     private func setupView() {
         backgroundViews.forEach { backgroundView in
-            backgroundView.roundCorners(.allCorners, radius: 12)
+            backgroundView.clipsToBounds = true
+            backgroundView.layer.cornerRadius = 12
         }
         
     }

@@ -150,6 +150,11 @@ extension AlertManager {
     public static func showErrorSendingPasswordReset(on vc: UIViewController, with error: Error) {
         self.showBasicAlert(on: vc, title: "Error Sending Password Reset", message: "\(error.localizedDescription)")
     }
+    
+    
+    public static func showErrorWrongEmailAlert(on vc:UIViewController) {
+        self.showBasicAlert(on: vc, title: "Error Sending Password Reset", message: "There is no account with that email address.")
+    }
 }
 
 

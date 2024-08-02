@@ -501,19 +501,19 @@
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Latest Transactions" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KKr-6P-nsS">
-                                <rect key="frame" x="12" y="421" width="283" height="41"/>
+                                <rect key="frame" x="12" y="429" width="283" height="41"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleTitle0"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <containerView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aig-M6-tZe">
-                                <rect key="frame" x="0.0" y="474" width="393" height="279"/>
+                                <rect key="frame" x="0.0" y="470" width="393" height="283"/>
                                 <connections>
                                     <segue destination="gEV-Ou-RfI" kind="embed" id="dUJ-SN-HqX"/>
                                 </connections>
                             </containerView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p5I-Pu-HaV">
-                                <rect key="frame" x="311.66666666666669" y="432" width="69.333333333333314" height="30"/>
+                                <rect key="frame" x="311.66666666666669" y="440" width="69.333333333333314" height="30"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                 <state key="normal" title="See all">
@@ -524,7 +524,7 @@
                                 </connections>
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="eBh-qv-YGV">
-                                <rect key="frame" x="0.0" y="474" width="393" height="279"/>
+                                <rect key="frame" x="0.0" y="470" width="393" height="283"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Cash" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5A2-hT-UJk">
@@ -582,7 +582,7 @@
                             <constraint firstItem="p5I-Pu-HaV" firstAttribute="trailing" secondItem="wtg-pm-82x" secondAttribute="trailing" constant="-12" id="1Hk-ld-7x5"/>
                             <constraint firstItem="wtg-pm-82x" firstAttribute="bottom" secondItem="aig-M6-tZe" secondAttribute="bottom" constant="16" id="1OG-yP-ifA"/>
                             <constraint firstItem="YMY-iP-aVb" firstAttribute="leading" secondItem="Rye-X7-UDV" secondAttribute="leading" constant="4" id="1md-BE-dhe"/>
-                            <constraint firstItem="aig-M6-tZe" firstAttribute="top" secondItem="KKr-6P-nsS" secondAttribute="bottom" constant="12" id="2nJ-Gd-ceI"/>
+                            <constraint firstItem="aig-M6-tZe" firstAttribute="top" secondItem="KKr-6P-nsS" secondAttribute="bottom" id="2nJ-Gd-ceI"/>
                             <constraint firstItem="Rye-X7-UDV" firstAttribute="leading" secondItem="fjh-aM-MlX" secondAttribute="leading" constant="-4" id="3ul-Te-CS9"/>
                             <constraint firstItem="fjh-aM-MlX" firstAttribute="leading" secondItem="5A2-hT-UJk" secondAttribute="leading" constant="4" id="4b5-aE-xM6"/>
                             <constraint firstItem="Rye-X7-UDV" firstAttribute="top" secondItem="fjh-aM-MlX" secondAttribute="bottom" constant="12" id="4ee-3d-GKa"/>
@@ -619,7 +619,7 @@
                             <constraint firstItem="p5I-Pu-HaV" firstAttribute="bottom" secondItem="KKr-6P-nsS" secondAttribute="bottom" id="uXd-m7-4nx"/>
                             <constraint firstItem="oHS-f3-E1K" firstAttribute="top" secondItem="SBz-jC-Nhq" secondAttribute="bottom" constant="8" id="vKE-sN-7v2"/>
                             <constraint firstItem="eBh-qv-YGV" firstAttribute="leading" secondItem="wtg-pm-82x" secondAttribute="leading" id="xCz-1v-gIp"/>
-                            <constraint firstItem="KKr-6P-nsS" firstAttribute="top" secondItem="YMY-iP-aVb" secondAttribute="bottom" constant="24" id="xEl-XI-H7u"/>
+                            <constraint firstItem="KKr-6P-nsS" firstAttribute="top" secondItem="YMY-iP-aVb" secondAttribute="bottom" constant="32" id="xEl-XI-H7u"/>
                             <constraint firstItem="eBh-qv-YGV" firstAttribute="centerY" secondItem="aig-M6-tZe" secondAttribute="centerY" id="xmo-JN-D9v"/>
                             <constraint firstItem="w5e-Qc-Iml" firstAttribute="bottom" secondItem="YMY-iP-aVb" secondAttribute="bottom" id="yEk-j1-d9b"/>
                             <constraint firstItem="KKr-6P-nsS" firstAttribute="leading" secondItem="wtg-pm-82x" secondAttribute="leading" constant="12" id="z2Q-Z3-t0o"/>
@@ -645,7 +645,7 @@
             <objects>
                 <tableViewController id="gEV-Ou-RfI" customClass="TransactionsTableViewController" customModule="CashFlow" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" id="8Re-XU-tLt">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="279"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="283"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
@@ -1459,7 +1459,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="UD1-my-JkC" customClass="GeneralTableViewCell" customModule="CashFlow" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionsTableViewCell" id="UD1-my-JkC" customClass="GeneralTableViewCell" customModule="CashFlow" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="50" width="393" height="43.666667938232422"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="UD1-my-JkC" id="yWR-Ti-2C5">
@@ -1561,6 +1561,11 @@
                                     <rect key="frame" x="0.0" y="0.0" width="393" height="43.666667938232422"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="skeletonCornerRadius">
+                                        <real key="value" value="0.0"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                             </tableViewCell>
                         </prototypes>
                         <connections>

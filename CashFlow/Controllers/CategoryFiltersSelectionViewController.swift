@@ -1,28 +1,32 @@
 //
-//  ChangeCategoryViewController.swift
+//  CategoryFiltersSelectionViewController.swift
 //  CashFlow
 //
-//  Created by Alex de la Fuente Martín on 31/7/24.
+//  Created by Alex de la Fuente Martín on 1/8/24.
 //
 
 import UIKit
 
-protocol ChangeCategoryViewControllerDelegate: AnyObject {
-    func categorySelected(selectedCategory: Category)
+
+protocol CategoryFiltersSelectionViewControllerDelegate: AnyObject {
+    
+    func filtersSelected(categories: [Category])
 }
 
-class ChangeCategoryViewController: UIViewController {
+class CategoryFiltersSelectionViewController: UIViewController {
 
     @IBOutlet var selectCategoryLabel: UILabel!
     private var tableView: UITableView!
     
-    public var delegate: ChangeCategoryViewControllerDelegate?
+    public var selectedCategories: [Category]!
     
     private let categories: [Category] = [
         .general, .entertainment, .shopping, .groceries, .restaurants, .salary, .transportation, .traveling, .healthcare
     ]
     
-    public var category: Category!
+    public var delegate: CategoryFiltersSelectionViewControllerDelegate!
+    
+    
     
     
     override func viewDidLoad() {
@@ -30,11 +34,12 @@ class ChangeCategoryViewController: UIViewController {
         setupTable()
     }
 
-    
+   
     private func setupTable() {
         tableView = UITableView(frame: .zero)
-        tableView.delegate = self
         tableView.dataSource = self
+        
+        tableView.allowsMultipleSelection = true
         
         view.addSubview(tableView)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -47,12 +52,41 @@ class ChangeCategoryViewController: UIViewController {
         ])
         
         tableView.register(UINib(nibName: "GeneralTableViewCell", bundle: nil), forCellReuseIdentifier: "CategoryTableViewCell")
-        tableView.selectRow(at: IndexPath(row: categories.firstIndex(of: category)!, section: 0), animated: true, scrollPosition: .none)
+        
+        selectedCategories.forEach { category in
+            tableView.selectRow(at: IndexPath(row: categories.firstIndex(of: category)!, section: 0), animated: true, scrollPosition: .none)
+        }
+        
+        
     }
+    
+
+    @IBAction func clearButtonTapped(_ sender: Any) {
+        if let selectedIndexPaths = tableView.indexPathsForSelectedRows {
+            selectedIndexPaths.forEach { indexPath in
+                tableView.deselectRow(at: indexPath, animated: true)
+            }
+        }
+    }
+    
+    
+    @IBAction func applyButtonTapped(_ sender: Any) {
+        let selectedIndexPaths = tableView.indexPathsForSelectedRows
+        
+        selectedCategories.removeAll()
+        
+        selectedIndexPaths?.forEach({ indexPath in
+            selectedCategories.append(categories[indexPath.row])
+        })
+        
+        delegate.filtersSelected(categories: selectedCategories)
+        dismiss(animated: true)
+    }
+    
 }
 
 //MARK: - UITableViewDataSource Methods
-extension ChangeCategoryViewController: UITableViewDataSource {
+extension CategoryFiltersSelectionViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
         1
@@ -92,18 +126,10 @@ extension ChangeCategoryViewController: UITableViewDataSource {
             imageView.heightAnchor.constraint(equalToConstant: heightConstraint),
             imageView.widthAnchor.constraint(equalToConstant: widthConstraint)
         ])
+        
         return cell
     }
-}
 
-//MARK: - UITableViewDelegate Methods
-extension ChangeCategoryViewController: UITableViewDelegate {
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCategory = categories[indexPath.row]
-        delegate?.categorySelected(selectedCategory: selectedCategory)
-        dismiss(animated: true)
-        
-        
-    }
+    
 }

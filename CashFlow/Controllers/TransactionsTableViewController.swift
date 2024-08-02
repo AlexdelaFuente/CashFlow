@@ -66,7 +66,8 @@ class TransactionsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 82
+        
+        return view.frame.height / 4 + 4
     }
     
     

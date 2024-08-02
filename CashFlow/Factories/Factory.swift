@@ -40,19 +40,20 @@ class Factory: NSObject {
     // }
     
     //MARK: - Home and Account Screens
-    
     static func providePersonalInfoScreen(storyboard: UIStoryboard) -> PersonalInfoTableViewController{
         let personalInfoScreen = storyboard.instantiateViewController(withIdentifier: Screens.personalInfoScreen) as! PersonalInfoTableViewController
         return personalInfoScreen
     }
     
+    
     static func provideChangeCurrencyScreen() -> ChangeCurrencyViewController{
-        let changeCurrencyScreen = ChangeCurrencyViewController(nibName: "ChangeCurrencyViewController", bundle: nil)
+        let changeCurrencyScreen = ChangeCurrencyViewController(nibName: Screens.changeCurrencyScreen, bundle: nil)
         return changeCurrencyScreen
     }
     
+    
     static func provideChangeLanguageScreen() -> ChangeLanguageViewController{
-        let changeLanguageScreen = ChangeLanguageViewController(nibName: "ChangeLanguageViewController", bundle: nil)
+        let changeLanguageScreen = ChangeLanguageViewController(nibName: Screens.changeLanguageScreen, bundle: nil)
         return changeLanguageScreen
     }
     
@@ -70,7 +71,7 @@ class Factory: NSObject {
     
     
     static func provideDateRangeFilter() -> DateRangeFilterViewController{
-        let dateRangeFilterScreen = DateRangeFilterViewController(nibName: "DateRangeFilterViewController", bundle: nil)
+        let dateRangeFilterScreen = DateRangeFilterViewController(nibName: Screens.dateRangeFilterScreen, bundle: nil)
         return dateRangeFilterScreen
     }
     
@@ -112,9 +113,16 @@ class Factory: NSObject {
         return balanceChartScreen
     }
     
+    
     static func provideChangeCategoryScreen() -> ChangeCategoryViewController{
-        let changeCategoryScreen = ChangeCategoryViewController(nibName: "ChangeCategoryViewController", bundle: nil)
+        let changeCategoryScreen = ChangeCategoryViewController(nibName: Screens.changeCategoryScreen, bundle: nil)
         return changeCategoryScreen
+    }
+    
+    
+    static func provideCategoryFiltersSelectionScreen() -> CategoryFiltersSelectionViewController{
+        let categoryFiltersSelectionScreen = CategoryFiltersSelectionViewController(nibName: Screens.categoryFiltersSelectionScreen, bundle: nil)
+        return categoryFiltersSelectionScreen
     }
     
 }

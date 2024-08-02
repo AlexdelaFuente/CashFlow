@@ -42,7 +42,8 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
     }
     
     private func setupMap() {
-        map.roundCorners(.allCorners, radius: 20)
+        map.clipsToBounds = true
+        map.layer.cornerRadius = 20
         map.showsUserLocation = true
         map.delegate = self
     }

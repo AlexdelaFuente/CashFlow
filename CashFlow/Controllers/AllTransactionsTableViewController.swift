@@ -181,19 +181,17 @@ class AllTransactionsTableViewController: UITableViewController {
     
     @objc private func showCategoryFilterView(_ sender: UIButton) {
         
-        if !categoryButton.isFiltering {
-            #warning("Esto esta hecho hardcodeado")
-            filteringCategories = [
-                .general, .restaurants
-            ]
-            filterTransactions(sender)
-            categoryButton.setTitleBold(title: filteringCategories.count == 1 ? filteringCategories.first!.title : "Multiple categories", isBold: true)
-        } else {
-            
-            filteringCategories.removeAll(keepingCapacity: false)
-            filterTransactions(sender)
-            categoryButton.setTitleBold(title: "Category", isBold: false)
+        let vc = Factory.provideCategoryFiltersSelectionScreen()
+        vc.delegate = self
+        vc.selectedCategories = filteringCategories
+        
+        vc.transitioningDelegate = self
+        if let presentationController = vc.presentationController as? UISheetPresentationController {
+            presentationController.detents = [.large()]
         }
+        self.present(vc, animated: true)
+        
+        
         
         
         
@@ -343,7 +341,7 @@ class AllTransactionsTableViewController: UITableViewController {
         }
         
         if !filteringCategories.isEmpty {
-            filteredTransactions = filteredTransactions.filter({ transaction in 
+            filteredTransactions = filteredTransactions.filter({ transaction in
                 filteringCategories.contains { category in
                     transaction.category == category
                 }
@@ -517,7 +515,7 @@ extension AllTransactionsTableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let section = sortedSections[indexPath.section]
-       
+        
         let transactions = groupedTransactions[section]!
         
         let transaction = transactions[indexPath.row]
@@ -554,8 +552,27 @@ extension AllTransactionsTableViewController: DateRangeFilterViewControllerDeleg
             
         } else {
             dateButton.setTitleBold(title: "\(firstDate.formatted(date: .abbreviated, time: .omitted)) - \n \(secondDateAdjusted.formatted(date: .abbreviated, time: .omitted))", isBold: true)
-            
         }
         filterTransactions(dateButton)
     }
+}
+
+extension AllTransactionsTableViewController: CategoryFiltersSelectionViewControllerDelegate {
+    
+    func filtersSelected(categories: [Category]) {
+        filteringCategories = categories
+        
+        categoryButton.setIsFiltering(!filteringCategories.isEmpty)
+        applyFilters()
+        reorderButtons()
+        
+        if categoryButton.isFiltering {
+            categoryButton.setTitleBold(title: filteringCategories.count == 1 ? filteringCategories.first!.title : "Multiple categories", isBold: true)
+        } else {
+            
+            categoryButton.setTitleBold(title: "Category", isBold: false)
+        }
+    }
+    
+    
 }

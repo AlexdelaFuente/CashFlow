@@ -99,9 +99,28 @@ class AuthService {
     }
     
     
-    public func forgotPassword(with email:String, completion: @escaping (Error?) -> Void) {
-        Auth.auth().sendPasswordReset(withEmail: email) {error in
-            completion(error)
+    public func forgotPassword(with email: String, vc: UIViewController, completion: @escaping (Error?) -> Void) {
+        let db = Firestore.firestore()
+        db.collection("users").getDocuments { snapshot, error in
+            if let error = error {
+                completion(error)
+            }
+            var userEmails: [String] = []
+            
+            if let snapshot = snapshot {
+                snapshot.documents.forEach { documentSnapshot in
+                    let snapshotData = documentSnapshot.data()
+                    userEmails.append(snapshotData["email"] as! String)
+                }
+            }
+            
+            if userEmails.contains(where: { $0.lowercased() == email.lowercased() }) {
+                Auth.auth().sendPasswordReset(withEmail: email) {error in
+                    completion(error)
+                }
+            } else {
+                AlertManager.showErrorWrongEmailAlert(on: vc)
+            }
         }
     }
     

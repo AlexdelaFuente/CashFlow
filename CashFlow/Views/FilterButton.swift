@@ -12,15 +12,18 @@ class FilterButton: UIButton {
     public var isFiltering: Bool = false
     private var crossImageView: UIImageView?
     
+    
     init(title: String) {
         super.init(frame: .zero)
         commonInit(title: title)
     }
     
+    
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         commonInit(title: "")
     }
+    
     
     private func commonInit(title: String) {
         self.configuration = .filled()
@@ -40,6 +43,7 @@ class FilterButton: UIButton {
         addCrossImageView()
     }
     
+    
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
         
@@ -47,6 +51,7 @@ class FilterButton: UIButton {
             self.layer.borderColor = UIColor.background.cgColor
         }
     }
+    
     
     private func addCrossImageView() {
         let crossImage = UIImage(systemName: "xmark")
@@ -63,6 +68,7 @@ class FilterButton: UIButton {
         self.crossImageView = imageView
     }
     
+    
     public func toggleFiltering() {
         isFiltering.toggle()
         if isFiltering {
@@ -75,6 +81,19 @@ class FilterButton: UIButton {
             crossImageView?.isHidden = true
         }
     }
+    
+    
+    public func setIsFiltering(_ bool: Bool) {
+        isFiltering = bool
+        if isFiltering {
+            self.tintColor = .accent
+            self.layer.borderWidth = 5
+        } else {
+            self.tintColor = UIColor.accent.withAlphaComponent(0.8)
+            self.layer.borderWidth = 8
+        }
+    }
+    
     
     public func setTitleBold(title: String, isBold: Bool) {
         

@@ -40,8 +40,8 @@ class ForgotPasswordViewController: UIViewController {
             AlertManager.showInvalidEmailAlert(on: self)
             return
         }
-        
-        AuthService.shared.forgotPassword(with: email) { [weak self] error in
+       
+        AuthService.shared.forgotPassword(with: email, vc: self) { [weak self] error in
             guard let self = self else { return }
             if let error = error {
                 AlertManager.showErrorSendingPasswordReset(on: self, with: error)
