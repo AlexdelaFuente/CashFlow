@@ -126,5 +126,11 @@ class Factory: NSObject {
     }
     
     
+    static func provideHelpScreen(storyboard: UIStoryboard) -> HelpViewController{
+        let helpScreen = storyboard.instantiateViewController(withIdentifier: Screens.helpScreen) as! HelpViewController
+        return helpScreen
+    }
+    
+    
 }
 

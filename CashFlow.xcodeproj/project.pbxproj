@@ -48,6 +48,8 @@
 		2879F6412C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879F6402C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift */; };
 		28809FAF2C60BC1B00725E89 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28809FAE2C60BC1B00725E89 /* PrivacyPolicyViewController.swift */; };
 		28809FB12C60BE7F00725E89 /* CashFlow Privacy Policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 28809FB02C60BE7F00725E89 /* CashFlow Privacy Policy.html */; };
+		28809FB32C60F88800725E89 /* HelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28809FB22C60F88800725E89 /* HelpViewController.swift */; };
+		28809FB52C60F8B500725E89 /* CashFlow Help.html in Resources */ = {isa = PBXBuildFile; fileRef = 28809FB42C60F8B500725E89 /* CashFlow Help.html */; };
 		2889B4942C247A600089B61E /* GeneralTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2889B4932C247A600089B61E /* GeneralTableViewCell.xib */; };
 		2889B4952C247A600089B61E /* GeneralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2889B4922C247A600089B61E /* GeneralTableViewCell.swift */; };
 		2889B4972C247F7E0089B61E /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2889B4962C247F7D0089B61E /* Cell.swift */; };
@@ -120,6 +122,8 @@
 		2879F6402C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTransactionsTableViewController.swift; sourceTree = "<group>"; };
 		28809FAE2C60BC1B00725E89 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
 		28809FB02C60BE7F00725E89 /* CashFlow Privacy Policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "CashFlow Privacy Policy.html"; sourceTree = "<group>"; };
+		28809FB22C60F88800725E89 /* HelpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HelpViewController.swift; sourceTree = "<group>"; };
+		28809FB42C60F8B500725E89 /* CashFlow Help.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "CashFlow Help.html"; sourceTree = "<group>"; };
 		2889B4922C247A600089B61E /* GeneralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTableViewCell.swift; sourceTree = "<group>"; };
 		2889B4932C247A600089B61E /* GeneralTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralTableViewCell.xib; sourceTree = "<group>"; };
 		2889B4962C247F7D0089B61E /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -167,6 +171,7 @@
 		284094272C22C6430096A9F9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				28809FB22C60F88800725E89 /* HelpViewController.swift */,
 				28809FAE2C60BC1B00725E89 /* PrivacyPolicyViewController.swift */,
 				287763292C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift */,
 				2877632A2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib */,
@@ -307,6 +312,7 @@
 		28A9E94E2C2082000037C639 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				28809FB42C60F8B500725E89 /* CashFlow Help.html */,
 				28809FB02C60BE7F00725E89 /* CashFlow Privacy Policy.html */,
 				2840942A2C22CB5F0096A9F9 /* GoogleService-Info.plist */,
 				28A9E9372C2081980037C639 /* AppDelegate.swift */,
@@ -428,6 +434,7 @@
 				28DBB87B2C2D52B1002AC154 /* DateRangeFilterViewController.xib in Resources */,
 				28A9E9472C20819A0037C639 /* Base in Resources */,
 				287154E32C296823009589D3 /* ChangeCurrencyViewController.xib in Resources */,
+				28809FB52C60F8B500725E89 /* CashFlow Help.html in Resources */,
 				2870EB4D2C5A3750005AD2DC /* ChangeCategoryViewController.xib in Resources */,
 				28A9E93F2C2081980037C639 /* Base in Resources */,
 			);
@@ -513,6 +520,7 @@
 				282066602C511D2700F4E782 /* BalanceDetailViewController.swift in Sources */,
 				287154E52C296C3C009589D3 /* Currency.swift in Sources */,
 				28DBB87E2C2D5CAF002AC154 /* DayRangeIndicatorView.swift in Sources */,
+				28809FB32C60F88800725E89 /* HelpViewController.swift in Sources */,
 				2879F6412C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift in Sources */,
 				28EA1BDF2C539A2B001F40D1 /* ChartBarViewModel.swift in Sources */,
 				28A9E9542C2082B70037C639 /* ForgotPasswordViewController.swift in Sources */,

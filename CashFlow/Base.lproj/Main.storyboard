@@ -2111,6 +2111,40 @@
             </objects>
             <point key="canvasLocation" x="2642" y="221"/>
         </scene>
+        <!--Help View Controller-->
+        <scene sceneID="V3j-3h-Fri">
+            <objects>
+                <viewController storyboardIdentifier="HelpScreen" id="YAF-rN-Zc4" customClass="HelpViewController" customModule="CashFlow" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="ZSW-Xs-DBt">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dQW-w5-US8">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <color key="backgroundColor" name="Background"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="5zC-9c-oxV"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="dQW-w5-US8" firstAttribute="leading" secondItem="5zC-9c-oxV" secondAttribute="leading" id="V9J-Mw-FdO"/>
+                            <constraint firstItem="dQW-w5-US8" firstAttribute="top" secondItem="5zC-9c-oxV" secondAttribute="top" id="eGA-Mt-AMH"/>
+                            <constraint firstItem="5zC-9c-oxV" firstAttribute="trailing" secondItem="dQW-w5-US8" secondAttribute="trailing" id="k9Y-lu-TgL"/>
+                            <constraint firstItem="5zC-9c-oxV" firstAttribute="bottom" secondItem="dQW-w5-US8" secondAttribute="bottom" id="vJ4-C1-3AX"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="webView" destination="dQW-w5-US8" id="jR6-2V-kAw"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CXd-JK-KDn" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1138" y="2611"/>
+        </scene>
     </scenes>
     <resources>
         <image name="banknote.fill" catalog="system" width="128" height="78"/>

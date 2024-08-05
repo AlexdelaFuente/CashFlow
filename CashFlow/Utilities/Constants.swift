@@ -65,4 +65,5 @@ enum Screens {
     static let changeCategoryScreen = "ChangeCategoryViewController"
     static let categoryFiltersSelectionScreen = "CategoryFiltersSelectionViewController"
     static let privacyPolicyScreen = "PrivacyPolicyScreen"
+    static let helpScreen = "HelpScreen"
 }

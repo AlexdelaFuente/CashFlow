@@ -103,6 +103,12 @@ class AccountTableViewController: UITableViewController, UIViewControllerTransit
             navigationController?.pushViewController(vc, animated: true)
         }
         
+        //Help case
+        if checkCell(cell: cell, SFSymbol: SFSymbols.help) {
+            let vc = Factory.provideHelpScreen(storyboard: storyboard!)
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
         
         tableView.deselectRow(at: indexPath, animated: true)
     }
