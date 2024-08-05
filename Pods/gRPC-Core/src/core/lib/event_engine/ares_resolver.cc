@@ -11,12 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-#include <grpc/support/port_platform.h>
-
 #include "src/core/lib/event_engine/ares_resolver.h"
 
 #include <string>
 #include <vector>
+
+#include <grpc/support/port_platform.h>
 
 #include "src/core/lib/iomgr/port.h"
 
@@ -52,6 +52,8 @@
 
 #include "absl/functional/any_invocable.h"
 #include "absl/hash/hash.h"
+#include "absl/log/check.h"
+#include "absl/log/log.h"
 #include "absl/strings/match.h"
 #include "absl/strings/numbers.h"
 #include "absl/strings/str_cat.h"
@@ -78,8 +80,6 @@
 
 namespace grpc_event_engine {
 namespace experimental {
-
-grpc_core::TraceFlag grpc_trace_ares_resolver(false, "cares_resolver");
 
 namespace {
 
@@ -199,7 +199,7 @@ AresResolver::CreateAresResolver(
   ares_channel channel;
   int status = ares_init_options(&channel, &opts, ARES_OPT_FLAGS);
   if (status != ARES_SUCCESS) {
-    gpr_log(GPR_ERROR, "ares_init_options failed, status: %d", status);
+    LOG(ERROR) << "ares_init_options failed, status: " << status;
     return AresStatusToAbslStatus(
         status,
         absl::StrCat("Failed to init c-ares channel: ", ares_strerror(status)));
@@ -220,8 +220,7 @@ AresResolver::AresResolver(
     std::unique_ptr<GrpcPolledFdFactory> polled_fd_factory,
     std::shared_ptr<EventEngine> event_engine, ares_channel channel)
     : RefCountedDNSResolverInterface(
-          GRPC_TRACE_FLAG_ENABLED(grpc_trace_ares_resolver) ? "AresResolver"
-                                                            : nullptr),
+          GRPC_TRACE_FLAG_ENABLED(cares_resolver) ? "AresResolver" : nullptr),
       channel_(channel),
       polled_fd_factory_(std::move(polled_fd_factory)),
       event_engine_(std::move(event_engine)) {
@@ -229,8 +228,8 @@ AresResolver::AresResolver(
 }
 
 AresResolver::~AresResolver() {
-  GPR_ASSERT(fd_node_list_.empty());
-  GPR_ASSERT(callback_map_.empty());
+  CHECK(fd_node_list_.empty());
+  CHECK(callback_map_.empty());
   ares_destroy(channel_);
 }
 
@@ -246,7 +245,7 @@ void AresResolver::Orphan() {
       if (!fd_node->already_shutdown) {
         GRPC_ARES_RESOLVER_TRACE_LOG("resolver: %p shutdown fd: %s", this,
                                      fd_node->polled_fd->GetName());
-        GPR_ASSERT(fd_node->polled_fd->ShutdownLocked(
+        CHECK(fd_node->polled_fd->ShutdownLocked(
             absl::CancelledError("AresResolver::Orphan")));
         fd_node->already_shutdown = true;
       }
@@ -513,7 +512,7 @@ void AresResolver::MaybeStartTimerLocked() {
 
 void AresResolver::OnReadable(FdNode* fd_node, absl::Status status) {
   grpc_core::MutexLock lock(&mutex_);
-  GPR_ASSERT(fd_node->readable_registered);
+  CHECK(fd_node->readable_registered);
   fd_node->readable_registered = false;
   GRPC_ARES_RESOLVER_TRACE_LOG("OnReadable: fd: %d; request: %p; status: %s",
                                fd_node->as, this, status.ToString().c_str());
@@ -532,7 +531,7 @@ void AresResolver::OnReadable(FdNode* fd_node, absl::Status status) {
 
 void AresResolver::OnWritable(FdNode* fd_node, absl::Status status) {
   grpc_core::MutexLock lock(&mutex_);
-  GPR_ASSERT(fd_node->writable_registered);
+  CHECK(fd_node->writable_registered);
   fd_node->writable_registered = false;
   GRPC_ARES_RESOLVER_TRACE_LOG("OnWritable: fd: %d; request:%p; status: %s",
                                fd_node->as, this, status.ToString().c_str());
@@ -582,7 +581,7 @@ void AresResolver::OnHostbynameDoneLocked(void* arg, int status,
                                           int /*timeouts*/,
                                           struct hostent* hostent) {
   auto* hostname_qa = static_cast<HostnameQueryArg*>(arg);
-  GPR_ASSERT(hostname_qa->pending_requests-- > 0);
+  CHECK_GT(hostname_qa->pending_requests--, 0);
   auto* ares_resolver = hostname_qa->ares_resolver;
   if (status != ARES_SUCCESS) {
     std::string error_msg =
@@ -643,9 +642,9 @@ void AresResolver::OnHostbynameDoneLocked(void* arg, int status,
   if (hostname_qa->pending_requests == 0) {
     auto nh =
         ares_resolver->callback_map_.extract(hostname_qa->callback_map_id);
-    GPR_ASSERT(!nh.empty());
-    GPR_ASSERT(absl::holds_alternative<
-               EventEngine::DNSResolver::LookupHostnameCallback>(nh.mapped()));
+    CHECK(!nh.empty());
+    CHECK(absl::holds_alternative<
+          EventEngine::DNSResolver::LookupHostnameCallback>(nh.mapped()));
     auto callback = absl::get<EventEngine::DNSResolver::LookupHostnameCallback>(
         std::move(nh.mapped()));
     if (!hostname_qa->result.empty() || hostname_qa->error_status.ok()) {
@@ -670,10 +669,9 @@ void AresResolver::OnSRVQueryDoneLocked(void* arg, int status, int /*timeouts*/,
   std::unique_ptr<QueryArg> qa(static_cast<QueryArg*>(arg));
   auto* ares_resolver = qa->ares_resolver;
   auto nh = ares_resolver->callback_map_.extract(qa->callback_map_id);
-  GPR_ASSERT(!nh.empty());
-  GPR_ASSERT(
-      absl::holds_alternative<EventEngine::DNSResolver::LookupSRVCallback>(
-          nh.mapped()));
+  CHECK(!nh.empty());
+  CHECK(absl::holds_alternative<EventEngine::DNSResolver::LookupSRVCallback>(
+      nh.mapped()));
   auto callback = absl::get<EventEngine::DNSResolver::LookupSRVCallback>(
       std::move(nh.mapped()));
   auto fail = [&](absl::string_view prefix) {
@@ -726,10 +724,9 @@ void AresResolver::OnTXTDoneLocked(void* arg, int status, int /*timeouts*/,
   std::unique_ptr<QueryArg> qa(static_cast<QueryArg*>(arg));
   auto* ares_resolver = qa->ares_resolver;
   auto nh = ares_resolver->callback_map_.extract(qa->callback_map_id);
-  GPR_ASSERT(!nh.empty());
-  GPR_ASSERT(
-      absl::holds_alternative<EventEngine::DNSResolver::LookupTXTCallback>(
-          nh.mapped()));
+  CHECK(!nh.empty());
+  CHECK(absl::holds_alternative<EventEngine::DNSResolver::LookupTXTCallback>(
+      nh.mapped()));
   auto callback = absl::get<EventEngine::DNSResolver::LookupTXTCallback>(
       std::move(nh.mapped()));
   auto fail = [&](absl::string_view prefix) {
@@ -768,9 +765,9 @@ void AresResolver::OnTXTDoneLocked(void* arg, int status, int /*timeouts*/,
   }
   GRPC_ARES_RESOLVER_TRACE_LOG("resolver:%p Got %zu TXT records", ares_resolver,
                                result.size());
-  if (GRPC_TRACE_FLAG_ENABLED(grpc_trace_ares_resolver)) {
+  if (GRPC_TRACE_FLAG_ENABLED(cares_resolver)) {
     for (const auto& record : result) {
-      gpr_log(GPR_INFO, "%s", record.c_str());
+      LOG(INFO) << record;
     }
   }
   // Clean up.

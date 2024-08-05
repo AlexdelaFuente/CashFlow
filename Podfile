@@ -1,5 +1,5 @@
 
-platform :ios, '15.0'
+platform :ios, '16.0'
 
 target 'CashFlow' do
   use_frameworks!
@@ -15,5 +15,6 @@ pod 'HorizonCalendar'
 pod 'SearchTextField'
 pod 'loady'
 pod 'SkeletonView'
+pod 'CryptoSwift', '~> 1.8.2'
 
 end

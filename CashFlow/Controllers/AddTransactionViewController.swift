@@ -31,6 +31,7 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
     
     let locationManager = CLLocationManager()
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setupSwitches()
@@ -113,7 +114,6 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
         }
     }
 
-    
     
     private func setupLocationManager() {
         locationManager.delegate = self
@@ -305,10 +305,10 @@ extension AddTransactionViewController: MKMapViewDelegate {
             return nil
         }
         
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         
         if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = true
             annotationView?.isDraggable = true
         } else {

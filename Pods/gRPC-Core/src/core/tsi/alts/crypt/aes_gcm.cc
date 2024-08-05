@@ -16,8 +16,6 @@
 //
 //
 
-#include <grpc/support/port_platform.h>
-
 #include <string.h>
 
 #include <memory>
@@ -51,6 +49,7 @@
 #include "absl/types/span.h"
 
 #include <grpc/support/alloc.h>
+#include <grpc/support/port_platform.h>
 
 #include "src/core/tsi/alts/crypt/gsec.h"
 

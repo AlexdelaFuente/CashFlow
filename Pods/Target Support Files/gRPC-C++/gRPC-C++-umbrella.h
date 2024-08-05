@@ -94,6 +94,7 @@
 #import "impl/service_type.h"
 #import "impl/status.h"
 #import "impl/sync.h"
+#import "passive_listener.h"
 #import "resource_quota.h"
 #import "security/audit_logging.h"
 #import "security/auth_context.h"

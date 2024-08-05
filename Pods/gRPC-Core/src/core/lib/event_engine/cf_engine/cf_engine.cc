@@ -20,6 +20,8 @@
 
 #include <CoreFoundation/CoreFoundation.h>
 
+#include "absl/log/check.h"
+
 #include <grpc/support/cpu.h>
 
 #include "src/core/lib/event_engine/cf_engine/cf_engine.h"
@@ -61,14 +63,14 @@ CFEventEngine::CFEventEngine()
 CFEventEngine::~CFEventEngine() {
   {
     grpc_core::MutexLock lock(&task_mu_);
-    if (GRPC_TRACE_FLAG_ENABLED(grpc_event_engine_trace)) {
+    if (GRPC_TRACE_FLAG_ENABLED(event_engine)) {
       for (auto handle : known_handles_) {
         gpr_log(GPR_ERROR,
                 "CFEventEngine:%p uncleared TaskHandle at shutdown:%s", this,
                 HandleToString(handle).c_str());
       }
     }
-    GPR_ASSERT(GPR_LIKELY(known_handles_.empty()));
+    CHECK(GPR_LIKELY(known_handles_.empty()));
     timer_manager_.Shutdown();
   }
   thread_pool_->Quiesce();

@@ -15,15 +15,12 @@ class AccountTableViewController: UITableViewController, UIViewControllerTransit
             Cell(title: "Help", imageName: SFSymbols.help)
         ]),
         (title: "Account preferences", cells: [
-            Cell(title: "Language", imageName: SFSymbols.language),
             Cell(title: "Currency", imageName: SFSymbols.currency),
-            Cell(title: "Time zone", imageName: SFSymbols.timeZone)
         ]),
         (title: "Security", cells: [
             Cell(title: "Change password", imageName: SFSymbols.changePassword)
         ]),
-        (title: "Other", cells: [
-            Cell(title: "Terms & conditions", imageName: SFSymbols.terms),
+        (title: "About", cells: [
             Cell(title: "Privacy policy", imageName: SFSymbols.privacyPolicy)
         ]),
         (title: "Session", cells: [
@@ -92,17 +89,6 @@ class AccountTableViewController: UITableViewController, UIViewControllerTransit
             self.present(vc, animated: true)
         }
         
-        //Language case
-        if checkCell(cell: cell, SFSymbol: SFSymbols.language) {
-            let vc = Factory.provideChangeLanguageScreen()
-            
-            vc.transitioningDelegate = self
-            if let presentationController = vc.presentationController as? UISheetPresentationController {
-                presentationController.detents = [.medium()]
-            }
-            self.present(vc, animated: true)
-        }
-        
         //Change password case
         if checkCell(cell: cell, SFSymbol: SFSymbols.changePassword) {
             let vc = Factory.provideChangePasswordScreen(storyboard: storyboard!)
@@ -110,7 +96,12 @@ class AccountTableViewController: UITableViewController, UIViewControllerTransit
             navigationController?.pushViewController(vc, animated: true)
         }
         
-        
+        //Privacy policy case
+        if checkCell(cell: cell, SFSymbol: SFSymbols.privacyPolicy) {
+            let vc = Factory.providePrivacyPolicyScreen(storyboard: storyboard!)
+            
+            navigationController?.pushViewController(vc, animated: true)
+        }
         
         
         tableView.deselectRow(at: indexPath, animated: true)

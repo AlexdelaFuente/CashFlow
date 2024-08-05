@@ -127,26 +127,26 @@ BSSL_NAMESPACE_BEGIN
 // |bitmap| or is stale. Otherwise it returns zero.
 static bool dtls1_bitmap_should_discard(DTLS1_BITMAP *bitmap,
                                         uint64_t seq_num) {
-  const unsigned kWindowSize = sizeof(bitmap->map) * 8;
+  const size_t kWindowSize = bitmap->map.size();
 
   if (seq_num > bitmap->max_seq_num) {
     return false;
   }
   uint64_t idx = bitmap->max_seq_num - seq_num;
-  return idx >= kWindowSize || (bitmap->map & (((uint64_t)1) << idx));
+  return idx >= kWindowSize || bitmap->map[idx];
 }
 
 // dtls1_bitmap_record updates |bitmap| to record receipt of sequence number
 // |seq_num|. It slides the window forward if needed. It is an error to call
 // this function on a stale sequence number.
 static void dtls1_bitmap_record(DTLS1_BITMAP *bitmap, uint64_t seq_num) {
-  const unsigned kWindowSize = sizeof(bitmap->map) * 8;
+  const size_t kWindowSize = bitmap->map.size();
 
   // Shift the window if necessary.
   if (seq_num > bitmap->max_seq_num) {
     uint64_t shift = seq_num - bitmap->max_seq_num;
     if (shift >= kWindowSize) {
-      bitmap->map = 0;
+      bitmap->map.reset();
     } else {
       bitmap->map <<= shift;
     }
@@ -155,7 +155,7 @@ static void dtls1_bitmap_record(DTLS1_BITMAP *bitmap, uint64_t seq_num) {
 
   uint64_t idx = bitmap->max_seq_num - seq_num;
   if (idx < kWindowSize) {
-    bitmap->map |= ((uint64_t)1) << idx;
+    bitmap->map[idx] = true;
   }
 }
 
@@ -258,29 +258,30 @@ enum ssl_open_record_t dtls_open_record(SSL *ssl, uint8_t *out_type,
 }
 
 static const SSLAEADContext *get_write_aead(const SSL *ssl,
-                                            enum dtls1_use_epoch_t use_epoch) {
-  if (use_epoch == dtls1_use_previous_epoch) {
-    assert(ssl->d1->w_epoch >= 1);
+                                            uint16_t epoch) {
+  if (epoch < ssl->d1->w_epoch) {
+    assert(epoch + 1 == ssl->d1->w_epoch);
     return ssl->d1->last_aead_write_ctx.get();
   }
 
+  assert(epoch == ssl->d1->w_epoch);
   return ssl->s3->aead_write_ctx.get();
 }
 
 size_t dtls_max_seal_overhead(const SSL *ssl,
-                              enum dtls1_use_epoch_t use_epoch) {
-  return DTLS1_RT_HEADER_LENGTH + get_write_aead(ssl, use_epoch)->MaxOverhead();
+                              uint16_t epoch) {
+  return DTLS1_RT_HEADER_LENGTH + get_write_aead(ssl, epoch)->MaxOverhead();
 }
 
-size_t dtls_seal_prefix_len(const SSL *ssl, enum dtls1_use_epoch_t use_epoch) {
+size_t dtls_seal_prefix_len(const SSL *ssl, uint16_t epoch) {
   return DTLS1_RT_HEADER_LENGTH +
-         get_write_aead(ssl, use_epoch)->ExplicitNonceLen();
+         get_write_aead(ssl, epoch)->ExplicitNonceLen();
 }
 
 bool dtls_seal_record(SSL *ssl, uint8_t *out, size_t *out_len, size_t max_out,
                       uint8_t type, const uint8_t *in, size_t in_len,
-                      enum dtls1_use_epoch_t use_epoch) {
-  const size_t prefix = dtls_seal_prefix_len(ssl, use_epoch);
+                      uint16_t epoch) {
+  const size_t prefix = dtls_seal_prefix_len(ssl, epoch);
   if (buffers_alias(in, in_len, out, max_out) &&
       (max_out < prefix || out + prefix != in)) {
     OPENSSL_PUT_ERROR(SSL, SSL_R_OUTPUT_ALIASES_INPUT);
@@ -288,14 +289,14 @@ bool dtls_seal_record(SSL *ssl, uint8_t *out, size_t *out_len, size_t max_out,
   }
 
   // Determine the parameters for the current epoch.
-  uint16_t epoch = ssl->d1->w_epoch;
   SSLAEADContext *aead = ssl->s3->aead_write_ctx.get();
   uint64_t *seq = &ssl->s3->write_sequence;
-  if (use_epoch == dtls1_use_previous_epoch) {
-    assert(ssl->d1->w_epoch >= 1);
-    epoch = ssl->d1->w_epoch - 1;
+  if (epoch < ssl->d1->w_epoch) {
+    assert(epoch + 1 == ssl->d1->w_epoch);
     aead = ssl->d1->last_aead_write_ctx.get();
     seq = &ssl->d1->last_write_sequence;
+  } else {
+    assert(epoch == ssl->d1->w_epoch);
   }
 
   if (max_out < DTLS1_RT_HEADER_LENGTH) {

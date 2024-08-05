@@ -24,7 +24,8 @@
 #include <openssl_grpc/curve25519.h>
 #include <openssl_grpc/ec.h>
 #include <openssl_grpc/err.h>
-#include <openssl_grpc/kyber.h>
+#define OPENSSL_UNSTABLE_EXPERIMENTAL_KYBER
+#include <openssl_grpc/experimental/kyber.h>
 #include <openssl_grpc/hrss.h>
 #include <openssl_grpc/mem.h>
 #include <openssl_grpc/nid.h>

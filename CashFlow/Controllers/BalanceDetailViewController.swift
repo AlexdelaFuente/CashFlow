@@ -243,7 +243,7 @@ class BalanceDetailViewController: UIViewController {
             AlertManager.showMonthlyExpensesInfo(on: self)
             return
         }
-        let vc = Factory.providetotalMonthlyExpensesScreen(storyboard: storyboard!)
+        let vc = Factory.provideTotalMonthlyExpensesScreen(storyboard: storyboard!)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

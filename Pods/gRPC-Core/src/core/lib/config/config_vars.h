@@ -19,8 +19,6 @@
 #ifndef GRPC_SRC_CORE_LIB_CONFIG_CONFIG_VARS_H
 #define GRPC_SRC_CORE_LIB_CONFIG_CONFIG_VARS_H
 
-#include <grpc/support/port_platform.h>
-
 #include <stdint.h>
 
 #include <atomic>
@@ -28,6 +26,8 @@
 
 #include "absl/strings/string_view.h"
 #include "absl/types/optional.h"
+
+#include <grpc/support/port_platform.h>
 
 namespace grpc_core {
 
@@ -79,7 +79,7 @@ class GPR_DLL ConfigVars {
   // A comma separated list of tracers that provide additional insight into how
   // gRPC C core is processing requests via debug logs.
   absl::string_view Trace() const { return trace_; }
-  // Default gRPC logging verbosity
+  // Logging verbosity.
   absl::string_view Verbosity() const { return verbosity_; }
   // Messages logged at the same or higher level than this will print stacktrace
   absl::string_view StacktraceMinloglevel() const {

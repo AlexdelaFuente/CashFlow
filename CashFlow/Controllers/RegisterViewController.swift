@@ -145,6 +145,13 @@ class RegisterViewController: UIViewController {
     @IBAction func dismissVC(_ sender: Any) {
         self.navigationController?.popViewController(animated: true)
     }
+    
+    
+    
+    @IBAction func privacyPolicyButtonTapped(_ sender: Any) {
+        let vc = Factory.providePrivacyPolicyScreen(storyboard: storyboard!)
+        self.navigationController?.pushViewController(vc, animated: true)
+    }
 }
 
 

@@ -57,7 +57,6 @@
 #import "hrss.h"
 #import "is_boringssl.h"
 #import "kdf.h"
-#import "kyber.h"
 #import "lhash.h"
 #import "md4.h"
 #import "md5.h"
@@ -98,6 +97,13 @@
 #import "x509v3.h"
 #import "x509v3_errors.h"
 #import "x509_vfy.h"
+#import "experimental/dilithium.h"
+#import "experimental/kyber.h"
+#import "experimental/spx.h"
+#import "pki/certificate.h"
+#import "pki/signature_verify_cache.h"
+#import "pki/verify.h"
+#import "pki/verify_error.h"
 
 FOUNDATION_EXPORT double openssl_grpcVersionNumber;
 FOUNDATION_EXPORT const unsigned char openssl_grpcVersionString[];

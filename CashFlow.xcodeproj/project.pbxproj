@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		281164FB2C2EB19F00CAA9BB /* AddTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */; };
+		2816686B2C5CFE7100BBA273 /* Encryptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2816686A2C5CFE7100BBA273 /* Encryptor.swift */; };
 		28172C9B2C41095400CFDA8B /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9A2C41095400CFDA8B /* Date+Extensions.swift */; };
 		28172CA02C41361600CFDA8B /* EditTransactionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */; };
 		282066602C511D2700F4E782 /* BalanceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */; };
@@ -32,9 +33,6 @@
 		287154E22C296823009589D3 /* ChangeCurrencyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */; };
 		287154E32C296823009589D3 /* ChangeCurrencyViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287154E12C296823009589D3 /* ChangeCurrencyViewController.xib */; };
 		287154E52C296C3C009589D3 /* Currency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154E42C296C3C009589D3 /* Currency.swift */; };
-		287154E82C29746C009589D3 /* ChangeLanguageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154E62C29746C009589D3 /* ChangeLanguageViewController.swift */; };
-		287154E92C29746C009589D3 /* ChangeLanguageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 287154E72C29746C009589D3 /* ChangeLanguageViewController.xib */; };
-		287154EB2C2974F9009589D3 /* Language.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154EA2C2974F9009589D3 /* Language.swift */; };
 		287154ED2C298B93009589D3 /* ChangePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154EC2C298B93009589D3 /* ChangePasswordViewController.swift */; };
 		287154EF2C299D3A009589D3 /* PersonalInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154EE2C299D3A009589D3 /* PersonalInfoCell.swift */; };
 		287154F12C29B88E009589D3 /* BirthDateCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287154F02C29B88E009589D3 /* BirthDateCell.swift */; };
@@ -48,6 +46,8 @@
 		2879F63E2C2B096F009E6B24 /* TransactionsTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879F63C2C2B096F009E6B24 /* TransactionsTableViewCell.swift */; };
 		2879F63F2C2B096F009E6B24 /* TransactionsTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2879F63D2C2B096F009E6B24 /* TransactionsTableViewCell.xib */; };
 		2879F6412C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2879F6402C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift */; };
+		28809FAF2C60BC1B00725E89 /* PrivacyPolicyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28809FAE2C60BC1B00725E89 /* PrivacyPolicyViewController.swift */; };
+		28809FB12C60BE7F00725E89 /* CashFlow Privacy Policy.html in Resources */ = {isa = PBXBuildFile; fileRef = 28809FB02C60BE7F00725E89 /* CashFlow Privacy Policy.html */; };
 		2889B4942C247A600089B61E /* GeneralTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2889B4932C247A600089B61E /* GeneralTableViewCell.xib */; };
 		2889B4952C247A600089B61E /* GeneralTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2889B4922C247A600089B61E /* GeneralTableViewCell.swift */; };
 		2889B4972C247F7E0089B61E /* Cell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2889B4962C247F7D0089B61E /* Cell.swift */; };
@@ -80,6 +80,7 @@
 /* Begin PBXFileReference section */
 		1C090C07EA9AA941DC972545 /* Pods-CashFlow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-CashFlow.release.xcconfig"; path = "Target Support Files/Pods-CashFlow/Pods-CashFlow.release.xcconfig"; sourceTree = "<group>"; };
 		281164FA2C2EB19F00CAA9BB /* AddTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTransactionViewController.swift; sourceTree = "<group>"; };
+		2816686A2C5CFE7100BBA273 /* Encryptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Encryptor.swift; sourceTree = "<group>"; };
 		28172C9A2C41095400CFDA8B /* Date+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		28172C9F2C41361600CFDA8B /* EditTransactionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditTransactionViewController.swift; sourceTree = "<group>"; };
 		2820665F2C511D2700F4E782 /* BalanceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BalanceDetailViewController.swift; sourceTree = "<group>"; };
@@ -104,9 +105,6 @@
 		287154E02C296823009589D3 /* ChangeCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeCurrencyViewController.swift; sourceTree = "<group>"; };
 		287154E12C296823009589D3 /* ChangeCurrencyViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeCurrencyViewController.xib; sourceTree = "<group>"; };
 		287154E42C296C3C009589D3 /* Currency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Currency.swift; sourceTree = "<group>"; };
-		287154E62C29746C009589D3 /* ChangeLanguageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeLanguageViewController.swift; sourceTree = "<group>"; };
-		287154E72C29746C009589D3 /* ChangeLanguageViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ChangeLanguageViewController.xib; sourceTree = "<group>"; };
-		287154EA2C2974F9009589D3 /* Language.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Language.swift; sourceTree = "<group>"; };
 		287154EC2C298B93009589D3 /* ChangePasswordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePasswordViewController.swift; sourceTree = "<group>"; };
 		287154EE2C299D3A009589D3 /* PersonalInfoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersonalInfoCell.swift; sourceTree = "<group>"; };
 		287154F02C29B88E009589D3 /* BirthDateCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BirthDateCell.swift; sourceTree = "<group>"; };
@@ -120,6 +118,8 @@
 		2879F63C2C2B096F009E6B24 /* TransactionsTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionsTableViewCell.swift; sourceTree = "<group>"; };
 		2879F63D2C2B096F009E6B24 /* TransactionsTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TransactionsTableViewCell.xib; sourceTree = "<group>"; };
 		2879F6402C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllTransactionsTableViewController.swift; sourceTree = "<group>"; };
+		28809FAE2C60BC1B00725E89 /* PrivacyPolicyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyViewController.swift; sourceTree = "<group>"; };
+		28809FB02C60BE7F00725E89 /* CashFlow Privacy Policy.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = "CashFlow Privacy Policy.html"; sourceTree = "<group>"; };
 		2889B4922C247A600089B61E /* GeneralTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralTableViewCell.swift; sourceTree = "<group>"; };
 		2889B4932C247A600089B61E /* GeneralTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GeneralTableViewCell.xib; sourceTree = "<group>"; };
 		2889B4962C247F7D0089B61E /* Cell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cell.swift; sourceTree = "<group>"; };
@@ -167,6 +167,7 @@
 		284094272C22C6430096A9F9 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				28809FAE2C60BC1B00725E89 /* PrivacyPolicyViewController.swift */,
 				287763292C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift */,
 				2877632A2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib */,
 				2870EB4A2C5A3750005AD2DC /* ChangeCategoryViewController.swift */,
@@ -183,8 +184,6 @@
 				28A466E12C24508A00519CE4 /* AccountViewController.swift */,
 				28A466E62C24759800519CE4 /* AccountTableViewController.swift */,
 				283DB36A2C256D3D0051F459 /* PersonalInfoTableViewController.swift */,
-				287154E62C29746C009589D3 /* ChangeLanguageViewController.swift */,
-				287154E72C29746C009589D3 /* ChangeLanguageViewController.xib */,
 				287154EC2C298B93009589D3 /* ChangePasswordViewController.swift */,
 				2879F6362C2AC76E009E6B24 /* TransactionsTableViewController.swift */,
 				2879F6402C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift */,
@@ -206,7 +205,6 @@
 				285FBB912C24341A003CA334 /* User.swift */,
 				2889B4962C247F7D0089B61E /* Cell.swift */,
 				287154E42C296C3C009589D3 /* Currency.swift */,
-				287154EA2C2974F9009589D3 /* Language.swift */,
 				2879F6382C2AD800009E6B24 /* Transaction.swift */,
 				2879F63A2C2AD80D009E6B24 /* TransactionType.swift */,
 				28DBB8812C2DBDF9002AC154 /* MoneyType.swift */,
@@ -309,6 +307,7 @@
 		28A9E94E2C2082000037C639 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
+				28809FB02C60BE7F00725E89 /* CashFlow Privacy Policy.html */,
 				2840942A2C22CB5F0096A9F9 /* GoogleService-Info.plist */,
 				28A9E9372C2081980037C639 /* AppDelegate.swift */,
 				28A9E9392C2081980037C639 /* SceneDelegate.swift */,
@@ -324,6 +323,7 @@
 				284094352C22F0A80096A9F9 /* Validator.swift */,
 				28A9E9562C22BF350037C639 /* Constants.swift */,
 				28172C9A2C41095400CFDA8B /* Date+Extensions.swift */,
+				2816686A2C5CFE7100BBA273 /* Encryptor.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -419,10 +419,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				287154E92C29746C009589D3 /* ChangeLanguageViewController.xib in Resources */,
 				28A9E9442C20819A0037C639 /* Assets.xcassets in Resources */,
 				2879F63F2C2B096F009E6B24 /* TransactionsTableViewCell.xib in Resources */,
 				2889B4942C247A600089B61E /* GeneralTableViewCell.xib in Resources */,
+				28809FB12C60BE7F00725E89 /* CashFlow Privacy Policy.html in Resources */,
 				2840942B2C22CB5F0096A9F9 /* GoogleService-Info.plist in Resources */,
 				2877632C2C5B913300B51FAA /* CategoryFiltersSelectionViewController.xib in Resources */,
 				28DBB87B2C2D52B1002AC154 /* DateRangeFilterViewController.xib in Resources */,
@@ -484,6 +484,7 @@
 			files = (
 				28A466E02C244F2100519CE4 /* TabBarViewController.swift in Sources */,
 				2855DCF62C579AF7005A700C /* LinearChartDataType.swift in Sources */,
+				2816686B2C5CFE7100BBA273 /* Encryptor.swift in Sources */,
 				28172C9B2C41095400CFDA8B /* Date+Extensions.swift in Sources */,
 				284094292C22C6640096A9F9 /* AlertManager.swift in Sources */,
 				28A9E9502C20829E0037C639 /* LoginViewController.swift in Sources */,
@@ -501,7 +502,6 @@
 				28A466E72C24759800519CE4 /* AccountTableViewController.swift in Sources */,
 				2840942D2C22D0B90096A9F9 /* AuthService.swift in Sources */,
 				287154EF2C299D3A009589D3 /* PersonalInfoCell.swift in Sources */,
-				287154EB2C2974F9009589D3 /* Language.swift in Sources */,
 				2879F6392C2AD800009E6B24 /* Transaction.swift in Sources */,
 				2870EB492C5A1BEF005AD2DC /* Category.swift in Sources */,
 				2889B4952C247A600089B61E /* GeneralTableViewCell.swift in Sources */,
@@ -511,7 +511,6 @@
 				2855DCF02C5797AD005A700C /* ChartLine.swift in Sources */,
 				28DBB8822C2DBDF9002AC154 /* MoneyType.swift in Sources */,
 				282066602C511D2700F4E782 /* BalanceDetailViewController.swift in Sources */,
-				287154E82C29746C009589D3 /* ChangeLanguageViewController.swift in Sources */,
 				287154E52C296C3C009589D3 /* Currency.swift in Sources */,
 				28DBB87E2C2D5CAF002AC154 /* DayRangeIndicatorView.swift in Sources */,
 				2879F6412C2B1AD3009E6B24 /* AllTransactionsTableViewController.swift in Sources */,
@@ -526,6 +525,7 @@
 				287154ED2C298B93009589D3 /* ChangePasswordViewController.swift in Sources */,
 				2876A9572C2C3DA800FE02E3 /* EmptyStateView.swift in Sources */,
 				2877632B2C5B913300B51FAA /* CategoryFiltersSelectionViewController.swift in Sources */,
+				28809FAF2C60BC1B00725E89 /* PrivacyPolicyViewController.swift in Sources */,
 				28A9E9572C22BF350037C639 /* Constants.swift in Sources */,
 				289718F02C4007A1004680A5 /* FilterOrderButton.swift in Sources */,
 				28A9E9382C2081980037C639 /* AppDelegate.swift in Sources */,
@@ -700,7 +700,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -736,7 +736,7 @@
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

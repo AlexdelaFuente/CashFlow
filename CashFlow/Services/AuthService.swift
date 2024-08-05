@@ -29,7 +29,6 @@ class AuthService {
         let password = userRequest.password
         
         let currency = Currency.euro
-        let language = Language.english
         
         Auth.auth().createUser(withEmail: email, password: password) { result, error in
             if let error = error {
@@ -47,7 +46,6 @@ class AuthService {
                 "username": username,
                 "email": email.lowercased(),
                 "currency": currency.description,
-                "language": language.name,
                 "birthDate": Date(),
                 "phoneNumber": "",
                 "address": "",
@@ -141,7 +139,6 @@ class AuthService {
                let username = snapshotData["username"] as? String,
                let email = snapshotData["email"] as? String,
                let currencyString = snapshotData["currency"] as? String, let currency = Currency(currencyString),
-               let languageString = snapshotData["language"] as? String, let language = Language(languageString),
                let birthTimestamp = snapshotData["birthDate"] as? Timestamp,
                let phoneNumber = snapshotData["phoneNumber"] as? String,
                let address = snapshotData["address"] as? String,
@@ -154,14 +151,14 @@ class AuthService {
                     if let snapshot = snapshot {
                         
                         if(snapshot.documents.isEmpty) {
-                            let user = User(username: username, email: email.lowercased(), userUID: userUID, currency: currency, language: language, birthDate: birthDate, phoneNumber: phoneNumber, address: address, city: city, zipCode: zipCode, transactions: [])
+                            let user = User(username: username, email: email.lowercased(), userUID: userUID, currency: currency, birthDate: birthDate, phoneNumber: phoneNumber, address: address, city: city, zipCode: zipCode, transactions: [])
                             completion(user, nil)
                         }
                         
                         snapshot.documents.forEach { documentSnapshot in
                             let snapshotData = documentSnapshot.data()
-                            if let description = snapshotData["description"] as? String,
-                            let money = snapshotData["money"] as? Double,
+                            if let description = Encryptor.decryptData(encryptedData: snapshotData["description"] as! String),
+                               let money = Encryptor.decryptData(encryptedData: snapshotData["money"] as! String),
                             let dateTimestamp = snapshotData["date"] as? Timestamp,
                             let transactionTypeRawValue = snapshotData["transactionType"] as? String, let transactionType = TransactionType(rawValue: transactionTypeRawValue),
                             let moneyTypeRawValue = snapshotData["moneyType"] as? String, let moneyType = MoneyType(rawValue: moneyTypeRawValue),
@@ -169,10 +166,10 @@ class AuthService {
                             let categoryRawValue = snapshotData["category"] as? String, let category = Category(rawValue: categoryRawValue){
                                 let uuid = UUID(uuidString: documentSnapshot.documentID)
                                 let date = dateTimestamp.dateValue()
-                                let transaction = Transaction(id: uuid!, description: description, money: money, date: date, transactionType: transactionType, moneyType: moneyType, location: location, category: category)
+                                let transaction = Transaction(id: uuid!, description: description, money: Double(money)!, date: date, transactionType: transactionType, moneyType: moneyType, location: location, category: category)
                                 transactions.append(transaction)
                                 
-                                let user = User(username: username, email: email.lowercased(), userUID: userUID, currency: currency, language: language, birthDate: birthDate, phoneNumber: phoneNumber, address: address, city: city, zipCode: zipCode, transactions: transactions.sorted(by: { $0.date > $1.date }))
+                                let user = User(username: username, email: email.lowercased(), userUID: userUID, currency: currency, birthDate: birthDate, phoneNumber: phoneNumber, address: address, city: city, zipCode: zipCode, transactions: transactions.sorted(by: { $0.date > $1.date }))
                                 completion(user, nil)
                             }
                             
@@ -190,22 +187,6 @@ class AuthService {
         let db = Firestore.firestore()
         db.collection("users").document(userUID).updateData([
             "currency": newCurrency.description
-        ]) { error in
-            if let error = error {
-                completion(error)
-                return
-            }
-            completion(nil)
-        }
-    }
-    
-    
-    public func updateLanguage(newLanguage: Language, completion: @escaping (Error?) -> Void) {
-        guard let userUID = Auth.auth().currentUser?.uid else { return }
-        
-        let db = Firestore.firestore()
-        db.collection("users").document(userUID).updateData([
-            "language": newLanguage.name
         ]) { error in
             if let error = error {
                 completion(error)
@@ -266,8 +247,8 @@ class AuthService {
         
         let db = Firestore.firestore()
         db.collection("users").document(userUID).collection("transactions").document(transaction.id.uuidString).setData([
-            "description": transaction.description,
-            "money": transaction.money,
+            "description": Encryptor.encryptData(data: transaction.description),
+            "money": Encryptor.encryptData(data: String(transaction.money)),
             "date": transaction.date,
             "transactionType": transaction.transactionType.rawValue,
             "moneyType": transaction.moneyType.rawValue,
@@ -288,8 +269,8 @@ class AuthService {
         
         let db = Firestore.firestore()
         db.collection("users").document(userUID).collection("transactions").document(transaction.id.uuidString).updateData([
-            "description": transaction.description,
-            "money": transaction.money,
+            "description": Encryptor.encryptData(data: transaction.description),
+            "money": Encryptor.encryptData(data: String(transaction.money)),
             "date": transaction.date,
             "transactionType": transaction.transactionType.rawValue,
             "moneyType": transaction.moneyType.rawValue,

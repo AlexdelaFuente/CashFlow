@@ -17,7 +17,6 @@ enum SFSymbols {
     static let currency = "dollarsign.circle"
     static let timeZone = "clock"
     static let changePassword = "rectangle.and.pencil.and.ellipsis"
-    static let terms = "doc.text"
     static let privacyPolicy = "hand.raised.circle"
     
     static let logOut = "rectangle.portrait.and.arrow.right"
@@ -65,4 +64,5 @@ enum Screens {
     static let dateRangeFilterScreen = "DateRangeFilterViewController"
     static let changeCategoryScreen = "ChangeCategoryViewController"
     static let categoryFiltersSelectionScreen = "CategoryFiltersSelectionViewController"
+    static let privacyPolicyScreen = "PrivacyPolicyScreen"
 }

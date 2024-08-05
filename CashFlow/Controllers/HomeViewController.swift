@@ -107,6 +107,7 @@ class HomeViewController: UIViewController {
     
     
     private func setupTabBar() {
+        tabBarController?.tabBar.isUserInteractionEnabled = false
         let tabBar = tabBarController as! TabBarViewController
         tabBar.delegt = self
     }
@@ -202,6 +203,7 @@ extension HomeViewController: TabBarViewControllerDelegate {
         calculateBalance()
         hideSkeletonViews()
         titleLabel.text = "Welcome back \(User.shared.username)!"
+        tabBarController?.tabBar.isUserInteractionEnabled = true
     }
     
     

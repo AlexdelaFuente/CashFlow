@@ -180,17 +180,29 @@ extern "C" {
 #endif
 
 
-#if defined(OPENSSL_X86) || defined(OPENSSL_X86_64) || defined(OPENSSL_ARM) || \
-    defined(OPENSSL_AARCH64)
-// OPENSSL_cpuid_setup initializes the platform-specific feature cache.
+#if !defined(OPENSSL_NO_ASM) && !defined(OPENSSL_STATIC_ARMCAP) && \
+    (defined(OPENSSL_X86) || defined(OPENSSL_X86_64) ||            \
+     defined(OPENSSL_ARM) || defined(OPENSSL_AARCH64))
+// x86, x86_64, and the ARMs need to record the result of a cpuid/getauxval call
+// for the asm to work correctly, unless compiled without asm code.
+#define NEED_CPUID
+
+// OPENSSL_cpuid_setup initializes the platform-specific feature cache. This
+// function should not be called directly. Call |OPENSSL_init_cpuid| instead.
 void OPENSSL_cpuid_setup(void);
+
+// OPENSSL_init_cpuid initializes the platform-specific feature cache, if
+// needed. This function is idempotent and may be called concurrently.
+void OPENSSL_init_cpuid(void);
+#else
+OPENSSL_INLINE void OPENSSL_init_cpuid(void) {}
 #endif
 
 #if (defined(OPENSSL_ARM) || defined(OPENSSL_AARCH64)) && \
     !defined(OPENSSL_STATIC_ARMCAP)
 // OPENSSL_get_armcap_pointer_for_test returns a pointer to |OPENSSL_armcap_P|
-// for unit tests. Any modifications to the value must be made after
-// |CRYPTO_library_init| but before any other function call in BoringSSL.
+// for unit tests. Any modifications to the value must be made before any other
+// function call in BoringSSL.
 OPENSSL_EXPORT uint32_t *OPENSSL_get_armcap_pointer_for_test(void);
 #endif
 
@@ -243,10 +255,18 @@ typedef __uint128_t uint128_t;
 #define OPENSSL_SSE2
 #endif
 
-// For convenience in testing 64-bit generic code, we allow disabling SSE2
-// intrinsics via |OPENSSL_NO_SSE2_FOR_TESTING|. x86_64 always has SSE2
-// available, so we would otherwise need to test such code on a non-x86_64
-// platform.
+#if defined(OPENSSL_X86) && !defined(OPENSSL_NO_ASM) && !defined(OPENSSL_SSE2)
+#error \
+    "x86 assembly requires SSE2. Build with -msse2 (recommended), or disable assembly optimizations with -DOPENSSL_NO_ASM."
+#endif
+
+// For convenience in testing the fallback code, we allow disabling SSE2
+// intrinsics via |OPENSSL_NO_SSE2_FOR_TESTING|. We require SSE2 on x86 and
+// x86_64, so we would otherwise need to test such code on a non-x86 platform.
+//
+// This does not remove the above requirement for SSE2 support with assembly
+// optimizations. It only disables some intrinsics-based optimizations so that
+// we can test the fallback code on CI.
 #if defined(OPENSSL_SSE2) && defined(OPENSSL_NO_SSE2_FOR_TESTING)
 #undef OPENSSL_SSE2
 #endif
@@ -263,8 +283,20 @@ typedef __uint128_t uint128_t;
 // should be called in between independent tests, at a point where failure from
 // a previous test will not impact subsequent ones.
 OPENSSL_EXPORT void OPENSSL_reset_malloc_counter_for_testing(void);
+
+// OPENSSL_disable_malloc_failures_for_testing, when malloc testing is enabled,
+// disables simulated malloc failures. Calls to |OPENSSL_malloc| will not
+// increment the malloc counter or synthesize failures. This may be used to skip
+// simulating malloc failures in some region of code.
+OPENSSL_EXPORT void OPENSSL_disable_malloc_failures_for_testing(void);
+
+// OPENSSL_enable_malloc_failures_for_testing, when malloc testing is enabled,
+// re-enables simulated malloc failures.
+OPENSSL_EXPORT void OPENSSL_enable_malloc_failures_for_testing(void);
 #else
 OPENSSL_INLINE void OPENSSL_reset_malloc_counter_for_testing(void) {}
+OPENSSL_INLINE void OPENSSL_disable_malloc_failures_for_testing(void) {}
+OPENSSL_INLINE void OPENSSL_enable_malloc_failures_for_testing(void) {}
 #endif
 
 #if defined(__has_builtin)
@@ -589,6 +621,12 @@ static inline int constant_time_declassify_int(int v) {
   return value_barrier_u32(v);
 }
 
+// declassify_assert behaves like |assert| but declassifies the result of
+// evaluating |expr|. This allows the assertion to branch on the (presumably
+// public) result, but still ensures that values leading up to the computation
+// were secret.
+#define declassify_assert(expr) assert(constant_time_declassify_int(expr))
+
 
 // Thread-safe initialisation.
 
@@ -885,14 +923,12 @@ typedef struct {
 #define CRYPTO_EX_DATA_CLASS_INIT_WITH_APP_DATA \
     {CRYPTO_MUTEX_INIT, NULL, NULL, 0, 1}
 
-// CRYPTO_get_ex_new_index allocates a new index for |ex_data_class| and writes
-// it to |*out_index|. Each class of object should provide a wrapper function
-// that uses the correct |CRYPTO_EX_DATA_CLASS|. It returns one on success and
-// zero otherwise.
-OPENSSL_EXPORT int CRYPTO_get_ex_new_index(CRYPTO_EX_DATA_CLASS *ex_data_class,
-                                           int *out_index, long argl,
-                                           void *argp,
-                                           CRYPTO_EX_free *free_func);
+// CRYPTO_get_ex_new_index_ex allocates a new index for |ex_data_class|. Each
+// class of object should provide a wrapper function that uses the correct
+// |CRYPTO_EX_DATA_CLASS|. It returns the new index on success and -1 on error.
+OPENSSL_EXPORT int CRYPTO_get_ex_new_index_ex(
+    CRYPTO_EX_DATA_CLASS *ex_data_class, long argl, void *argp,
+    CRYPTO_EX_free *free_func);
 
 // CRYPTO_set_ex_data sets an extra data pointer on a given object. Each class
 // of object should provide a wrapper function.
@@ -1150,6 +1186,11 @@ static inline uint64_t CRYPTO_rotr_u64(uint64_t value, int shift) {
 
 // Arithmetic functions.
 
+// The most efficient versions of these functions on GCC and Clang depend on C11
+// |_Generic|. If we ever need to call these from C++, we'll need to add a
+// variant that uses C++ overloads instead.
+#if !defined(__cplusplus)
+
 // CRYPTO_addc_* returns |x + y + carry|, and sets |*out_carry| to the carry
 // bit. |carry| must be zero or one.
 #if OPENSSL_HAS_BUILTIN(__builtin_addc)
@@ -1162,13 +1203,13 @@ static inline uint64_t CRYPTO_rotr_u64(uint64_t value, int shift) {
 
 static inline uint32_t CRYPTO_addc_u32(uint32_t x, uint32_t y, uint32_t carry,
                                        uint32_t *out_carry) {
-  assert(carry <= 1);
+  declassify_assert(carry <= 1);
   return CRYPTO_GENERIC_ADDC(x, y, carry, out_carry);
 }
 
 static inline uint64_t CRYPTO_addc_u64(uint64_t x, uint64_t y, uint64_t carry,
                                        uint64_t *out_carry) {
-  assert(carry <= 1);
+  declassify_assert(carry <= 1);
   return CRYPTO_GENERIC_ADDC(x, y, carry, out_carry);
 }
 
@@ -1176,7 +1217,7 @@ static inline uint64_t CRYPTO_addc_u64(uint64_t x, uint64_t y, uint64_t carry,
 
 static inline uint32_t CRYPTO_addc_u32(uint32_t x, uint32_t y, uint32_t carry,
                                        uint32_t *out_carry) {
-  assert(carry <= 1);
+  declassify_assert(carry <= 1);
   uint64_t ret = carry;
   ret += (uint64_t)x + y;
   *out_carry = (uint32_t)(ret >> 32);
@@ -1185,7 +1226,7 @@ static inline uint32_t CRYPTO_addc_u32(uint32_t x, uint32_t y, uint32_t carry,
 
 static inline uint64_t CRYPTO_addc_u64(uint64_t x, uint64_t y, uint64_t carry,
                                        uint64_t *out_carry) {
-  assert(carry <= 1);
+  declassify_assert(carry <= 1);
 #if defined(BORINGSSL_HAS_UINT128)
   uint128_t ret = carry;
   ret += (uint128_t)x + y;
@@ -1214,13 +1255,13 @@ static inline uint64_t CRYPTO_addc_u64(uint64_t x, uint64_t y, uint64_t carry,
 
 static inline uint32_t CRYPTO_subc_u32(uint32_t x, uint32_t y, uint32_t borrow,
                                        uint32_t *out_borrow) {
-  assert(borrow <= 1);
+  declassify_assert(borrow <= 1);
   return CRYPTO_GENERIC_SUBC(x, y, borrow, out_borrow);
 }
 
 static inline uint64_t CRYPTO_subc_u64(uint64_t x, uint64_t y, uint64_t borrow,
                                        uint64_t *out_borrow) {
-  assert(borrow <= 1);
+  declassify_assert(borrow <= 1);
   return CRYPTO_GENERIC_SUBC(x, y, borrow, out_borrow);
 }
 
@@ -1228,7 +1269,7 @@ static inline uint64_t CRYPTO_subc_u64(uint64_t x, uint64_t y, uint64_t borrow,
 
 static inline uint32_t CRYPTO_subc_u32(uint32_t x, uint32_t y, uint32_t borrow,
                                        uint32_t *out_borrow) {
-  assert(borrow <= 1);
+  declassify_assert(borrow <= 1);
   uint32_t ret = x - y - borrow;
   *out_borrow = (x < y) | ((x == y) & borrow);
   return ret;
@@ -1236,7 +1277,7 @@ static inline uint32_t CRYPTO_subc_u32(uint32_t x, uint32_t y, uint32_t borrow,
 
 static inline uint64_t CRYPTO_subc_u64(uint64_t x, uint64_t y, uint64_t borrow,
                                        uint64_t *out_borrow) {
-  assert(borrow <= 1);
+  declassify_assert(borrow <= 1);
   uint64_t ret = x - y - borrow;
   *out_borrow = (x < y) | ((x == y) & borrow);
   return ret;
@@ -1250,6 +1291,8 @@ static inline uint64_t CRYPTO_subc_u64(uint64_t x, uint64_t y, uint64_t borrow,
 #define CRYPTO_addc_w CRYPTO_addc_u32
 #define CRYPTO_subc_w CRYPTO_subc_u32
 #endif
+
+#endif  // !__cplusplus
 
 
 // FIPS functions.
@@ -1428,7 +1471,7 @@ OPENSSL_INLINE int CRYPTO_is_RDRAND_capable(void) {
 // See Intel manual, volume 2A, table 3-8.
 
 OPENSSL_INLINE int CRYPTO_is_BMI1_capable(void) {
-#if defined(__BMI1__)
+#if defined(__BMI__)
   return 1;
 #else
   return (OPENSSL_get_ia32cap(2) & (1u << 3)) != 0;
@@ -1490,7 +1533,6 @@ OPENSSL_INLINE int CRYPTO_is_x86_SHA_capable(void) {
 // otherwise select. See chacha-x86_64.pl.
 //
 // Bonnell, Silvermont's predecessor in the Atom lineup, will also be matched by
-// this. |OPENSSL_cpuid_setup| forces Knights Landing to also be matched by
 // this. Goldmont (Silvermont's successor in the Atom lineup) added XSAVE so it
 // isn't matched by this. Various sources indicate AMD first implemented MOVBE
 // and XSAVE at the same time in Jaguar, so it seems like AMD chips will not be
@@ -1499,11 +1541,12 @@ OPENSSL_INLINE int CRYPTO_cpu_perf_is_like_silvermont(void) {
   // WARNING: This MUST NOT be used to guard the execution of the XSAVE
   // instruction. This is the "hardware supports XSAVE" bit, not the OSXSAVE bit
   // that indicates whether we can safely execute XSAVE. This bit may be set
-  // even when XSAVE is disabled (by the operating system). See the comment in
-  // cpu_intel.c and check how the users of this bit use it.
+  // even when XSAVE is disabled (by the operating system). See how the users of
+  // this bit use it.
   //
-  // We do not use |__XSAVE__| for static detection because the hack in
-  // |OPENSSL_cpuid_setup| for Knights Landing CPUs needs to override it.
+  // Historically, the XSAVE bit was artificially cleared on Knights Landing
+  // and Knights Mill chips, but as Intel has removed all support from GCC,
+  // LLVM, and SDE, we assume they are no longer worth special-casing.
   int hardware_supports_xsave = (OPENSSL_get_ia32cap(1) & (1u << 26)) != 0;
   return !hardware_supports_xsave && CRYPTO_is_MOVBE_capable();
 }

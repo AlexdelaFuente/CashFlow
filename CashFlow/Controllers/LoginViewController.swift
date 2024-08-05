@@ -134,6 +134,9 @@ class LoginViewController: UIViewController {
                 view.endEditing(true)
                 navigateTabBarController(animated: true)
                 resetView()
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1 ) {
+                    self.signInButton.setTitle("Sign In", for: .normal)
+                }
                 
             } else {
                 AlertManager.showEmailNotVerifiedAlert(on: self)

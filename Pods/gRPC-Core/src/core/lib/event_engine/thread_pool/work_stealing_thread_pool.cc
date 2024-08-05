@@ -15,8 +15,6 @@
 // limitations under the License.
 //
 //
-#include <grpc/support/port_platform.h>
-
 #include "src/core/lib/event_engine/thread_pool/work_stealing_thread_pool.h"
 
 #include <inttypes.h>
@@ -28,14 +26,17 @@
 #include <utility>
 
 #include "absl/functional/any_invocable.h"
+#include "absl/log/check.h"
+#include "absl/log/log.h"
 #include "absl/time/clock.h"
 #include "absl/time/time.h"
 #include "absl/types/optional.h"
 
-#include <grpc/support/log.h>
+#include <grpc/support/port_platform.h>
 #include <grpc/support/thd_id.h>
 
 #include "src/core/lib/backoff/backoff.h"
+#include "src/core/lib/debug/trace_impl.h"
 #include "src/core/lib/event_engine/common_closures.h"
 #include "src/core/lib/event_engine/thread_local.h"
 #include "src/core/lib/event_engine/trace.h"
@@ -156,11 +157,10 @@ std::atomic<size_t> g_reported_dump_count{0};
 void DumpSignalHandler(int /* sig */) {
   const auto trace = grpc_core::GetCurrentStackTrace();
   if (!trace.has_value()) {
-    gpr_log(GPR_ERROR, "DumpStack::%" PRIdPTR ": Stack trace not available",
-            gpr_thd_currentid());
+    LOG(ERROR) << "DumpStack::" << gpr_thd_currentid()
+               << ": Stack trace not available";
   } else {
-    gpr_log(GPR_ERROR, "DumpStack::%" PRIdPTR ": %s", gpr_thd_currentid(),
-            trace->c_str());
+    LOG(ERROR) << "DumpStack::" << gpr_thd_currentid() << ": " << trace.value();
   }
   g_reported_dump_count.fetch_add(1);
   grpc_core::Thread::Kill(gpr_thd_currentid());
@@ -184,7 +184,7 @@ WorkStealingThreadPool::WorkStealingThreadPool(size_t reserve_threads)
 void WorkStealingThreadPool::Quiesce() { pool_->Quiesce(); }
 
 WorkStealingThreadPool::~WorkStealingThreadPool() {
-  GPR_ASSERT(pool_->IsQuiesced());
+  CHECK(pool_->IsQuiesced());
 }
 
 void WorkStealingThreadPool::Run(absl::AnyInvocable<void()> callback) {
@@ -227,18 +227,19 @@ void WorkStealingThreadPool::PostforkChild() { pool_->Postfork(); }
 
 WorkStealingThreadPool::WorkStealingThreadPoolImpl::WorkStealingThreadPoolImpl(
     size_t reserve_threads)
-    : reserve_threads_(reserve_threads), queue_(this), lifeguard_(this) {}
+    : reserve_threads_(reserve_threads), queue_(this) {}
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Start() {
   for (size_t i = 0; i < reserve_threads_; i++) {
     StartThread();
   }
-  lifeguard_.Start();
+  grpc_core::MutexLock lock(&lifeguard_ptr_mu_);
+  lifeguard_ = std::make_unique<Lifeguard>(this);
 }
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Run(
     EventEngine::Closure* closure) {
-  GPR_DEBUG_ASSERT(quiesced_.load(std::memory_order_relaxed) == false);
+  CHECK(!IsQuiesced());
   if (g_local_queue != nullptr && g_local_queue->owner() == this) {
     g_local_queue->Add(closure);
   } else {
@@ -266,7 +267,6 @@ void WorkStealingThreadPool::WorkStealingThreadPoolImpl::StartThread() {
 }
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Quiesce() {
-  gpr_log(GPR_INFO, "WorkStealingThreadPoolImpl::Quiesce");
   SetShutdown(true);
   // Wait until all threads have exited.
   // Note that if this is a threadpool thread then we won't exit this thread
@@ -281,9 +281,10 @@ void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Quiesce() {
   if (!threads_were_shut_down.ok() && g_log_verbose_failures) {
     DumpStacksAndCrash();
   }
-  GPR_ASSERT(queue_.Empty());
+  CHECK(queue_.Empty());
   quiesced_.store(true, std::memory_order_relaxed);
-  lifeguard_.BlockUntilShutdownAndReset();
+  grpc_core::MutexLock lock(&lifeguard_ptr_mu_);
+  lifeguard_.reset();
 }
 
 bool WorkStealingThreadPool::WorkStealingThreadPoolImpl::SetThrottled(
@@ -294,14 +295,14 @@ bool WorkStealingThreadPool::WorkStealingThreadPoolImpl::SetThrottled(
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::SetShutdown(
     bool is_shutdown) {
   auto was_shutdown = shutdown_.exchange(is_shutdown);
-  GPR_ASSERT(is_shutdown != was_shutdown);
+  CHECK(is_shutdown != was_shutdown);
   work_signal_.SignalAll();
 }
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::SetForking(
     bool is_forking) {
   auto was_forking = forking_.exchange(is_forking);
-  GPR_ASSERT(is_forking != was_forking);
+  CHECK(is_forking != was_forking);
 }
 
 bool WorkStealingThreadPool::WorkStealingThreadPoolImpl::IsForking() {
@@ -317,7 +318,8 @@ bool WorkStealingThreadPool::WorkStealingThreadPoolImpl::IsQuiesced() {
 }
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::PrepareFork() {
-  gpr_log(GPR_INFO, "WorkStealingThreadPoolImpl::PrepareFork");
+  LOG_IF(INFO, GRPC_TRACE_FLAG_ENABLED(event_engine))
+      << "WorkStealingThreadPoolImpl::PrepareFork";
   SetForking(true);
   work_signal_.SignalAll();
   auto threads_were_shut_down = living_thread_count_.BlockUntilThreadCount(
@@ -325,7 +327,8 @@ void WorkStealingThreadPool::WorkStealingThreadPoolImpl::PrepareFork() {
   if (!threads_were_shut_down.ok() && g_log_verbose_failures) {
     DumpStacksAndCrash();
   }
-  lifeguard_.BlockUntilShutdownAndReset();
+  grpc_core::MutexLock lock(&lifeguard_ptr_mu_);
+  lifeguard_.reset();
 }
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Postfork() {
@@ -347,10 +350,9 @@ void WorkStealingThreadPool::WorkStealingThreadPoolImpl::UntrackThread(
 
 void WorkStealingThreadPool::WorkStealingThreadPoolImpl::DumpStacksAndCrash() {
   grpc_core::MutexLock lock(&thd_set_mu_);
-  gpr_log(GPR_ERROR,
-          "Pool did not quiesce in time, gRPC will not shut down cleanly. "
-          "Dumping all %zu thread stacks.",
-          thds_.size());
+  LOG(ERROR) << "Pool did not quiesce in time, gRPC will not shut down "
+                "cleanly. Dumping all "
+             << thds_.size() << " thread stacks.";
   for (const auto tid : thds_) {
     grpc_core::Thread::Signal(tid, kDumpStackSignal);
   }
@@ -374,9 +376,7 @@ WorkStealingThreadPool::WorkStealingThreadPoolImpl::Lifeguard::Lifeguard(
                    .set_max_backoff(kLifeguardMaxSleepBetweenChecks)
                    .set_multiplier(1.3)),
       lifeguard_should_shut_down_(std::make_unique<grpc_core::Notification>()),
-      lifeguard_is_shut_down_(std::make_unique<grpc_core::Notification>()) {}
-
-void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Lifeguard::Start() {
+      lifeguard_is_shut_down_(std::make_unique<grpc_core::Notification>()) {
   // lifeguard_running_ is set early to avoid a quiesce race while the
   // lifeguard is still starting up.
   lifeguard_running_.store(true);
@@ -411,8 +411,7 @@ void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Lifeguard::
   lifeguard_is_shut_down_->Notify();
 }
 
-void WorkStealingThreadPool::WorkStealingThreadPoolImpl::Lifeguard::
-    BlockUntilShutdownAndReset() {
+WorkStealingThreadPool::WorkStealingThreadPoolImpl::Lifeguard::~Lifeguard() {
   lifeguard_should_shut_down_->Notify();
   while (lifeguard_running_.load(std::memory_order_relaxed)) {
     GRPC_LOG_EVERY_N_SEC_DELAYED(kBlockingQuiesceLogRateSeconds, GPR_DEBUG,
@@ -508,7 +507,7 @@ void WorkStealingThreadPool::ThreadState::ThreadBody() {
   } else if (pool_->IsShutdown()) {
     FinishDraining();
   }
-  GPR_ASSERT(g_local_queue->Empty());
+  CHECK(g_local_queue->Empty());
   pool_->theft_registry()->Unenroll(g_local_queue);
   delete g_local_queue;
   if (g_log_verbose_failures) {

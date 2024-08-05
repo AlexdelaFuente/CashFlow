@@ -1,3 +1,11 @@
+# 11.0.0
+- [fixed] Fixed auth domain matching code to prioritize matching `firebaseapp.com` over `web.app`
+  even if the server returns the `web.app` domain listed first. (#7992)
+- [added] Introduced the Swift enum `AuthProviderID` for the Auth Provider IDs. (#9236)
+- [deprecated] Swift APIs using `String`-typed `productID`s have been deprecated in favor
+  of newly added API that leverages the `AuthProviderID` enum.
+- [fixed] Breaking API: The `email` property in `ActionCodeInfo` is now non-optional.
+
 # 10.21.0
 - [fixed] Fixed multifactor resolver to use the correct Auth instance instead of
   always the default. (#12265)
@@ -377,7 +385,7 @@
 # 3.0.3
 - [added] Adds documentation for all possible errors returned by each method.
 - [fixed] Improves error handling and messages for a variety of error conditions.
-- [fixed] Whether or not an user is considered anonymous is now consistent with other
+- [fixed] Whether or not a user is considered anonymous is now consistent with other
   platforms.
 - [changed] A saved signed in user is now siloed between different Firebase projects
   within the same app.

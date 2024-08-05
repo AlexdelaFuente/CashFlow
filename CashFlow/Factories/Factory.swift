@@ -52,12 +52,6 @@ class Factory: NSObject {
     }
     
     
-    static func provideChangeLanguageScreen() -> ChangeLanguageViewController{
-        let changeLanguageScreen = ChangeLanguageViewController(nibName: Screens.changeLanguageScreen, bundle: nil)
-        return changeLanguageScreen
-    }
-    
-    
     static func provideChangePasswordScreen(storyboard: UIStoryboard) -> ChangePasswordViewController{
         let changePasswordScreen = storyboard.instantiateViewController(withIdentifier: Screens.changePasswordScreen) as! ChangePasswordViewController
         return changePasswordScreen
@@ -101,7 +95,7 @@ class Factory: NSObject {
     }
     
     
-    static func providetotalMonthlyExpensesScreen(storyboard: UIStoryboard) -> MonthlyExpensesViewController{
+    static func provideTotalMonthlyExpensesScreen(storyboard: UIStoryboard) -> MonthlyExpensesViewController{
         let monthlyExpensesScreen = storyboard.instantiateViewController(withIdentifier: Screens.monthlyExpensesScreen) as! MonthlyExpensesViewController
         return monthlyExpensesScreen
     }
@@ -124,6 +118,13 @@ class Factory: NSObject {
         let categoryFiltersSelectionScreen = CategoryFiltersSelectionViewController(nibName: Screens.categoryFiltersSelectionScreen, bundle: nil)
         return categoryFiltersSelectionScreen
     }
+    
+    
+    static func providePrivacyPolicyScreen(storyboard: UIStoryboard) -> PrivacyPolicyViewController{
+        let privacyPolicyScreen = storyboard.instantiateViewController(withIdentifier: Screens.privacyPolicyScreen) as! PrivacyPolicyViewController
+        return privacyPolicyScreen
+    }
+    
     
 }
 
