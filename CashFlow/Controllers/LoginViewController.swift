@@ -13,6 +13,7 @@ import Loady
 
 class LoginViewController: UIViewController {
     
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var emailTextField: SearchTextField!
     @IBOutlet var passwordTextField: UITextField!
     @IBOutlet var webView: WKWebView!
@@ -26,11 +27,23 @@ class LoginViewController: UIViewController {
         setupTextFields()
         setupWebView()
         setupSignInButton()
+        setupKeyboardObservers()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        setupNavigation()
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeKeyboardObservers()
+    }
+    
+    
+    private func setupNavigation() {
         navigationController?.navigationBar.isHidden = true
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
@@ -55,7 +68,6 @@ class LoginViewController: UIViewController {
         webView.load(request)
     }
     
-    
     private func setupTextFields() {
         emailTextField.inlineMode = true
         emailTextField.startFilteringAfter = "@"
@@ -68,7 +80,6 @@ class LoginViewController: UIViewController {
     
     private func resetView() {
         emailTextField.text = ""
-        
         passwordTextField.text = ""
         if !passwordTextField.isSecureTextEntry { togglePasswordVisibility() }
         passwordTextField.rightView?.isHidden = true
@@ -150,6 +161,7 @@ class LoginViewController: UIViewController {
         }
     }
     
+    
     @IBAction func dismissKeyboard(_ sender: Any) {
         self.view.endEditing(true)
     }
@@ -164,7 +176,6 @@ class LoginViewController: UIViewController {
             navigateTabBarController(animated: false)
         }
     }
-    
     
     // MARK: - Navigation
     private func navigateRegisterScreen(animated: Bool) {
@@ -192,6 +203,35 @@ class LoginViewController: UIViewController {
     
     @IBAction func showForgotPasswordScreen(_ sender: Any) {
         navigateForgotPasswordScreen(animated: true)
+    }
+    
+    
+    // MARK: - Keyboard Notifications
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
+            scrollView.contentInset = contentInset
+            scrollView.scrollIndicatorInsets = contentInset
+        }
+    }
+    
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
     }
 }
 

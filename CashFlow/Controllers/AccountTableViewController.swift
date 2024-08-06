@@ -59,6 +59,7 @@ class AccountTableViewController: UITableViewController, UIViewControllerTransit
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = createCell(indexPath: indexPath)
         configure(cell: cell, for: indexPath)
+        
         return cell
     }
     
@@ -133,6 +134,9 @@ class AccountTableViewController: UITableViewController, UIViewControllerTransit
         let cellData = sections[indexPath.section].cells[indexPath.row]
         cell.setup(systemImage: cellData.imageName,
                    title: cellData.title)
+        if cellData.imageName == SFSymbols.logOut {
+            cell.imageViewCell.tintColor = .systemRed
+        }
     }
 }
 

@@ -42,7 +42,7 @@ enum Category: String {
         case .shopping:
             return UIImage(systemName: SFSymbols.cart)!
         case .groceries:
-            return UIImage(systemName: SFSymbols.bag)!
+            return UIImage(systemName: SFSymbols.groceries)!
         case .salary:
             return UIImage(systemName: SFSymbols.banknote)!
         case .transportation:

@@ -59,16 +59,13 @@ class AllTransactionsTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.register(UINib(nibName: "TransactionsTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionsTableViewCell")
-        
+        setupTable()
         
         setupEmptyState()
         setupSearchController()
         
         configureDataSource()
         setupFilterButtons()
-        
-        tableView.delegate = self
     }
     
     
@@ -83,6 +80,12 @@ class AllTransactionsTableViewController: UITableViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         updateSnapshot()
+    }
+    
+    
+    private func setupTable() {
+        tableView.register(UINib(nibName: "TransactionsTableViewCell", bundle: nil), forCellReuseIdentifier: "TransactionsTableViewCell")
+        tableView.delegate = self
     }
     
     

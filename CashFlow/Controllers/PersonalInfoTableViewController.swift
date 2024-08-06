@@ -37,12 +37,7 @@ class PersonalInfoTableViewController: UITableViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.delegate = self
-        
-        originalUser = User.shared
-        
-        registerCells()
-        tableView.allowsSelection = false
+        setupView()
     }
     
     
@@ -55,6 +50,14 @@ class PersonalInfoTableViewController: UITableViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         navigationController?.interactivePopGestureRecognizer?.isEnabled = true
+    }
+    
+    
+    private func setupView() {
+        navigationController?.delegate = self
+        originalUser = User.shared
+        registerCells()
+        tableView.allowsSelection = false
     }
     
     
@@ -93,6 +96,11 @@ class PersonalInfoTableViewController: UITableViewController {
             guard let cell = tableView.dequeueReusableCell(withIdentifier: "BirthDateCell", for: indexPath) as? BirthDateCell else { return UITableViewCell() }
             
             cell.datePicker.date = User.shared.birthDate
+            
+            let thirteenYearsAgo = Calendar.current.date(byAdding: .year, value: -13, to: Date())
+
+            cell.datePicker.maximumDate = thirteenYearsAgo
+            
             cellDatePicker = cell.datePicker
             return cell
         } else {

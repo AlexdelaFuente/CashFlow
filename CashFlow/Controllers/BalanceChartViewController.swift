@@ -34,8 +34,7 @@ class BalanceChartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        filterTransactions()
-        vm.selectedIndex = sortedTransactions.count - 1
+        setupView()
     }
     
     
@@ -48,7 +47,6 @@ class BalanceChartViewController: UIViewController {
         setupEmptyState()
         setupTable()
         updateScreen(vm.selectedIndex)
-        
     }
 
     
@@ -58,6 +56,12 @@ class BalanceChartViewController: UIViewController {
         DispatchQueue.main.async {
             self.title = "Back"
         }
+    }
+    
+    
+    private func setupView() {
+        filterTransactions()
+        vm.selectedIndex = sortedTransactions.count - 1
     }
     
     

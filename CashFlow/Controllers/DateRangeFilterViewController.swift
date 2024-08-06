@@ -31,9 +31,7 @@ class DateRangeFilterViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         instantiateVars()
-        
         setupButtons()
         setupCalendar()
     }

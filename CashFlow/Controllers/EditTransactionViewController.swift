@@ -50,8 +50,8 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
     
     
     private func setupCenterCoordinateView() {
-        centerCoordinateView = UIImageView(image: UIImage(systemName: SFSymbols.pin))
-        centerCoordinateView.tintColor = .red
+        centerCoordinateView = UIImageView(image: UIImage(systemName: SFSymbols.pin)?.withRenderingMode(.alwaysOriginal))
+        centerCoordinateView.tintColor = .systemRed
         centerCoordinateView.translatesAutoresizingMaskIntoConstraints = false
         map.addSubview(centerCoordinateView)
         
@@ -155,7 +155,7 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
         amountTextField.text = String(transaction.money)
         descriptionTextField.text = transaction.description
         datePicker.date = transaction.date
-        
+        datePicker.maximumDate = Date()
         loadSwitches()
     }
     
@@ -301,6 +301,11 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
             })
             self.navigationController?.popViewController(animated: true)
         }
+    }
+    
+    
+    @IBAction func dismissKeyboard(_ sender: Any) {
+        self.view.endEditing(true)
     }
 }
 

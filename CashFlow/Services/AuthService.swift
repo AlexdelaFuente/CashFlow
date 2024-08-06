@@ -41,12 +41,14 @@ class AuthService {
                 return
             }
             
+            let thirteenYearsAgo = Calendar.current.date(byAdding: .year, value: -13, to: Date())
+            
             let db = Firestore.firestore()
             db.collection("users").document(resultUser.uid).setData([
                 "username": username,
                 "email": email.lowercased(),
                 "currency": currency.description,
-                "birthDate": Date(),
+                "birthDate": thirteenYearsAgo!,
                 "phoneNumber": "",
                 "address": "",
                 "city": "",

@@ -18,8 +18,7 @@ enum SFSymbols {
     static let timeZone = "clock"
     static let changePassword = "rectangle.and.pencil.and.ellipsis"
     static let privacyPolicy = "hand.raised.circle"
-    
-    static let logOut = "rectangle.portrait.and.arrow.right"
+    static let logOut = "door.left.hand.open"
     
     static let checkmark = "checkmark.circle.fill"
     static let xmark = "xmark"
@@ -38,7 +37,7 @@ enum SFSymbols {
     static let airplane = "airplane.departure"
     static let healthcare = "waveform.path.ecg"
     static let general = "square.on.square"
-    static let bag = "bag"
+    static let groceries = "carrot"
     
     static let pin = "mappin"
 }

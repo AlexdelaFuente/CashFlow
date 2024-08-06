@@ -59,14 +59,14 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
     
     
     private func setupCenterCoordinateView() {
-        centerCoordinateView = UIImageView(image: UIImage(systemName: SFSymbols.pin))
-        centerCoordinateView.tintColor = .red
+        centerCoordinateView = UIImageView(image: UIImage(systemName: SFSymbols.pin)?.withRenderingMode(.alwaysOriginal))
+        centerCoordinateView.tintColor = .systemRed
         centerCoordinateView.translatesAutoresizingMaskIntoConstraints = false
         map.addSubview(centerCoordinateView)
         
         NSLayoutConstraint.activate([
             centerCoordinateView.centerXAnchor.constraint(equalTo: map.centerXAnchor),
-            centerCoordinateView.centerYAnchor.constraint(equalTo: map.centerYAnchor),
+            centerCoordinateView.centerYAnchor.constraint(equalTo: map.centerYAnchor, constant: -16),
             centerCoordinateView.widthAnchor.constraint(equalToConstant: 32),
             centerCoordinateView.heightAnchor.constraint(equalToConstant: 38)
             
@@ -281,6 +281,11 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
                 self.navigationController?.popViewController(animated: true)
             }
         }
+    }
+    
+    
+    @IBAction func dismissKeyboard(_ sender: Any) {
+        view.endEditing(true)
     }
 }
 

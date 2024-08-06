@@ -24,8 +24,8 @@ class ChangeCurrencyViewController: UIViewController {
     
     
     override func viewWillDisappear(_ animated: Bool) {
-        saveCurrency()
         super.viewWillDisappear(animated)
+        saveCurrency()
         
     }
     

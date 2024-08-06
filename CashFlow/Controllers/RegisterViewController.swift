@@ -13,6 +13,7 @@ import Loady
 class RegisterViewController: UIViewController {
     
     
+    @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var usernameTextField: UITextField!
     @IBOutlet var emailTextField: SearchTextField!
     @IBOutlet var passwordTextField: UITextField!
@@ -26,12 +27,19 @@ class RegisterViewController: UIViewController {
         setupTextFields()
         setupPasswordTextField()
         setupRegisterButton()
+        setupKeyboardObservers()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.navigationBar.isHidden = true
+    }
+    
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        removeKeyboardObservers()
     }
     
     
@@ -151,6 +159,35 @@ class RegisterViewController: UIViewController {
     @IBAction func privacyPolicyButtonTapped(_ sender: Any) {
         let vc = Factory.providePrivacyPolicyScreen(storyboard: storyboard!)
         self.navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    
+    // MARK: - Keyboard Notifications
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+            let contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardFrame.height, right: 0)
+            scrollView.contentInset = contentInset
+            scrollView.scrollIndicatorInsets = contentInset
+        }
+    }
+    
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        let contentInset = UIEdgeInsets.zero
+        scrollView.contentInset = contentInset
+        scrollView.scrollIndicatorInsets = contentInset
     }
 }
 
