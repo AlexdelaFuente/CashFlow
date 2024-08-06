@@ -66,7 +66,7 @@ class TransactionsTableViewController: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        let suggestedHeight = (view.frame.height / 4 + 4)
+        let suggestedHeight = (view.frame.height / 4)
         return suggestedHeight >= 74 ? suggestedHeight : 74
     }
     

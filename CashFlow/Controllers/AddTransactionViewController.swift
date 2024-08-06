@@ -11,7 +11,7 @@ import CoreLocation
 import FirebaseFirestoreInternal
 
 class AddTransactionViewController: UIViewController, UIViewControllerTransitioningDelegate {
-    
+
     @IBOutlet var transactionTypeSwitch: AnimatedSegmentSwitch!
     @IBOutlet var moneyTypeSwitch: AnimatedSegmentSwitch!
     @IBOutlet var descriptionTextField: UITextField!
@@ -27,7 +27,7 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
     
     private var category: Category!
     
-    private var annotation: MKPointAnnotation!
+    private var centerCoordinateView: UIImageView!
     
     let locationManager = CLLocationManager()
     
@@ -40,13 +40,37 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
         setupMap()
         setupLocationManager()
         setupCategory()
+        setupCenterCoordinateView()
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setupNavigationController()
+        setupTabBarController()
+    }
+    
     
     private func setupMap() {
         map.clipsToBounds = true
         map.layer.cornerRadius = 20
         map.showsUserLocation = true
-        map.delegate = self
+    }
+    
+    
+    private func setupCenterCoordinateView() {
+        centerCoordinateView = UIImageView(image: UIImage(systemName: SFSymbols.pin))
+        centerCoordinateView.tintColor = .red
+        centerCoordinateView.translatesAutoresizingMaskIntoConstraints = false
+        map.addSubview(centerCoordinateView)
+        
+        NSLayoutConstraint.activate([
+            centerCoordinateView.centerXAnchor.constraint(equalTo: map.centerXAnchor),
+            centerCoordinateView.centerYAnchor.constraint(equalTo: map.centerYAnchor),
+            centerCoordinateView.widthAnchor.constraint(equalToConstant: 32),
+            centerCoordinateView.heightAnchor.constraint(equalToConstant: 38)
+            
+        ])
     }
     
     
@@ -84,7 +108,6 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
             
         let isInside = categoryBackgroundView.bounds.contains(location)
         
-        
         switch gesture.state {
         case .began:
             UIView.animate(withDuration: 0.08) {
@@ -120,21 +143,6 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
-    }
-    
-    
-    private func addAnnotation(at coordinate: CLLocationCoordinate2D) {
-        annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = "Blank Description"
-        map.addAnnotation(annotation)
-    }
-    
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        setupNavigationController()
-        setupTabBarController()
     }
     
     
@@ -186,11 +194,6 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
         navigationItem.backButtonTitle = "Back"
     }
     
-   
-    @IBAction func descriptionTextFieldEditingChanged(_ sender: Any) {
-        annotation.title = descriptionTextField.text!.isEmpty ? "Blank Description" : descriptionTextField.text
-    }
-    
     
     @IBAction func addButtonTapped(_ sender: Any) {
         var invalidAmount = false
@@ -237,7 +240,8 @@ class AddTransactionViewController: UIViewController, UIViewControllerTransition
         let transactionType: TransactionType = transactionTypeIndex == 0 ? .income : .expense
         let moneyType: MoneyType = moneyTypeIndex == 0 ? .cash : .card
         
-        let location = GeoPoint(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+        let centerCoordinate = map.centerCoordinate
+        let location = GeoPoint(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
         
         let transaction = Transaction(
             id: UUID(),
@@ -289,33 +293,8 @@ extension AddTransactionViewController: CLLocationManagerDelegate {
         let center = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         map.setRegion(region, animated: true)
-        addAnnotation(at: center)
         
         locationManager.stopUpdatingLocation()
-    }
-}
-
-// MARK: - MKMapViewDelegate Methods
-extension AddTransactionViewController: MKMapViewDelegate {
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "DraggablePin"
-        
-        if annotation is MKUserLocation {
-            return nil
-        }
-        
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
-        
-        if annotationView == nil {
-            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-            annotationView?.isDraggable = true
-        } else {
-            annotationView?.annotation = annotation
-        }
-        
-        return annotationView
     }
 }
 

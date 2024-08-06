@@ -26,7 +26,7 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
     
     @IBOutlet var map: MKMapView!
     
-    private var annotation: MKPointAnnotation!
+    private var centerCoordinateView: UIImageView!
     
     var transaction: Transaction!
     
@@ -39,12 +39,28 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
         setupMap()
         setupTextFields()
         setupCategory()
+        setupCenterCoordinateView()
     }
     
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupView()
+    }
+    
+    
+    private func setupCenterCoordinateView() {
+        centerCoordinateView = UIImageView(image: UIImage(systemName: SFSymbols.pin))
+        centerCoordinateView.tintColor = .red
+        centerCoordinateView.translatesAutoresizingMaskIntoConstraints = false
+        map.addSubview(centerCoordinateView)
+        
+        NSLayoutConstraint.activate([
+            centerCoordinateView.centerXAnchor.constraint(equalTo: map.centerXAnchor),
+            centerCoordinateView.centerYAnchor.constraint(equalTo: map.centerYAnchor, constant: -16),
+            centerCoordinateView.widthAnchor.constraint(equalToConstant: 32),
+            centerCoordinateView.heightAnchor.constraint(equalToConstant: 38)
+        ])
     }
     
     
@@ -116,7 +132,6 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
         map.clipsToBounds = true
         map.layer.cornerRadius = 20
         map.showsUserLocation = true
-        map.delegate = self
         let latitude = transaction.location.latitude
         let longitude = transaction.location.longitude
         
@@ -125,18 +140,9 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         map.setRegion(region, animated: true)
         
-        addAnnotation(at: center)
         
     }
     
-    
-    private func addAnnotation(at coordinate: CLLocationCoordinate2D) {
-        annotation = MKPointAnnotation()
-        annotation.coordinate = coordinate
-        annotation.title = descriptionTextField.text!.isEmpty ? "Transaction Location" : descriptionTextField.text
-        map.addAnnotation(annotation)
-    }
-
     
     private func setupView() {
         navigationController?.navigationBar.isHidden = false
@@ -194,12 +200,7 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
         switchConfig(moneyTypeSwitch)
     }
     
-    
-    @IBAction func descriptionTextFIeldEditingChanged(_ sender: Any) {
-        annotation.title = descriptionTextField.text!.isEmpty ? "Blank Description" : descriptionTextField.text
-    }
-    
-    
+
     @IBAction func saveButtonTapped(_ sender: Any) {
         var invalidAmount = false
         var negativeAmount = false
@@ -245,7 +246,8 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
         let transactionType: TransactionType = transactionTypeIndex == 0 ? .income : .expense
         let moneyType: MoneyType = moneyTypeIndex == 0 ? .cash : .card
 
-        let location = GeoPoint(latitude: annotation.coordinate.latitude, longitude: annotation.coordinate.longitude)
+        let centerCoordinate = map.centerCoordinate
+        let location = GeoPoint(latitude: centerCoordinate.latitude, longitude: centerCoordinate.longitude)
         
         let category = transaction.category
         
@@ -296,34 +298,9 @@ class EditTransactionViewController: UIViewController, UIViewControllerTransitio
                     allTransactionsVC.transactions.removeAll { $0.id == transactionToSave.id }
                     allTransactionsVC.transactions.append(transactionToSave)
                 }
-                
             })
             self.navigationController?.popViewController(animated: true)
         }
-    }
-}
-
-// MARK: - MKMapViewDelegate Methods
-extension EditTransactionViewController: MKMapViewDelegate {
-    
-    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
-        let identifier = "DraggablePin"
-        
-        if annotation is MKUserLocation {
-            return nil
-        }
-        
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
-        
-        if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
-            annotationView?.canShowCallout = true
-            annotationView?.isDraggable = true
-        } else {
-            annotationView?.annotation = annotation
-        }
-        
-        return annotationView
     }
 }
 

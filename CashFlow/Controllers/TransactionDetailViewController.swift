@@ -44,6 +44,7 @@ class TransactionDetailViewController: UIViewController {
     
     
     private func setupMap() {
+        map.removeAnnotations(map.annotations)
         map.clipsToBounds = true
         map.layer.cornerRadius = 32
         map.showsUserLocation = true
@@ -190,10 +191,10 @@ extension TransactionDetailViewController: MKMapViewDelegate {
             return nil
         }
         
-        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKPinAnnotationView
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: identifier) as? MKMarkerAnnotationView
         
         if annotationView == nil {
-            annotationView = MKPinAnnotationView(annotation: annotation, reuseIdentifier: identifier)
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: identifier)
             annotationView?.canShowCallout = false
             annotationView?.isDraggable = false
         } else {

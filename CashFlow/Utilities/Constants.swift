@@ -39,6 +39,8 @@ enum SFSymbols {
     static let healthcare = "waveform.path.ecg"
     static let general = "square.on.square"
     static let bag = "bag"
+    
+    static let pin = "mappin"
 }
 
 

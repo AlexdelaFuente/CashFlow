@@ -27,13 +27,6 @@ class BalanceDetailViewController: UIViewController {
     @IBOutlet var previousMonthExpensesLabel: UILabel!
     
 
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
-    
-
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setupNavigation()
@@ -84,19 +77,15 @@ class BalanceDetailViewController: UIViewController {
         
         if totalBalance < 0 {
             totalBalanceLabel.textColor = .systemRed
-            if #available(iOS 17, *) {
-                totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
-            }
+            totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            
         } else if totalBalance == 0 {
             totalBalanceLabel.textColor = .label
-            if #available(iOS 17, *) {
-                totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
-            }
+            totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            
         } else {
             totalBalanceLabel.textColor = .label
-            if #available(iOS 17, *) {
-                totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
-            }
+            totalBalanceGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
         }
     }
     
@@ -108,19 +97,15 @@ class BalanceDetailViewController: UIViewController {
         
         if cashBalance < 0 {
             cashLabel.textColor = .systemRed
-            if #available(iOS 17, *) {
-                cashGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
-            }
+            cashGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            
         } else if cashBalance == 0 {
             cashLabel.textColor = .label
-            if #available(iOS 17, *) {
-                cashGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
-            }
+            cashGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            
         } else {
             cashLabel.textColor = .label
-            if #available(iOS 17, *) {
-                cashGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
-            }
+            cashGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
         }
     }
     
@@ -132,19 +117,15 @@ class BalanceDetailViewController: UIViewController {
         
         if cardBalance < 0 {
             cardLabel.textColor = .systemRed
-            if #available(iOS 17, *) {
-                cardGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
-            }
+            cardGraphButton.setImage(UIImage(systemName: SFSymbols.downtrendChart), for: .normal)
+            
         } else if cardBalance == 0 {
             cardLabel.textColor = .label
-            if #available(iOS 17, *) {
-                cardGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
-            }
+            cardGraphButton.setImage(UIImage(systemName: SFSymbols.flattrendChart), for: .normal)
+            
         } else {
             cardLabel.textColor = .label
-            if #available(iOS 17, *) {
-                cardGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
-            }
+            cardGraphButton.setImage(UIImage(systemName: SFSymbols.uptrendChart), for: .normal)
         }
     }
     
